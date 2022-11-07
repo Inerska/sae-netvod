@@ -16,6 +16,11 @@ require_once 'vendor/autoload.php';
 $s = new \Application\video\Serie(1);
 $sr = new \Application\render\SerieRenderer($s);
 echo $sr->render();
+echo "<p>--------------------------</p>";
+$e = new \Application\video\Episode(1,1);
+$er = new \Application\render\EpisodeRenderer($e);
+echo $er->render();
+
 
 ?>
 </body>

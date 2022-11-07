@@ -1,5 +1,5 @@
 <?php
-namespace iutnc\deefy\render;
+namespace Application\render;
 
 interface Renderer
 {

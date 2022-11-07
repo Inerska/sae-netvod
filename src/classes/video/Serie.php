@@ -3,7 +3,8 @@
 namespace Application\video;
 
 use Application\datalayer\factory\ConnectionFactory;
-use function Application\render\count;
+use Application\exception\EpisodeNotFoundException;
+
 
 class Serie {
     protected int $id;
@@ -32,14 +33,19 @@ class Serie {
         $this->dateAjout = $data['date_ajout'];
         $this->genre = '';
         $this->publicVise = '';
-        /*$sql = "SELECT * FROM episode WHERE serie_id = ?";
+        $stmt->closeCursor();
+        $sql = "SELECT * FROM episode WHERE serie_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id]);
-        while($data = $stmt->fetch()){
-            $this->episodes[] = array_push( new Episode($data['id'],$data['numero']);
-        }*/
         $this->episodes = [];
-        $this->nbEpisodes = count($this->episodes);
+        $count = 0;
+        while($data = $stmt->fetch()){
+            $e = new Episode($data['id'],$data['numero']);
+            $this->episodes[] = array_push( $this->episodes, $e);
+            $count++;
+        }
+        $this->nbEpisodes = $count;
+        $stmt->closeCursor();
     }
 
     public function __get(string $attrname) : mixed

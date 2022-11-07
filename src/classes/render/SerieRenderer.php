@@ -3,7 +3,7 @@
 namespace Application\render;
 
 use Application\video\Serie;
-use iutnc\deefy\render\Renderer;
+use Application\render\Renderer;
 
 class SerieRenderer implements Renderer {
 
@@ -18,13 +18,13 @@ class SerieRenderer implements Renderer {
     public function render(): string
     {
         $html = "<div class = 'serie' >".
-                "<h3> {$this->serie->titre} </h3>".
-                "<h3>{$this->serie->genre}</h3>".
-                "<h3>{$this->serie->publicVise}</h3>".
-                "<h3>{$this->serie->descriptif}</h3>".
-                "<h3>{$this->serie->annee}</h3>".
-                "<h3>{$this->serie->dateAjout}</h3>".
-                "<h3>{$this->serie->nbEpisodes}</h3>".
+                "<h3>Titre : {$this->serie->titre} </h3>".
+                "<p>Genre : {$this->serie->genre}</p>".
+                "<p>Public visé : {$this->serie->publicVise}</p>".
+                "<p>Descriptif : {$this->serie->descriptif}</p>".
+                "<p>Année : {$this->serie->annee}</p>".
+                "<p>Date ajout : {$this->serie->dateAjout}</p>".
+                "<p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>".
                 "</div>";
         return $html;
     }
