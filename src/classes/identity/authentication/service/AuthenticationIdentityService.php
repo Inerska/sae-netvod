@@ -22,7 +22,7 @@ class AuthenticationIdentityService
         $statement = $context->prepare($query);
         $result = $context->execute([$email]);
 
-        if ($result) {
+        if (!$result) {
             throw new AuthenticationException("Authentication failed");
         }
 
