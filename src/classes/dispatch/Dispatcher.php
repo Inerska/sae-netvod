@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Application\dispatch;
 
+use Application\action\SignUpAction;
+
 class Dispatcher
 {
     private ?string $action = null;
@@ -16,6 +18,10 @@ class Dispatcher
     final public function dispatch(): void
     {
         switch ($this->action) {
+            case "sign-up":
+                $action = new SignUpAction();
+                $html = $action->execute();
+                break;
             default:
                 $html = "Hello World!";
                 break;
