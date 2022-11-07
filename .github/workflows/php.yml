@@ -27,6 +27,8 @@ jobs:
         format: json
         output: php-security-checker.json
 
+    - uses: symfonycorp/security-checker-action@v4
+
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
