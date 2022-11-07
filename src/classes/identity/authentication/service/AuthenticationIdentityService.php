@@ -37,10 +37,34 @@ class AuthenticationIdentityService
 
     /**
      * @throws AuthenticationException
+     * @throws DatabaseConnectionException
      */
     public static function register(string $email, string $password): bool
     {
-        //TODO
-        throw new AuthenticationException("Not implemented");
+        if (!PasswordStrengthCheckerService::check($password)) {
+            throw new AuthenticationException("<p>password trop faible</p>");
+        }
+
+        $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+        try {
+            $db = ConnectionFactory::getConnection();
+        } catch (DatabaseConnectionException $e) {
+            throw new DatabaseConnectionException("<p>Erreur de connexion à la base de données</p>");
+        }
+
+        $query_email = $db->prepare('SELECT id FROM user WHERE email = :email');
+        $query_email->execute([':email' => $email]);
+        if ($query_email->fetch()) {
+            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
+        }
+
+        try {
+            $query = $db->prepare('INSERT INTO user (email, passwd, role) VALUES (:email, :passwd, :role)');
+            $query->execute([':email' => $email, ':passwd' => $hash, ':role' => 1]);
+        } catch (\PDOException $e) {
+            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p>");
+        }
+
+        return true;
     }
 }
