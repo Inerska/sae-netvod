@@ -12,6 +12,9 @@ use PDOException;
 
 class AuthenticationIdentityService
 {
+
+    private const AUTHENTICATION_FAIL_ERROR_MESSAGE = 'Authentication failed';
+
     /**
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
@@ -25,13 +28,13 @@ class AuthenticationIdentityService
         $result = $context->execute([$email]);
 
         if (!$result) {
-            throw new AuthenticationException("Authentication failed");
+            throw new AuthenticationException(self::AUTHENTICATION_FAIL_ERROR_MESSAGE);
         }
 
         $user = $statement->fetch();
 
         if (!password_verify($password, $user['password'])) {
-            throw new AuthenticationException("Authentication failed");
+            throw new AuthenticationException(self::AUTHENTICATION_FAIL_ERROR_MESSAGE);
         }
 
         return true;
