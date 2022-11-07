@@ -229,8 +229,8 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-DROP TABLE IF EXISTS user_serie;
-CREATE TABLE user_serie (
+DROP TABLE IF EXISTS user_serie_Pref;
+CREATE TABLE user_serie_Pref (
   idUser int(11) NOT NULL,
   idSerie int(5) NOT NULL,
   PRIMARY KEY (idUser, idSerie)
@@ -240,7 +240,7 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-INSERT INTO user_serie VALUES 
+INSERT INTO user_serie_Pref VALUES 
 (1, 1),
 (1, 2),
 (1, 5),
@@ -254,5 +254,63 @@ INSERT INTO user_serie VALUES
 (4, 1),
 (4, 4),
 (4, 6)
+END);
+$query->execute();
+
+$query = $db->prepare(
+    <<<END
+DROP TABLE IF EXISTS user_serie;
+CREATE TABLE user_serie (
+  idUser int(11) NOT NULL,
+  idSerie int(5) NOT NULL,
+  etat varchar(32) NOT NULL,
+  PRIMARY KEY (idUser, idSerie)
+)
+END);
+$query->execute();
+
+$query = $db->prepare(
+    <<<END
+INSERT INTO user_serie VALUES 
+(1, 1, 'vu'),
+(1, 2, 'en cours'),
+(1, 3, 'en cours'),
+(1, 4, 'vu'),
+(2, 2, 'vu'),
+(2, 3, 'vu'),
+(2, 4, 'en cours'),
+(2, 5, 'en cours'),
+(3, 1, 'en cours'),
+(3, 3, 'vu'),
+(3, 4, 'vu'),
+(4, 1, 'vu'),
+(4, 3, 'en cours'),
+(4, 6, 'en cours')
+END);
+$query->execute();
+
+
+$query = $db->prepare(
+    <<<END
+DROP TABLE IF EXISTS notation;
+CREATE TABLE notation (
+  idUser int(11) NOT NULL,
+  idSerie int(5) NOT NULL,
+  note int(2) NOT NULL,
+  commentaire varchar(256),
+  PRIMARY KEY (idUser, idSerie)
+)
+END);
+$query->execute();
+
+$query = $db->prepare(
+    <<<END
+INSERT INTO notation VALUES 
+(1, 1, 4, 'Un super film qui donne envie de voir la suite !!!'),
+(1, 4, 2, 'Film décevant malgrès la hype autour du film'),
+(2, 3, 3, 'Un film sans prétention.'),
+(2, 4, 3, 'Un film moyen qui se regarde tranquille.'),
+(3, 1, 1, 'Déconseille fortement, passez votre chemin.'),
+(4, 6, 5, 'Meilleur film de l\'année 2017, je vous conseille de d\'aller le voir immédiatement')
 END);
 $query->execute();
