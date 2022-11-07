@@ -17,5 +17,5 @@ abstract class Action
         $this->scriptName = $_SERVER['SCRIPT_NAME'];
     }
 
-    abstract public function execute(): void;
+    abstract public function execute(): string;
 }
