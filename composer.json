@@ -1,6 +1,11 @@
 {
-  "require": {
-    "dcandido/code-sniffer": "v1.6.0",
-    "egosun/code-sniffer": "2.x-dev"
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "dcandido/code-sniffer": "v1.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Application\\": "src/classes"
+    }
   }
 }
