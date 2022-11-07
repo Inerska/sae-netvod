@@ -31,6 +31,8 @@ class ConnectionFactory
                     self::$config['password']
                 );
 
+                self::$context->exec('SET NAMES utf8');
+
                 self::$context->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$context->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 

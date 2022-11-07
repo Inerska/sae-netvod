@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Application\dispatch;
 
+use Application\action\ViewCatalogueAction;
+use Application\exception\datalayer\DatabaseConnectionException;
+
 class Dispatcher
 {
     private ?string $action = null;
@@ -13,9 +16,16 @@ class Dispatcher
         $this->action = $action;
     }
 
+    /**
+     * @throws DatabaseConnectionException
+     */
     final public function dispatch(): void
     {
         switch ($this->action) {
+            case 'viewCatalogue':
+                $action = new ViewCatalogueAction();
+                $html = $action->execute();
+                break;
             default:
                 $html = "Hello World!";
                 break;
