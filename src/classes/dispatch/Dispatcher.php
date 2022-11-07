@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Application\dispatch;
 
 use Application\action\SignupAction;
+use Application\action\ViewCatalogueAction;
+use Application\exception\datalayer\DatabaseConnectionException;
 
 class Dispatcher
 {
@@ -15,6 +17,9 @@ class Dispatcher
         $this->action = $action;
     }
 
+    /**
+     * @throws DatabaseConnectionException
+     */
     final public function dispatch(): void
     {
         switch ($this->action) {
@@ -22,6 +27,12 @@ class Dispatcher
                 $action = new SignupAction();
                 $html = $action->execute();
                 break;
+                
+            case 'viewCatalogue':
+                $action = new ViewCatalogueAction();
+                $html = $action->execute();
+                break;
+                
             default:
                 $html = "Hello World!";
                 break;
