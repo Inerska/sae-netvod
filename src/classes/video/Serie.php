@@ -41,7 +41,7 @@ class Serie {
         $count = 0;
         while($data = $stmt->fetch()){
             $e = new Episode($data['id'],$data['numero']);
-            $this->episodes[] = array_push( $this->episodes, $e);
+            $this->episodes[] = $e;
             $count++;
         }
         $this->nbEpisodes = $count;

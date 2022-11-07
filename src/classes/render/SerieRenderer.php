@@ -25,7 +25,12 @@ class SerieRenderer implements Renderer {
                 "<p>Année : {$this->serie->annee}</p>".
                 "<p>Date ajout : {$this->serie->dateAjout}</p>".
                 "<p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>".
+                "<p>Liste des épisodes : </p>".
                 "</div>";
+        foreach ($this->serie->episodes as $episode) {
+            $e = new EpisodeRenderer($episode);
+            $html .= $e->render();
+        }
         return $html;
     }
 }

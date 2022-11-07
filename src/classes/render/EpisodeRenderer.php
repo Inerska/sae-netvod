@@ -3,6 +3,7 @@
 namespace Application\render;
 use Application\video\Episode;
 
+
 class EpisodeRenderer implements Renderer {
 
     private Episode $episode;
@@ -14,10 +15,9 @@ class EpisodeRenderer implements Renderer {
 
     public function render(): string {
         $html = "<div class = 'episode' >".
-                "<h3>Titre : {$this->episode->titre} </h3>".
-                "<p>Numéro : {$this->episode->numero}</p>".
-                "<p>Durée : {$this->episode->duree}</p>" .
-                "<img src='{$this->episode->image}' alt='image de l'episode' />".
+                "<h3>Episode {$this->episode->numero} - {$this->episode->titre} </h3>".
+                "<p>Durée : {$this->episode->duree} secondes</p>" .
+                //"<img src='{$this->episode->image}' alt='image de l'episode' />".
                 "</div>";
         return $html;
     }

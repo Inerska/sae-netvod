@@ -3,6 +3,7 @@
 namespace Application\video;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\EpisodeNotFoundException;
+use Application\exception\InvalidPropertyNameException;
 
 class Episode {
     protected int $id;
@@ -16,10 +17,11 @@ class Episode {
     public function __construct(int $id, int $numero){
         ConnectionFactory::setConfig("config.ini");
         $conn = ConnectionFactory::getConnection();
-        $sql = "SELECT * FROM episode WHERE id = ? AND numero = ?";
+        $sql = "SELECT * FROM episode WHERE serie_id = ? AND numero = ?";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$id,$numero]);
         $data = $stmt->fetch();
+        if ($data === false) throw new EpisodeNotFoundException("Episode $numero de la série $id non trouvé");
         $this->id = $data['id'];
         $this->numero = $data['numero'];
         $this->titre = $data['titre'];
