@@ -7,11 +7,17 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
+
 use Application\exception\identity\BadPasswordException;
 use Application\identity\model\User;
+use PDOException;
+
 
 class AuthenticationIdentityService
 {
+
+    private const AUTHENTICATION_FAIL_ERROR_MESSAGE = 'Authentication failed';
+
     /**
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
@@ -19,6 +25,7 @@ class AuthenticationIdentityService
      */
     public static function authenticate(string $email, string $password): User
     {
+
         $db = ConnectionFactory::getConnection();
         $st = $db->prepare("select * from user where email = ?");
         $st->execute([$email]);
@@ -26,9 +33,11 @@ class AuthenticationIdentityService
         // s'il n'y a pas de retour à la requetes, c'est que l'utilisateur n'existe pas
         if(! $row){
             throw new AuthenticationException("erreur d'auth");
+
         }
 
         $hash = $row['passwrd'];
+
 
         // si ce n'est pas le bon password
         if (! password_verify($password, $hash)){
@@ -42,32 +51,57 @@ class AuthenticationIdentityService
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
      */
-    public static function register(string $email, string $password): bool
+    public static function register(string $email, string $password, string $confirm): bool
     {
+        if ($password !== $confirm) {
+            throw new AuthenticationException("Passwords do not match");
+        }
+
         if (!PasswordStrengthCheckerService::check($password)) {
             throw new AuthenticationException("<p>password trop faible</p>");
         }
 
+        if (self::alreadyExists($email)) {
+            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
+        }
+
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+
         try {
             $db = ConnectionFactory::getConnection();
         } catch (DatabaseConnectionException $e) {
             throw new DatabaseConnectionException("<p>Erreur de connexion à la base de données</p>");
         }
 
-        $query_email = $db->prepare('SELECT id FROM user WHERE email = :email');
-        $query_email->execute([':email' => $email]);
-        if ($query_email->fetch()) {
-            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
-        }
-
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwd, role) VALUES (:email, :passwd, :role)');
-            $query->execute([':email' => $email, ':passwd' => $hash, ':role' => 1]);
-        } catch (\PDOException $e) {
-            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p>");
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role) VALUES (:email, :passwrd, :role)');
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
+
+            $_SESSION['loggedUser'] = serialize(new User((int)$db->lastInsertId(), $email, $password));
+        } catch (PDOException $e) {
+            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());
         }
 
         return true;
+    }
+
+    /**
+     * @throws AuthenticationException
+     * @throws DatabaseConnectionException
+     */
+    public static function alreadyExists(string $email): bool
+    {
+        $query = "select * from user where email = ?";
+        $context = ConnectionFactory::getConnection();
+
+        $statement = $context->prepare($query);
+
+        $result = $statement->execute([$email]);
+
+        if (!$result) {
+            throw new AuthenticationException("Authentication failed");
+        }
+
+        return $statement->fetch();
     }
 }
