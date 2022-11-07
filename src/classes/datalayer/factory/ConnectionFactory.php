@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Application\datalayer\factory;
 
-use Application\exception\DatabaseConnectionException;
+use Application\exception\datalayer\DatabaseConnectionException;
 use PDO;
 use PDOException;
 
