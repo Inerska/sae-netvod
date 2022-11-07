@@ -1,4 +1,21 @@
 {
+  "name": "netvod/netvod",
+  "description": "Series streaming web application",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Alexis GRIDEL"
+    },
+    {
+      "name": "Florian POVOAS"
+    },
+    {
+      "name": "Adrien SCHER"
+    },
+    {
+      "name": "Jérémy GROSSMANN"
+    }
+  ],
   "require-dev": {
     "roave/security-advisories": "dev-latest",
     "dcandido/code-sniffer": "v1.6.0"
