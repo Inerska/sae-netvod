@@ -10,7 +10,7 @@ class SigninAction extends Action{
     public function execute(): string{
 
         $html = <<<END
-            <form method="post" action="?action=signin">
+            <form method="post" action="?action=sign-in">
                   <input type="email" name="email" placeholder="votre email">
                   <input type="text" name="password" placeholder="votre mdp">
                   <button type="submit">Connexion</button>
@@ -25,13 +25,14 @@ class SigninAction extends Action{
             try{
                 AuthenticationIdentityService::authenticate($email, $password);
                 $html .= "<p>Connexion réussi</p>";
-            }catch (BadPasswordException $e){
-                $html .= "<p>Mot de passe incorrect</p>";
             }catch (AuthenticationException $e){
                 $html .= "<p>Compte inexistant</p>";
+            }catch (BadPasswordException $e){
+                $html .= "<p>Mot de passe incorrect</p>";
             }
 
         }
+
 
         return $html;
 

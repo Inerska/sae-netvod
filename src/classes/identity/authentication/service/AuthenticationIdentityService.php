@@ -14,6 +14,7 @@ class AuthenticationIdentityService
     /**
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
+     * @throws BadPasswordException
      */
     public static function authenticate(string $email, string $password): bool
     {
@@ -30,7 +31,7 @@ class AuthenticationIdentityService
         $user = $statement->fetch();
 
         if (!password_verify($password, $user['password'])) {
-            throw new BadPasswordException();
+            throw new BadPasswordException("Mauvais password");
         }
 
         return true;
