@@ -7,8 +7,11 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
+
+use Application\exception\identity\BadPasswordException;
 use Application\identity\model\User;
 use PDOException;
+
 
 class AuthenticationIdentityService
 {
@@ -18,26 +21,30 @@ class AuthenticationIdentityService
     /**
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
+     * @throws BadPasswordException
      */
-    public static function authenticate(string $email, string $password): bool
+    public static function authenticate(string $email, string $password): User
     {
-        $query = "select * from user where email = ?";
-        $context = ConnectionFactory::getConnection();
 
-        $statement = $context->prepare($query);
-        $result = $context->execute([$email]);
+        $db = ConnectionFactory::getConnection();
+        $st = $db->prepare("select * from user where email = ?");
+        $st->execute([$email]);
+        $row = $st->fetch(\PDO::FETCH_ASSOC);
+        // s'il n'y a pas de retour à la requetes, c'est que l'utilisateur n'existe pas
+        if(! $row){
+            throw new AuthenticationException("erreur d'auth");
 
-        if (!$result) {
-            throw new AuthenticationException(self::AUTHENTICATION_FAIL_ERROR_MESSAGE);
         }
 
-        $user = $statement->fetch();
+        $hash = $row['passwrd'];
 
-        if (!password_verify($password, $user['password'])) {
-            throw new AuthenticationException(self::AUTHENTICATION_FAIL_ERROR_MESSAGE);
+
+        // si ce n'est pas le bon password
+        if (! password_verify($password, $hash)){
+            throw new BadPasswordException();
         }
 
-        return true;
+        return new User($row['id'], $email);
     }
 
     /**

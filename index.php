@@ -19,6 +19,7 @@ use Application\dispatch\Dispatcher;
 require_once "src/views/header.php";
 require_once 'vendor/autoload.php';
 
+
 ConnectionFactory::setConfig( 'db.config.ini' );
 
 session_start();
