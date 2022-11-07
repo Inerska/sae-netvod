@@ -5,7 +5,6 @@ namespace Application\action;
 use Application\exception\identity\AuthenticationException;
 use Application\exception\identity\BadPasswordException;
 use Application\identity\authentication\service\AuthenticationIdentityService;
-use Application\identity\model\User;
 
 class SigninAction extends Action
 {
@@ -38,7 +37,7 @@ class SigninAction extends Action
 
         }
 
-
+        $html .= "<a href='index.php'>Retour page principale</a>";
         return $html;
 
     }
