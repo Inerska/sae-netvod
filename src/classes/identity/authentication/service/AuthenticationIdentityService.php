@@ -7,6 +7,8 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
+use Application\identity\model\User;
+use PDOException;
 
 class AuthenticationIdentityService
 {
@@ -45,26 +47,46 @@ class AuthenticationIdentityService
             throw new AuthenticationException("<p>password trop faible</p>");
         }
 
+        if (self::alreadyExists($email)) {
+            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
+        }
+
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+
         try {
             $db = ConnectionFactory::getConnection();
         } catch (DatabaseConnectionException $e) {
             throw new DatabaseConnectionException("<p>Erreur de connexion à la base de données</p>");
         }
 
-        $query_email = $db->prepare('SELECT id FROM user WHERE email = :email');
-        $query_email->execute([':email' => $email]);
-        if ($query_email->fetch()) {
-            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
-        }
-
         try {
             $query = $db->prepare('INSERT INTO user (email, passwd, role) VALUES (:email, :passwd, :role)');
             $query->execute([':email' => $email, ':passwd' => $hash, ':role' => 1]);
-        } catch (\PDOException $e) {
+
+            $_SESSION['loggedUser'] = serialize(new User((int)$db->lastInsertId(), $email, $password));
+        } catch (PDOException $e) {
             throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p>");
         }
 
         return true;
+    }
+
+    /**
+     * @throws AuthenticationException
+     * @throws DatabaseConnectionException
+     */
+    public static function alreadyExists(string $email): bool
+    {
+        $query = "select * from user where email = ?";
+        $context = ConnectionFactory::getConnection();
+
+        $statement = $context->prepare($query);
+        $result = $context->execute([$email]);
+
+        if (!$result) {
+            throw new AuthenticationException("Authentication failed");
+        }
+
+        return $statement->fetch();
     }
 }
