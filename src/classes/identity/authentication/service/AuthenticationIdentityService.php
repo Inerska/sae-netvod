@@ -67,12 +67,12 @@ class AuthenticationIdentityService
         }
 
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwd, role) VALUES (:email, :passwd, :role)');
-            $query->execute([':email' => $email, ':passwd' => $hash, ':role' => 1]);
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role) VALUES (:email, :passwrd, :role)');
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
 
             $_SESSION['loggedUser'] = serialize(new User((int)$db->lastInsertId(), $email, $password));
         } catch (PDOException $e) {
-            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p>");
+            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());
         }
 
         return true;
@@ -88,7 +88,8 @@ class AuthenticationIdentityService
         $context = ConnectionFactory::getConnection();
 
         $statement = $context->prepare($query);
-        $result = $context->execute([$email]);
+
+        $result = $statement->execute([$email]);
 
         if (!$result) {
             throw new AuthenticationException("Authentication failed");
