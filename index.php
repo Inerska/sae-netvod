@@ -10,6 +10,10 @@
 <body>
 <h1>Bienvenue sur NetVOD</h1>
 
-<?php echo "Hello World!"; ?>
+<?php
+
+require_once 'vendor/autoload.php';
+
+echo "Hello World!"; ?>
 </body>
 </html>
