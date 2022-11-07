@@ -19,23 +19,23 @@ class AuthenticationIdentityService
      */
     public static function authenticate(string $email, string $password): User
     {
-        $query = "select * from user where email = ?";
-        $context = ConnectionFactory::getConnection();
-
-        $statement = $context->prepare($query);
-        $result = $context->execute([$email]);
-
-        if (!$result) {
-            throw new AuthenticationException("Authentication failed");
+        $db = ConnectionFactory::getConnection();
+        $st = $db->prepare("select * from user where email = ?");
+        $st->execute([$email]);
+        $row = $st->fetch(\PDO::FETCH_ASSOC);
+        // s'il n'y a pas de retour à la requetes, c'est que l'utilisateur n'existe pas
+        if(! $row){
+            throw new AuthenticationException("erreur d'auth");
         }
 
-        $user = $statement->fetch();
+        $hash = $row['passwrd'];
 
-        if (!password_verify($password, $user['password'])) {
-            throw new BadPasswordException("Mauvais password");
+        // si ce n'est pas le bon password
+        if (! password_verify($password, $hash)){
+            throw new BadPasswordException();
         }
 
-        return new User($user['id'], $user['email'], $user['password']);
+        return new User($row['id'], $email);
     }
 
     /**

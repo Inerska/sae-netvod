@@ -14,6 +14,16 @@
 
 require_once 'vendor/autoload.php';
 
-echo "Hello World!"; ?>
+\Application\datalayer\factory\ConnectionFactory::setConfig('db.config.ini');
+
+if (isset($_GET['action'])){
+    $dispatcher = new \Application\dispatch\Dispatcher($_GET['action']);
+    $dispatcher->dispatch();
+}else{
+    echo "Hello World!";
+}
+
+
+?>
 </body>
 </html>
