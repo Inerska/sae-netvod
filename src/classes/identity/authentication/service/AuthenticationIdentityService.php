@@ -44,7 +44,7 @@ class AuthenticationIdentityService
             throw new BadPasswordException();
         }
 
-        return new User($row['id'], $email);
+        return new User((int)$row['id'], $email);
     }
 
     /**

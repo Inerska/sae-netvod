@@ -24,7 +24,7 @@ ConnectionFactory::setConfig( 'db.config.ini' );
 
 session_start();
 
-$action = $_GET['action'] ?? null;
+$action = $_GET['action'] ?? "";
 
 $dispatcher = new Dispatcher($action);
 

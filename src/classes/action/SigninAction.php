@@ -29,6 +29,7 @@ class SigninAction extends Action
             try {
                 $user = AuthenticationIdentityService::authenticate($email, $password);
                 $html .= "<p>Connexion réussi</p>";
+                $html .= "<p>Bienvenue $email</p>";
                 $_SESSION['loggedUser'] = serialize($user);
             } catch (AuthenticationException $e) {
                 $html .= "<p>Compte inexistant</p>";
