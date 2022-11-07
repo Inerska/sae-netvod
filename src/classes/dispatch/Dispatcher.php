@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Application\dispatch;
 
-use Application\action\SignUpAction;
+use Application\action\SignupAction;
 
 class Dispatcher
 {
@@ -19,7 +19,7 @@ class Dispatcher
     {
         switch ($this->action) {
             case "sign-up":
-                $action = new SignUpAction();
+                $action = new SignupAction();
                 $html = $action->execute();
                 break;
             default:
