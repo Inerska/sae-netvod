@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Application\dispatch;
 
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\DisplayUserLikesAction;
 use Application\action\SigninAction;
 
 class Dispatcher
@@ -25,6 +26,11 @@ class Dispatcher
                 break;
             case 'display-series-episode':
                 $act = new DisplaySerieEpisodeAction();
+                $html = $act->execute();
+                break;
+
+            case 'display-user-likes':
+                $act = new DisplayUserLikesAction();
                 $html = $act->execute();
                 break;
             default:
