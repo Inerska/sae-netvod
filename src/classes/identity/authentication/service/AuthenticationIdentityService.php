@@ -8,6 +8,7 @@ use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
 use Application\exception\identity\BadPasswordException;
+use Application\identity\model\User;
 
 class AuthenticationIdentityService
 {
@@ -16,7 +17,7 @@ class AuthenticationIdentityService
      * @throws DatabaseConnectionException
      * @throws BadPasswordException
      */
-    public static function authenticate(string $email, string $password): bool
+    public static function authenticate(string $email, string $password): User
     {
         $query = "select * from user where email = ?";
         $context = ConnectionFactory::getConnection();
@@ -34,7 +35,7 @@ class AuthenticationIdentityService
             throw new BadPasswordException("Mauvais password");
         }
 
-        return true;
+        return new User($user['id'], $user['email'], $user['password']);
     }
 
     /**

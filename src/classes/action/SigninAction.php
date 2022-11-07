@@ -1,13 +1,17 @@
 <?php
 
 namespace Application\action;
+
 use Application\exception\identity\AuthenticationException;
 use Application\exception\identity\BadPasswordException;
 use Application\identity\authentication\service\AuthenticationIdentityService;
+use Application\identity\model\User;
 
-class SigninAction extends Action{
+class SigninAction extends Action
+{
 
-    public function execute(): string{
+    public function execute(): string
+    {
 
         $html = <<<END
             <form method="post" action="?action=sign-in">
@@ -17,17 +21,18 @@ class SigninAction extends Action{
             </form>
         END;
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $email = filter_var($_POST['email'] ,FILTER_SANITIZE_EMAIL);
-            $password = filter_var($_POST['password'] ,FILTER_SANITIZE_SPECIAL_CHARS);
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $password = filter_var($_POST['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            try{
-                AuthenticationIdentityService::authenticate($email, $password);
+            try {
+                $user = AuthenticationIdentityService::authenticate($email, $password);
                 $html .= "<p>Connexion réussi</p>";
-            }catch (AuthenticationException $e){
+                $_SESSION['loggedUser'] = serialize($user);
+            } catch (AuthenticationException $e) {
                 $html .= "<p>Compte inexistant</p>";
-            }catch (BadPasswordException $e){
+            } catch (BadPasswordException $e) {
                 $html .= "<p>Mot de passe incorrect</p>";
             }
 
