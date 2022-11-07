@@ -7,6 +7,7 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
+use Application\exception\identity\BadPasswordException;
 
 class AuthenticationIdentityService
 {
@@ -29,7 +30,7 @@ class AuthenticationIdentityService
         $user = $statement->fetch();
 
         if (!password_verify($password, $user['password'])) {
-            throw new AuthenticationException("Authentication failed");
+            throw new BadPasswordException();
         }
 
         return true;

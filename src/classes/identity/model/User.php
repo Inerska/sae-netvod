@@ -11,7 +11,7 @@ class User{
     private string $mdp;
     //private int $role;
 
-    public function __construct(int $id, string $email, string $mdp, /*int $role*/){
+    public function __construct(int $id, string $email, string $mdp /*int $role*/){
         $this->email = $email;
         $this->mdp = $mdp;
         $this->id = $id;
