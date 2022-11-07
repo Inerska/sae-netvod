@@ -22,6 +22,10 @@ jobs:
 
     - name: Local PHP Security Checker
       uses: pplotka/local-php-security-checker-github-actions@1.1.2
+      with:
+        path: .
+        format: json
+        output: php-security-checker.json
 
     - name: Cache Composer packages
       id: composer-cache
