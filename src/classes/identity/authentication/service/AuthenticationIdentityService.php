@@ -41,8 +41,12 @@ class AuthenticationIdentityService
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
      */
-    public static function register(string $email, string $password): bool
+    public static function register(string $email, string $password, string $confirm): bool
     {
+        if ($password !== $confirm) {
+            throw new AuthenticationException("Passwords do not match");
+        }
+
         if (!PasswordStrengthCheckerService::check($password)) {
             throw new AuthenticationException("<p>password trop faible</p>");
         }

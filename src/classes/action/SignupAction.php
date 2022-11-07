@@ -15,6 +15,7 @@ class SignupAction extends Action
                 <form method="POST">
                     <input type="email" name="email" placeholder="Adresse mail" required>
                     <input type="password" name="password" placeholder="Password" required>
+                    <input type="password" name="confirm" placeholder="Confirm" required>
                     <input type="submit" value="S'enregistrer">
                 </form>
             END;
@@ -22,9 +23,10 @@ class SignupAction extends Action
 
         $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
         $password = $_POST['password'];
+        $confirm = $_POST['confirm'];
 
         try {
-            AuthenticationIdentityService::register($email, $password);
+            AuthenticationIdentityService::register($email, $password, $confirm);
         } catch (DatabaseConnectionException|AuthenticationException $e) {
             return $e->getMessage();
         }
