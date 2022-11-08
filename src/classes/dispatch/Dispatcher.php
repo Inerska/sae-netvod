@@ -9,6 +9,7 @@ use Application\action\DisplaySerieEpisodeAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
+use Application\action\ViewProfileAction;
 use Application\exception\datalayer\DatabaseConnectionException;
 
 
@@ -46,7 +47,11 @@ class Dispatcher
                 $action = new ViewCatalogueAction();
                 $html = $action->execute();
                 break;
-                
+
+            case 'profile':
+                $action = new ViewProfileAction();
+                $html = $action->execute();
+                break;
 
             default:
                 $html = "Hello World!";
