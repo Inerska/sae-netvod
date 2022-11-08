@@ -31,7 +31,7 @@ class ViewCatalogueAction extends Action
             $html = "<p>Aucune série n'est disponible</p>";
         } else {
             $html = <<<END
-            <div class="catalogue">
+            <div class="grid grid-cols-6 gap-1">
                 {$html}
             </div>
             END;
