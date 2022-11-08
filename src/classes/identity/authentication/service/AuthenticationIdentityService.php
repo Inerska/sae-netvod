@@ -76,7 +76,7 @@ class AuthenticationIdentityService
         try {
             $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, activationToken, expirationToken) VALUES (:email, :passwrd, :role, false, :token, :expiration)');
             $token = bin2hex(random_bytes(32));
-            $expiration = date('Y-m-d H:i:s', time() + 60);
+            $expiration = time() + 60;
             $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':token' => $token, ':expiration' => $expiration]);
 
         } catch (PDOException $e) {
@@ -89,7 +89,7 @@ class AuthenticationIdentityService
 
     public static function regenerateToken(int $id) : string {
         $token = bin2hex(random_bytes(32));
-        $expiration = date('Y-m-d H:i:s', time() + 60);
+        $expiration = time() + 60;
         $db = ConnectionFactory::getConnection();
         $query = $db->prepare('UPDATE user SET activationToken = :token, expirationToken = :expiration WHERE id = :id');
         $query->execute([':token' => $token, ':expiration' => $expiration, ':id' => $id]);

@@ -97,7 +97,7 @@ CREATE TABLE user (
   idProfil int(5),
   active boolean,
   activationToken varchar(64),
-  expirationToken date,
+  expirationToken int(16),
   PRIMARY KEY (id)
 )
 END);
