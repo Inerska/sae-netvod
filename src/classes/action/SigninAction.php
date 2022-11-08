@@ -15,7 +15,7 @@ class SigninAction extends Action
         $html = <<<END
             <form method="post" action="?action=sign-in">
                   <input type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
-                  <input type="text" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
+                  <input type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
                   <button type="submit">Connexion</button>
             </form>
         END;
