@@ -18,10 +18,10 @@ class SeriesCardRenderer implements Renderer
     public function render(): string
     {
         return <<<END
-        <div class="p-5 rounded border">
+        <div>
             <a href="?action=viewSerie&id={$this->seriesId}">
-                <img class="h-48 w-48" src="$this->cover" alt="Couverture du film $this->title">
-                <h3>$this->title</h3> 
+                <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
+                <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm">$this->title</h3> 
             </a>
         </div>
         END;
