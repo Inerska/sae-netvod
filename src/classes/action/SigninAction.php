@@ -25,9 +25,11 @@ class SigninAction extends Action
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = filter_var($_POST['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
+
             try {
                 $user = AuthenticationIdentityService::authenticate($email, $password);
                 $html .= "<p>Connexion réussi</p>";
+                $html .= "<p>Bienvenue $email</p>";
                 $_SESSION['loggedUser'] = serialize($user);
             } catch (AuthenticationException $e) {
                 $html .= "<p>Compte inexistant</p>";

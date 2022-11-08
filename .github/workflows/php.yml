@@ -20,6 +20,15 @@ jobs:
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
+    - name: Local PHP Security Checker
+      uses: pplotka/local-php-security-checker-github-actions@1.1.2
+      with:
+        path: .
+        format: json
+        output: php-security-checker.json
+
+    - uses: symfonycorp/security-checker-action@v4
+
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
