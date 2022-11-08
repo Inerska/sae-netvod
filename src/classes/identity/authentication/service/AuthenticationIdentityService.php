@@ -7,9 +7,9 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
-
 use Application\exception\identity\BadPasswordException;
 use Application\identity\model\User;
+use PDO;
 use PDOException;
 
 
@@ -29,9 +29,9 @@ class AuthenticationIdentityService
         $db = ConnectionFactory::getConnection();
         $st = $db->prepare("select * from user where email = ?");
         $st->execute([$email]);
-        $row = $st->fetch(\PDO::FETCH_ASSOC);
+        $row = $st->fetch(PDO::FETCH_ASSOC);
         // s'il n'y a pas de retour à la requetes, c'est que l'utilisateur n'existe pas
-        if(! $row){
+        if (!$row) {
             throw new AuthenticationException("erreur d'auth");
 
         }
@@ -40,7 +40,7 @@ class AuthenticationIdentityService
 
 
         // si ce n'est pas le bon password
-        if (! password_verify($password, $hash)){
+        if (!password_verify($password, $hash)) {
             throw new BadPasswordException();
         }
 
@@ -74,8 +74,20 @@ class AuthenticationIdentityService
         }
 
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwrd, role) VALUES (:email, :passwrd, :role)');
-            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
+
+            $query = $db->prepare("INSERT INTO profil (nom, prenom, age, sexe, genrePref) VALUES (:nom, :prenom, :age, :genre, :genrePrefere)");
+            $query->execute([
+                'nom' => "Unknown",
+                'prenom' => "Unknown",
+                'age' => -1,
+                'genre' => "Unknown",
+                'genrePrefere' => "Unknown"
+            ]);
+
+            $profileId = $db->lastInsertId();
+
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role, idProfil) VALUES (:email, :passwrd, :role, :idProfil)');
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':idProfil' => $profileId]);
 
             $_SESSION['loggedUser'] = serialize(new User((int)$db->lastInsertId(), $email, $password));
         } catch (PDOException $e) {

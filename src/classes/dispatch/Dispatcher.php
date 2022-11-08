@@ -53,6 +53,12 @@ class Dispatcher
                 $html = $action->execute();
                 break;
 
+            case 'sign-out':
+                session_destroy();
+                header('Location: index.php');
+                exit();
+                break;
+
             default:
                 $html = "Hello World!";
                 break;

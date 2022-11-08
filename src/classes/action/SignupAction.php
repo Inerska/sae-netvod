@@ -31,6 +31,8 @@ class SignupAction extends Action
             return $e->getMessage();
         }
 
+        header('Location: index.php');
+
         return 'You have been signed up!';
     }
 }

@@ -2,44 +2,36 @@
 
 namespace Application\action;
 
+if (!isset($_SESSION['loggedUser'])) {
+    header('Location: index.php?action=sign-in');
+    exit();
+}
+
+use Application\datalayer\repository\ProfileRepository;
+use Application\datalayer\util\Gender;
+use Application\identity\model\User;
+
 class ViewProfileAction extends Action
 {
     public function execute(): string
     {
-        $html = <<<END
-        <div class="flex flex-col items-center">
-            <h1 class="text-3xl">Mon profil</h1>
-            <div class="flex flex-col items-center">
-                <div class="flex flex-col items-center">
-                    <h2 class="text-2xl">Mes informations</h2>
-                    <div class="flex flex-col items-center">
-                        <div class="flex flex-col items-center">
-                            <h3 class="text-xl">Nom d'utilisateur</h3>
-                            <p>{$_SESSION['username']}</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <h3 class="text-xl">Adresse e-mail</h3>
-                            <p>{$_SESSION['email']}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <h2 class="text-2xl">Mes abonnements</h2>
-                    <div class="flex flex-col items-center">
-                        <div class="flex flex-col items-center">
-                            <h3 class="text-xl">Séries</h3>
-                            <p>TODO</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <h3 class="text-xl">Films</h3>
-                            <p>TODO</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        END;
+        $loggedUser = unserialize($_SESSION["loggedUser"], ["allowed_classes" => true]);
+        $repository = new ProfileRepository();
 
-        return $html;
+        echo "va";
+
+        $profile = $repository->getProfileByUserId($loggedUser->id);
+
+        if ($profile === null) {
+            return "Profile not found";
+        }
+
+        echo $profile->getAge() ?? -1;
+        echo $profile->getGenrePrefere() ?? "null";
+        echo $profile->getGender() ?? "null";
+        echo $profile->getNom() ?? "null";
+        echo $profile->getPrenom() ?? "null";
+
+        return "";
     }
 }
