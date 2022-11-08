@@ -17,17 +17,17 @@ class ActivationAction extends Action
         } else if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $db = ConnectionFactory::getConnection();
-            $query = $db->prepare("SELECT id, email, expirationToken FROM user WHERE activationToken = :token");
+            $query = $db->prepare("SELECT id, email, activationExpiration FROM user WHERE activationToken = :token");
             $query->execute([':token' => $token]);
             if($result = $query->fetch()) {
-                if ($result['expirationToken'] > time()) {
-                    $query = $db->prepare("UPDATE user SET activationToken = NULL, expirationToken = NULL, active = 1 WHERE id = :id");
+                if ($result['activationExpiration'] > time()) {
+                    $query = $db->prepare("UPDATE user SET activationToken = NULL, activationExpiration = NULL, active = 1 WHERE id = :id");
                     $query->execute([':id' => $result['id']]);
                     $_SESSION['loggedUser'] = serialize(new User($result['id'], $result['email']));
 
                     $html = "<p>Votre compte a bien été activé</p>";
                 } else {
-                    $token = AuthenticationIdentityService::regenerateToken($result['id']);
+                    $token = AuthenticationIdentityService::generateActivationToken($result['id']);
                     $html = "<p>Votre lien d'activation a expiré, un nouveau lien a été généré</p>";
                     $html .= "<p><a href='index.php?action=activation&token={$token}'>Activer mon compte</a></p>";
                 }

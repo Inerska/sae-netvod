@@ -8,6 +8,7 @@ namespace Application\dispatch;
 use Application\action\ActivationAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\RenewAction;
 use Application\action\DisplayUserLikesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
@@ -78,11 +79,17 @@ class Dispatcher
                 $html = $action->execute();
                 break;
 
+            case 'renew':
+                $action = new RenewAction();
+                $html = $action->execute();
+                break;
+
             case 'viewSerie':
                 $act = new \Application\action\ViewSerieAction();
 
                 $html = $act->execute();
                 break;
+                
             default:
                 $action = new DisplayUserLikesAction();
                 $html = $action->execute();
