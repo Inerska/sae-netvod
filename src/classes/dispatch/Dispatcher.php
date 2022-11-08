@@ -84,7 +84,8 @@ class Dispatcher
                 $html = $act->execute();
                 break;
             default:
-                $html = "Hello World!";
+                $action = new DisplayUserLikesAction();
+                $html = $action->execute();
                 break;
         }
 
