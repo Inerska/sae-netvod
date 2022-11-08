@@ -9,7 +9,7 @@ use Application\action\DisplaySerieEpisodeAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
-use Application\action\ViewProfileAction;
+use Application\action\ProfileAction;
 use Application\exception\datalayer\DatabaseConnectionException;
 
 
@@ -49,7 +49,7 @@ class Dispatcher
                 break;
 
             case 'profile':
-                $action = new ViewProfileAction();
+                $action = new ProfileAction();
                 $html = $action->execute();
                 break;
 
