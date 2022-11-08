@@ -94,6 +94,10 @@ CREATE TABLE user (
   email varchar(128) NOT NULL,
   passwrd varchar(128) NOT NULL,
   role int(5) NOT NULL,
+  idProfil int(5),
+  active boolean,
+  activationToken varchar(64),
+  expirationToken int(16),
   PRIMARY KEY (id)
 )
 END);
@@ -101,13 +105,29 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-INSERT INTO user (email, passwrd, role) VALUES
-('user1@gmail.com', '\$2y\$12\$e9DCiDKOGpVs9s.9u2ENEOiq7wGvx7sngyhPvKXo2mUbI3ulGWOdC', 1),
-('user2@gmail.com', '\$2y\$12\$4EuAiwZCaMouBpquSVoiaOnQTQTconCP9rEev6DMiugDmqivxJ3AG', 1),
-('user3@gmail.com', '\$2y\$12\$5dDqgRbmCN35XzhniJPJ1ejM5GIpBMzRizP730IDEHsSNAu24850S', 1),
-('admin@gmail.com', '\$2y\$12\$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a', 100);
+INSERT INTO user (email, passwrd, role, active) VALUES
+('user1@gmail.com', '\$2y\$12\$e9DCiDKOGpVs9s.9u2ENEOiq7wGvx7sngyhPvKXo2mUbI3ulGWOdC', 1, true),
+('user2@gmail.com', '\$2y\$12\$4EuAiwZCaMouBpquSVoiaOnQTQTconCP9rEev6DMiugDmqivxJ3AG', 1, true),
+('user3@gmail.com', '\$2y\$12\$5dDqgRbmCN35XzhniJPJ1ejM5GIpBMzRizP730IDEHsSNAu24850S', 1, true),
+('admin@gmail.com', '\$2y\$12\$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a', 100, true);
 END);
 $query->execute();
+
+$query = $db->prepare(
+    <<<END
+DROP TABLE IF EXISTS profil;
+CREATE TABLE profil (
+  idProfil int(5) NOT NULL AUTO_INCREMENT,
+  nom varchar(64),
+  prenom varchar(64),
+  age int(3),
+  sexe varchar(32),
+  genrePref varchar(64),
+  PRIMARY KEY (idProfil)
+)
+END);
+$query->execute();
+
 
 $query = $db->prepare(
     <<<END
@@ -260,10 +280,10 @@ $query->execute();
 $query = $db->prepare(
     <<<END
 DROP TABLE IF EXISTS user_serie;
-CREATE TABLE user_serie (
+DROP TABLE IF EXISTS user_serie_vu;
+CREATE TABLE user_serie_vu (
   idUser int(11) NOT NULL,
   idSerie int(5) NOT NULL,
-  etat varchar(32) NOT NULL,
   PRIMARY KEY (idUser, idSerie)
 )
 END);
@@ -271,24 +291,41 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-INSERT INTO user_serie VALUES 
-(1, 1, 'vu'),
-(1, 2, 'en cours'),
-(1, 3, 'en cours'),
-(1, 4, 'vu'),
-(2, 2, 'vu'),
-(2, 3, 'vu'),
-(2, 4, 'en cours'),
-(2, 5, 'en cours'),
-(3, 1, 'en cours'),
-(3, 3, 'vu'),
-(3, 4, 'vu'),
-(4, 1, 'vu'),
-(4, 3, 'en cours'),
-(4, 6, 'en cours')
+INSERT INTO user_serie_vu VALUES 
+(1, 1),
+(1, 4),
+(2, 2),
+(2, 3),
+(3, 3),
+(3, 4),
+(4, 1)
 END);
 $query->execute();
 
+$query = $db->prepare(
+    <<<END
+DROP TABLE IF EXISTS user_serie_en_cours;
+CREATE TABLE user_serie_en_cours (
+  idUser int(11) NOT NULL,
+  idSerie int(5) NOT NULL,
+  numEpisode int(3) NOT NULL,
+  PRIMARY KEY (idUser, idSerie)
+)
+END);
+$query->execute();
+
+$query = $db->prepare(
+    <<<END
+INSERT INTO user_serie_en_cours VALUES 
+(1, 2, 3),
+(1, 3, 2),
+(2, 4, 1),
+(2, 5, 2),
+(3, 1, 4),
+(4, 3, 1),
+(4, 6, 1)
+END);
+$query->execute();
 
 $query = $db->prepare(
     <<<END

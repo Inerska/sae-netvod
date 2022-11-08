@@ -26,13 +26,15 @@ class SignupAction extends Action
         $confirm = $_POST['confirm'];
 
         try {
-            AuthenticationIdentityService::register($email, $password, $confirm);
+            $token = AuthenticationIdentityService::register($email, $password, $confirm);
         } catch (DatabaseConnectionException|AuthenticationException $e) {
             return $e->getMessage();
         }
 
-        header('Location: index.php');
+        return <<<END
+            <p>Compte enregister avec succès, veuillez activer votre compte</p>
+            <a href="index.php?action=activation&token={$token}">Activer mon compte</a>
+        END;
 
-        return 'You have been signed up!';
     }
 }
