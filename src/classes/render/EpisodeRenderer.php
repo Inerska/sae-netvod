@@ -26,6 +26,7 @@ class EpisodeRenderer implements Renderer {
     public function longRender():String{
         $html = $this->render();
         $html .= "<p>Resumé : {$this->episode->resume}</p>";
+        $html .= "<video><source src='video/{$this->episode->file}' type='video/mp4'></video>";
 
         return $html;
     }
