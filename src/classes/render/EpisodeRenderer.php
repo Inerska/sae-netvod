@@ -15,19 +15,9 @@ class EpisodeRenderer implements Renderer {
     }
 
     public function render(): string {
-        if (isset($_GET['id'])){
-            $id = $_GET['id'];
-        }else if(isset($_GET['serieId'])){
-            $id = $_GET['serieId'];
-        }else{
-            // on recupere l'id de la serie sur laquelle on clique
-            $bd = ConnectionFactory::getConnection();
-            $query = "select serie_id from episode where id = ?";
-            $stmt = $bd->prepare($query);
-            $id = $stmt->execute([$this->episode->id]);
-        }
+
         $html = <<<END
-                <h3><a href="index.php?action=display-series-episode&serieId={$id}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
+                <h1 class="text-red-600 text-2xl font-bold'"><a href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h1>
                 <p>Durée : {$this->episode->duree} secondes</p>
          END;
         return $html;
@@ -35,8 +25,10 @@ class EpisodeRenderer implements Renderer {
 
     public function longRender():String{
         $html = $this->render();
-        $html .= "<p>Resumé : {$this->episode->resume}</p>";
+        $html .= "<p class='text-lg'>Resumé : {$this->episode->resume}</p>";
+        $html .= "<video><source src='video/{$this->episode->file}' type='video/mp4'></video>";
 
         return $html;
     }
+
 }

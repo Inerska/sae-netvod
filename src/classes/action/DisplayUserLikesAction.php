@@ -4,6 +4,7 @@ namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
 use Application\render\SerieRenderer;
+use Application\render\SeriesCardRenderer;
 use Application\video\Serie;
 
 class DisplayUserLikesAction extends Action{
@@ -21,14 +22,19 @@ class DisplayUserLikesAction extends Action{
             $stmt = $bd->prepare($query);
             $stmt->execute([$user->__get('id')]);
             // affiche les likes
-            $html = "<p>liste de vos likes : </p>";
+            $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos likes : </h1>";
             while ($row = $stmt->fetch()){
                 // on affiche toutes les series qu'il a like
 
                 // cree une serie a partir de l'id
                 $serie = new Serie($row['idSerie']+0);
                 // cree un renderer
-                $renderer = new SerieRenderer($serie);
+                // si on est sur la page principale
+                if(!isset($_GET['action'])){
+                    $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id);
+                }else{
+                    $renderer = new SerieRenderer($serie);
+                }
                 // l'affiche
                 $html .= $renderer->render();
             }
