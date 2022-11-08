@@ -22,7 +22,13 @@ class DisplayUserLikesAction extends Action{
             $html = "<p>liste de vos likes : </p>";
             while ($row = $stmt->fetch()){
                 // on affiche toutes les series qu'il a like
-                $html .= "<p>{$row['idSerie']}</p>";
+
+                // cree une serie a partir de l'id
+                $serie = new Serie($row['idSerie']+0);
+                // cree un renderer
+                $renderer = new SerieRenderer($serie);
+                // l'affiche
+                $html .= $renderer->render();
             }
         }
 
