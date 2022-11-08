@@ -38,7 +38,6 @@ class AuthenticationIdentityService
 
         $hash = $row['passwrd'];
 
-
         // si ce n'est pas le bon password
         if (!password_verify($password, $hash)) {
             throw new BadPasswordException();
