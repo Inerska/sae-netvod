@@ -16,6 +16,10 @@ class Dispatcher
     final public function dispatch(): void
     {
         switch ($this->action) {
+            case 'ViewSerie':
+                $act = new \Application\action\ViewSerieAction();
+                $html = $act->execute();
+                break;
             default:
                 $html = "Hello World!";
                 break;
