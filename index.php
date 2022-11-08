@@ -15,13 +15,13 @@ use Application\datalayer\factory\ConnectionFactory;
 use Application\dispatch\Dispatcher;
 use Application\exception\datalayer\DatabaseConnectionException;
 
+session_start();
+
 require_once "src/views/header.php";
 require_once 'vendor/autoload.php';
 
 
 ConnectionFactory::setConfig( 'db.config.ini' );
-
-session_start();
 
 $action = $_GET['action'] ?? "";
 
