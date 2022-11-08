@@ -7,9 +7,9 @@ namespace Application\identity\authentication\service;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
-
 use Application\exception\identity\BadPasswordException;
 use Application\identity\model\User;
+use PDO;
 use PDOException;
 
 
@@ -29,9 +29,9 @@ class AuthenticationIdentityService
         $db = ConnectionFactory::getConnection();
         $st = $db->prepare("select * from user where email = ?");
         $st->execute([$email]);
-        $row = $st->fetch(\PDO::FETCH_ASSOC);
+        $row = $st->fetch(PDO::FETCH_ASSOC);
         // s'il n'y a pas de retour à la requetes, c'est que l'utilisateur n'existe pas
-        if(! $row){
+        if (!$row) {
             throw new AuthenticationException("erreur d'auth");
 
         }
@@ -40,7 +40,7 @@ class AuthenticationIdentityService
 
 
         // si ce n'est pas le bon password
-        if (! password_verify($password, $hash)){
+        if (!password_verify($password, $hash)) {
             throw new BadPasswordException();
         }
 
@@ -74,10 +74,21 @@ class AuthenticationIdentityService
         }
 
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, activationToken, expirationToken) VALUES (:email, :passwrd, :role, false, :token, :expiration)');
+            $query = $db->prepare("INSERT INTO profil (nom, prenom, age, sexe, genrePref) VALUES (:nom, :prenom, :age, :genre, :genrePrefere)");
+            $query->execute([
+                'nom' => "Unknown",
+                'prenom' => "Unknown",
+                'age' => -1,
+                'genre' => "Unknown",
+                'genrePrefere' => "Unknown"
+            ]);
+
+            $profileId = $db->lastInsertId();
+
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, activationToken, expirationToken, idProfil) VALUES (:email, :passwrd, :role, false, :token, :expiration, :idProfil)');
             $token = bin2hex(random_bytes(32));
             $expiration = time() + 60;
-            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':token' => $token, ':expiration' => $expiration]);
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':token' => $token, ':expiration' => $expiration, ':idProfil' => $profileId]);
 
         } catch (PDOException $e) {
             throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());

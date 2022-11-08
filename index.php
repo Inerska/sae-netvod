@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="bg-white dark:bg-gray-800">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -27,7 +27,7 @@ $action = $_GET['action'] ?? "";
 
 $dispatcher = new Dispatcher($action);
 
-echo "<div class='container mx-auto p-4'>";
+echo "<div class='container mx-auto pt-4'>";
 try {
     $dispatcher->dispatch();
 } catch (DatabaseConnectionException $e) {

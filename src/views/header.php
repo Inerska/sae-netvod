@@ -24,6 +24,11 @@
                         </a>
                     </li>
                     <li class="flex flex-col md:flex-row">
+                        <a href="?action=profile"
+                           class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
+                            <span class="ml-2">Mon compte</span>
+                        </a>
+                    <li class="flex flex-col md:flex-row">
                         <a href="?action=sign-out"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
                             <span class="ml-2">Déconnexion</span>
