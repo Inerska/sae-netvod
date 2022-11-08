@@ -15,7 +15,6 @@ class Episode {
     protected int $serieId;
 
     public function __construct(int $id, int $numero){
-        ConnectionFactory::setConfig("config.ini");
         $conn = ConnectionFactory::getConnection();
         $sql = "SELECT * FROM episode WHERE serie_id = ? AND numero = ?";
         $stmt = $conn->prepare($sql);
