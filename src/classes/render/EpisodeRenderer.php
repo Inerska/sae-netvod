@@ -15,14 +15,9 @@ class EpisodeRenderer implements Renderer {
     }
 
     public function render(): string {
-            // on recupere l'id de la serie sur laquelle on clique
-            $bd = ConnectionFactory::getConnection();
-            $query = "select serie_id from episode where id = ?";
-            $stmt = $bd->prepare($query);
-            $stmt->execute([$this->episode->id]);
-            $id = $stmt->fetch()['serie_id'];
+
         $html = <<<END
-                <h3><a href="index.php?action=display-series-episode&serieId={$id}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
+                <h3><a href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
                 <p>Durée : {$this->episode->duree} secondes</p>
          END;
         return $html;

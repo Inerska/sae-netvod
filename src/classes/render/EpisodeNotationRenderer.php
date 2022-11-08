@@ -15,18 +15,9 @@ class EpisodeNotationRenderer implements Renderer {
     }
 
     public function render(): string {
-        if(isset($_GET['serieId'])){
-            $id = $_GET['serieId'];
-        }else{
-            // on recupere l'id de la serie sur laquelle on clique
-            $bd = ConnectionFactory::getConnection();
-            $query = "select serie_id from episode where id = ?";
-            $stmt = $bd->prepare($query);
-            $stmt->execute([$this->episode->id]);
-            $id = $stmt->fetch()['serie_id'];
-        }
-        $episode = new Episode($id,$_GET['episodeId']);
-        $episodeRender = new EpisodeRenderer($episode);
+        $id = $this->episode->serieId;
+        $numero = $this->episode->numero;
+        $episodeRender = new EpisodeRenderer($this->episode);
         $html = $episodeRender->longRender();
 
         $db = ConnectionFactory::getConnection();
@@ -40,9 +31,9 @@ class EpisodeNotationRenderer implements Renderer {
         } else {
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 $html .= <<<END
-            <form action="?action=display-series-episode&serieId={$id}&episodeId={$this->episode->numero}" method="post">
+            <form action="?action=display-series-episode&serieId={$id}&episodeId={$numero}" method="post">
                 <input type="hidden" name="serieId" value="{$id}">
-                <input type="hidden" name="episodeId" value="{$this->episode->numero}">
+                <input type="hidden" name="episodeId" value="{$numero}">
                 <h3>Notez la série :</h3>
                 <label><input type="radio" id="note_1" name="note" value="1">1</label><br>
                 <label><input type="radio" id="note_2" name="note" value="2">2</label><br>
