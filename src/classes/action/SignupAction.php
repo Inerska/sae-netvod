@@ -13,9 +13,9 @@ class SignupAction extends Action
         if ($this->httpMethod === 'GET') {
             return <<<END
                 <form method="POST">
-                    <input type="email" name="email" placeholder="Adresse mail" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <input type="password" name="confirm" placeholder="Confirm" required>
+                    <input type="email" name="email" poncopy="return false" onpaste="return false" placeholder="Adresse mail" required>
+                    <input type="password" name="password" oncopy="return false" onpaste="return false" placeholder="Password" required>
+                    <input type="password" name="confirm" oncopy="return false" onpaste="return false" placeholder="Confirm" required>
                     <input type="submit" value="S'enregistrer">
                 </form>
             END;
