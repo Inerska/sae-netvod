@@ -16,7 +16,7 @@ class SigninAction extends Action
             <form method="post" action="?action=sign-in">
                   <input type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
                   <input type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
-                  <button type="submit">Connexion</button>
+                  <button type="submit" class="bg-blue-500 rounded p-3 text-white hover:bg-blue-600">Connexion</button>
             </form>
         END;
 
