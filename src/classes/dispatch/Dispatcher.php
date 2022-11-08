@@ -7,6 +7,7 @@ namespace Application\dispatch;
 
 use Application\action\ActivationAction;
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\RenewAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
@@ -50,6 +51,11 @@ class Dispatcher
 
             case 'activation':
                 $action = new ActivationAction();
+                $html = $action->execute();
+                break;
+
+            case 'renew':
+                $action = new RenewAction();
                 $html = $action->execute();
                 break;
 

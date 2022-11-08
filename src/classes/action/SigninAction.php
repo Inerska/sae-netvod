@@ -18,6 +18,7 @@ class SigninAction extends Action
                   <input type="text" name="password" placeholder="votre mdp">
                   <button type="submit">Connexion</button>
             </form>
+            <a href="index.php?action=renew">Mot de passe oublié ?</a>
         END;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,7 +40,7 @@ class SigninAction extends Action
 
         }
 
-        $html .= "<a href='index.php'>Retour page principale</a>";
+        $html .= "<br><br><a href='index.php'>Retour page principale</a>";
         return $html;
 
     }

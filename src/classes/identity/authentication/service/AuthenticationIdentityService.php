@@ -74,10 +74,10 @@ class AuthenticationIdentityService
         }
 
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, activationToken, expirationToken) VALUES (:email, :passwrd, :role, false, :token, :expiration)');
-            $token = bin2hex(random_bytes(32));
-            $expiration = time() + 60;
-            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':token' => $token, ':expiration' => $expiration]);
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active) VALUES (:email, :passwrd, :role, false)');
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
+            $id = $db->lastInsertId();
+            $token = self::generateActivationToken($id);
 
         } catch (PDOException $e) {
             throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());
@@ -87,11 +87,11 @@ class AuthenticationIdentityService
     }
 
 
-    public static function regenerateToken(int $id) : string {
+    public static function generateActivationToken(string $id) : string {
         $token = bin2hex(random_bytes(32));
         $expiration = time() + 60;
         $db = ConnectionFactory::getConnection();
-        $query = $db->prepare('UPDATE user SET activationToken = :token, expirationToken = :expiration WHERE id = :id');
+        $query = $db->prepare('UPDATE user SET activationToken = :token, activationExpiration = :expiration WHERE id = :id');
         $query->execute([':token' => $token, ':expiration' => $expiration, ':id' => $id]);
         return $token;
     }
@@ -114,5 +114,16 @@ class AuthenticationIdentityService
         }
 
         return $statement->fetch();
+    }
+
+    public static function generateRenewToken(string $email) : string
+    {
+        $db = ConnectionFactory::getConnection();
+        $query = $db->prepare('UPDATE user SET renewExpiration = :expiration, renewToken = :token WHERE email = :email');
+        $token = bin2hex(random_bytes(32));
+        $expiration = time() + 60;
+        $query->execute([':expiration' => $expiration, ':token' => $token, ':email' => $email]);
+
+        return $token;
     }
 }

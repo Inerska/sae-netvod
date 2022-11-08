@@ -97,10 +97,13 @@ CREATE TABLE user (
   idProfil int(5),
   active boolean,
   activationToken varchar(64),
-  expirationToken int(16),
+  activationExpiration int(16),
+  renewToken varchar(64),
+  renewExpiration int(16),
   PRIMARY KEY (id)
 )
-END);
+END
+);
 $query->execute();
 
 $query = $db->prepare(
