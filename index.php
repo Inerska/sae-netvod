@@ -9,25 +9,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<h1>Bienvenue sur NetVOD</h1>
-
 <?php
 
 use Application\datalayer\factory\ConnectionFactory;
 use Application\dispatch\Dispatcher;
+use Application\exception\datalayer\DatabaseConnectionException;
+
+session_start();
 
 require_once "src/views/header.php";
 require_once 'vendor/autoload.php';
 
+
 ConnectionFactory::setConfig( 'db.config.ini' );
 
-session_start();
-
-$action = $_GET['action'] ?? null;
+$action = $_GET['action'] ?? "";
 
 $dispatcher = new Dispatcher($action);
 
-$dispatcher->dispatch();
+echo "<div class='container mx-auto p-4'>";
+try {
+    $dispatcher->dispatch();
+} catch (DatabaseConnectionException $e) {
+    echo $e->getMessage();
+}
+echo "</div>";
 
 ?>
 </body>
