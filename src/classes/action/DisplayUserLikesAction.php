@@ -3,6 +3,8 @@
 namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
+use Application\render\SerieRenderer;
+use Application\video\Serie;
 
 class DisplayUserLikesAction extends Action{
 
@@ -17,7 +19,7 @@ class DisplayUserLikesAction extends Action{
             $bd = ConnectionFactory::getConnection();
             $query = "select idSerie from user_serie_Pref where idUser = ?";
             $stmt = $bd->prepare($query);
-            $stmt->execute([$user->get('id')]);
+            $stmt->execute([$user->__get('id')]);
             // affiche les likes
             $html = "<p>liste de vos likes : </p>";
             while ($row = $stmt->fetch()){
