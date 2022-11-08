@@ -4,6 +4,7 @@ namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
 use Application\identity\authentication\service\AuthenticationIdentityService;
+use Application\identity\authentication\service\PasswordStrengthCheckerService;
 use Application\identity\model\User;
 
 class RenewAction extends Action
@@ -17,7 +18,7 @@ class RenewAction extends Action
             $html .= "<p>Vous êtes déjà connecté</p>";
         } else {
 
-            if (!isset($_GET['token']) or !isset($_POST['token'])) {
+            if (!isset($_GET['token']) && !isset($_POST['token'])) {
                 if ($this->httpMethod === 'GET') {
 
                     $html .= <<<END
@@ -40,6 +41,7 @@ class RenewAction extends Action
                         <p>Un email de renouvellement a été envoyé à l'adresse $email</p>
                         <a href="index.php?action=renew&token={$token}">Changer le mot de passe</a>
                         END;
+                    } else {
                         $html .= "<p>Cette adresse mail n'existe pas</p>";
                     }
 
@@ -73,23 +75,37 @@ class RenewAction extends Action
                     }
                 } else if ($this->httpMethod === 'POST') {
                     $token = $_POST['token'];
-                    $password = $_POST['password'];
-                    $passwordConfirm = $_POST['passwordConfirm'];
-                    if ($password === $passwordConfirm) {
-                        $db = ConnectionFactory::getConnection();
-                        $query = $db->prepare("SELECT id, email FROM user WHERE renewToken = :token");
-                        $query->execute([':token' => $token]);
-                        if($result = $query->fetch()) {
-                            $query = $db->prepare("UPDATE user SET renewToken = NULL, renewExpiration = NULL, password = :password WHERE id = :id");
-                            $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
-                            $query->execute([':id' => $result['id'], ':password' => $hash]);
-                            $html = "<p>Votre mot de passe a bien été changé</p>";
-                            $html .= "<a href='index.php?action=sign-in'>Se connecter</a>";
+
+                    $db = ConnectionFactory::getConnection();
+                    $query = $db->prepare("SELECT id, email FROM user WHERE renewToken = :token");
+                    $query->execute([':token' => $token]);
+
+                    if($result = $query->fetch()) {
+
+                        $password = $_POST['password'];
+                        $passwordConfirm = $_POST['passwordConfirm'];
+
+                        if ($password === $passwordConfirm) {
+
+                            if (PasswordStrengthCheckerService::check($password)) {
+                                $query = $db->prepare("UPDATE user SET renewToken = NULL, renewExpiration = NULL, passwrd = :password WHERE id = :id");
+                                $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+                                $query->execute([':id' => $result['id'], ':password' => $hash]);
+                                $html = "<p>Votre mot de passe a bien été changé</p>";
+                                $html .= "<a href='index.php?action=sign-in'>Se connecter</a>";
+                            } else {
+                                $html = "<p>Votre mot de passe n'est pas assez fort</p>";
+                                $html .= "<a href='index.php?action=renew&token={$token}'>Changer le mot de passe</a>";
+                            }
+
                         } else {
-                            $html = "<p>Ce token ne correspond a aucun compte</p>";
+                            $html = "<p>Les mots de passe ne correspondent pas</p>";
+                            $html .= "<a href='index.php?action=renew&token={$token}'>Changer le mot de passe</a>";
                         }
+
                     } else {
-                        $html = "<p>Les mots de passe ne correspondent pas</p>";
+                        $html = "<p>Ce token ne correspond a aucun compte</p>";
+                        $html .= "<a href='index.php?action=renew&token={$token}'>Changer le mot de passe</a>";
                     }
                 }
             }
