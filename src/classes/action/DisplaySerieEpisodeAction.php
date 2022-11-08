@@ -25,13 +25,15 @@ class DisplaySerieEpisodeAction extends Action{
                 // ajoute cette serie a la liste de serie en cours
                 $db = ConnectionFactory::getConnection();
                 $user = unserialize($_SESSION['loggedUser']);
-                try{
+                $stmt = $db->prepare("select * from user_serie_en_cours where idUser = ? and idSerie = ?");
+                $stmt->execute([$user->__get('id')+0, $serieId+0]);
+                $data = $stmt->fetch();
+                if (!$data){
                     $stmt = $db->prepare("insert into user_serie_en_cours (idUser, idSerie, numEpisode) values (?, ?, ?)");
                     $stmt->execute([$user->__get('id')+0, $serieId+0, $episodeId+0]);
-                }catch(\PDOException $e){
-                    echo $e->getMessage();
-                    $html .= "<p>Erreur de connexion à la base de donnée</p>";
+                    $html .= "<p>Ajouter à la liste de visionnage en cours</p>";
                 }
+
 
             }
 
