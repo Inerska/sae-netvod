@@ -15,17 +15,17 @@ class DisplayUserLikesAction extends Action{
             $user = unserialize($_SESSION['loggedUser']);
             // get ses likes dans la bd grace a son id
             $bd = ConnectionFactory::getConnection();
-            $query = "select likeou jsp dep de la bd";
+            $query = "select idSerie from user_serie_Pref where idUser = ?";
             $stmt = $bd->prepare($query);
             $stmt->execute([$user->get('id')]);
             // affiche les likes
             $html = "<p>liste de vos likes : </p>";
             while ($row = $stmt->fetch()){
-                $html .= "<p>{$row['jsp']}</p>";
+                // on affiche toutes les series qu'il a like
+                $html .= "<p>{$row['idSerie']}</p>";
             }
         }
 
         return $html;
-
     }
 }
