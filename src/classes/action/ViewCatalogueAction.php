@@ -4,6 +4,7 @@ namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
 use Application\exception\datalayer\DatabaseConnectionException;
+use Application\render\SeriesCardRenderer;
 
 class ViewCatalogueAction extends Action
 {
@@ -21,11 +22,12 @@ class ViewCatalogueAction extends Action
         $html = "";
 
         while ($result = $query->fetch()) {
-            $name = htmlentities($result['titre'], ENT_HTML5, 'UTF-8');
-            $html .= "<a href='index.php?action=viewSerie&id={$result['id']}'><img src='{$result['img']}' alt=\"Image representant la serie '{$name}'\"><br>{$name}</a><br><br>";
+            $seriesCard = new SeriesCardRenderer($result["img"], $result["titre"], $result["id"]);
+
+            $html .= $seriesCard->render();
         }
 
-        if ($html == "") {
+        if ($html === "") {
             $html = "<p>Aucune série n'est disponible</p>";
         } else {
             $html = <<<END
