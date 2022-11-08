@@ -27,7 +27,7 @@ $action = $_GET['action'] ?? "";
 
 $dispatcher = new Dispatcher($action);
 
-echo "<div class='container mx-auto p-4'>";
+echo "<div class='container mx-auto pt-4'>";
 try {
     $dispatcher->dispatch();
 } catch (DatabaseConnectionException $e) {
