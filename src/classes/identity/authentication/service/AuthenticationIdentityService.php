@@ -51,7 +51,7 @@ class AuthenticationIdentityService
      * @throws AuthenticationException
      * @throws DatabaseConnectionException
      */
-    public static function register(string $email, string $password, string $confirm): bool
+    public static function register(string $email, string $password, string $confirm): string
     {
         if ($password !== $confirm) {
             throw new AuthenticationException("Passwords do not match");
@@ -74,15 +74,26 @@ class AuthenticationIdentityService
         }
 
         try {
-            $query = $db->prepare('INSERT INTO user (email, passwrd, role) VALUES (:email, :passwrd, :role)');
-            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, activationToken, expirationToken) VALUES (:email, :passwrd, :role, false, :token, :expiration)');
+            $token = bin2hex(random_bytes(32));
+            $expiration = time() + 60;
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':token' => $token, ':expiration' => $expiration]);
 
-            $_SESSION['loggedUser'] = serialize(new User((int)$db->lastInsertId(), $email, $password));
         } catch (PDOException $e) {
             throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());
         }
 
-        return true;
+        return $token;
+    }
+
+
+    public static function regenerateToken(int $id) : string {
+        $token = bin2hex(random_bytes(32));
+        $expiration = time() + 60;
+        $db = ConnectionFactory::getConnection();
+        $query = $db->prepare('UPDATE user SET activationToken = :token, expirationToken = :expiration WHERE id = :id');
+        $query->execute([':token' => $token, ':expiration' => $expiration, ':id' => $id]);
+        return $token;
     }
 
     /**

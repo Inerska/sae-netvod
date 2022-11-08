@@ -96,8 +96,8 @@ CREATE TABLE user (
   role int(5) NOT NULL,
   idProfil int(5),
   active boolean,
-  activationToken varchar(16),
-  expirationToken date,
+  activationToken varchar(64),
+  expirationToken int(16),
   PRIMARY KEY (id)
 )
 END);
