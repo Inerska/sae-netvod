@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Application\dispatch;
 
 
+use Application\action\ActivationAction;
+use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
 use Application\action\DisplayUserLikesAction;
 use Application\action\SigninAction;
@@ -42,6 +44,8 @@ class Dispatcher
 
             case 'display-user-likes':
                 $act = new DisplayUserLikesAction();
+                $html = $act->execute();
+                break;
 
             case "sign-up":
                 $action = new SignupAction();
