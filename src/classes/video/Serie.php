@@ -17,7 +17,7 @@ class Serie {
     protected string $image;
     protected string $annee;
     protected string $dateAjout;
-    protected array $episodes = [];
+    protected array $episodes = [] ;
     protected int $nbEpisodes = 0;
 
     public function __construct(int $id){

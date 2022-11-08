@@ -18,7 +18,7 @@ class SerieRenderer implements Renderer {
     public function render(): string
     {
         if ($this->serie->id == 0){
-            $html ="<p>La série n'existe pas</p>";
+            $html ="<p>La série n'existe pas.</p>";
         } else {
             $html = "<div class = 'serie' >".
                 "<img src='{$this->serie->image}' alt='image de la série' />".
