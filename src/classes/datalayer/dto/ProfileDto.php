@@ -49,6 +49,54 @@ class ProfileDto
     }
 
     /**
+     * @param int $idProfil
+     */
+    public function setIdProfil(int $idProfil): void
+    {
+        $this->idProfil = $idProfil;
+    }
+
+    /**
+     * @param string|null $nom
+     */
+    public function setNom(?string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @param string|null $prenom
+     */
+    public function setPrenom(?string $prenom): void
+    {
+        $this->prenom = $prenom;
+    }
+
+    /**
+     * @param int $age
+     */
+    public function setAge(int $age): void
+    {
+        $this->age = $age;
+    }
+
+    /**
+     * @param string|null $gender
+     */
+    public function setGender(?string $gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    /**
+     * @param string|null $genrePrefere
+     */
+    public function setGenrePrefere(?string $genrePrefere): void
+    {
+        $this->genrePrefere = $genrePrefere;
+    }
+
+    /**
      * @return int
      */
     public function getAge(): int

@@ -25,7 +25,7 @@ class ProfileAction extends Action
             }
 
             return <<<END
-<h1 class="text-3xl font-bold mb-8 dark:text-white text-gray-900">Modifier le profil</h1>
+<h1 class="text-3xl font-bold mb-8 dark:text-white text-gray-900" xmlns="http://www.w3.org/1999/html">Modifier le profil</h1>
 <form method="POST">
 <div class="grid gap-6 mb-6 md:grid-cols-2">
 <div>
@@ -42,7 +42,12 @@ class ProfileAction extends Action
 </div>   
 <div>
 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="sexe">Sexe</label>
-    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="sexe" id="sexe" value="{$profile->getGender()}">
+    <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="sexe" id="sexe">
+        <option value="{$profile->getGender()}">{$profile->getGender()}</option>
+        <option value="male">Masculin</option>
+        <option value="female">Feminin</option>
+        <option value="other">Autre</option>
+    </select>
 </div>
    <div>
    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="genrePrefere">Genre prefere</label>
@@ -55,7 +60,25 @@ class ProfileAction extends Action
 END;
 
         } elseif ($this->httpMethod === "POST") {
-            return "";
+            $loggedUser = unserialize($_SESSION["loggedUser"], ["allowed_classes" => true]);
+            $repository = new ProfileRepository();
+
+            $profile = $repository->getProfileByUserId($loggedUser->id);
+
+            if ($profile === null) {
+                return "Profile not found";
+            }
+
+            $profile->setNom($_POST["nom"]);
+            $profile->setPrenom($_POST["prenom"]);
+            $profile->setAge($_POST["age"]);
+            $profile->setGender($_POST["sexe"]);
+            $profile->setGenrePrefere($_POST["genrePrefere"]);
+
+            $repository->updateProfile($profile);
+
+            header('Location: index.php?action=profile');
+            return "Profile updated";
         }
 
     }

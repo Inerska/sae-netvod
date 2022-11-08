@@ -74,4 +74,17 @@ class ProfileRepository extends RepositoryBase
             $result["genrePref"]
         );
     }
+
+    final public function updateProfile(ProfileDto $profile): void
+    {
+        $query = $this->context->prepare("UPDATE profil SET nom = :nom, prenom = :prenom, age = :age, sexe = :sexe, genrePref = :genrePref WHERE idProfil = :id");
+        $query->execute([
+            'nom' => $profile->getNom(),
+            'prenom' => $profile->getPrenom(),
+            'age' => $profile->getAge(),
+            'sexe' => $profile->getGender(),
+            'genrePref' => $profile->getGenrePrefere(),
+            'id' => $profile->getIdProfil()
+        ]);
+    }
 }
