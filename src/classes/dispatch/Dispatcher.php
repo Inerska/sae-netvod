@@ -11,6 +11,7 @@ use Application\action\DisplayUserLikesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
+use Application\action\ProfileAction;
 use Application\exception\datalayer\DatabaseConnectionException;
 
 
@@ -51,6 +52,17 @@ class Dispatcher
             case 'viewCatalogue':
                 $action = new ViewCatalogueAction();
                 $html = $action->execute();
+                break;
+
+            case 'profile':
+                $action = new ProfileAction();
+                $html = $action->execute();
+                break;
+
+            case 'sign-out':
+                session_destroy();
+                header('Location: index.php');
+                exit();
                 break;
 
             case 'activation':
