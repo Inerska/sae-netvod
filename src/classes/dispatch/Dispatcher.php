@@ -48,7 +48,7 @@ class Dispatcher
                 break;
                 
 
-            case 'ViewSerie':
+            case 'viewSerie':
                 $act = new \Application\action\ViewSerieAction();
                 $html = $act->execute();
                 break;
