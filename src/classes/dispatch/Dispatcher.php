@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Application\dispatch;
 
 
-use Application\action\ActivationAction;
 use Application\action\DisplaySerieEpisodeAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
@@ -42,7 +41,12 @@ class Dispatcher
                 $action = new SignupAction();
                 $html = $action->execute();
                 break;
-                
+
+            case 'viewSerie':
+                $act = new DisplaySerieAction();
+                $html = $act->execute();
+                break;
+
             case 'viewCatalogue':
                 $action = new ViewCatalogueAction();
                 $html = $action->execute();

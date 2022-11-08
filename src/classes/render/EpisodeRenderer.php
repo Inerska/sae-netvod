@@ -14,11 +14,22 @@ class EpisodeRenderer implements Renderer {
     }
 
     public function render(): string {
-        $html = "<div class = 'episode' >".
-                "<h3>Episode {$this->episode->numero} - {$this->episode->titre} </h3>".
-                "<p>Durée : {$this->episode->duree} secondes</p>" .
-                //"<img src='{$this->episode->image}' alt='image de l'episode' />".
-                "</div>";
+        if (isset($_GET['id'])){
+            $id = $_GET['id'];
+        }else{
+            $id = $_GET['serieId'];
+        }
+        $html = <<<END
+                <h3><a href="index.php?action=display-series-episode&serieId={$id}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
+                <p>Durée : {$this->episode->duree} secondes</p>
+         END;
+        return $html;
+    }
+
+    public function longRender():String{
+        $html = $this->render();
+        $html .= "<p>Resumé : {$this->episode->resume}</p>";
+
         return $html;
     }
 }

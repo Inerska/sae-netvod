@@ -19,7 +19,6 @@ class Serie {
     protected int $nbEpisodes;
 
     public function __construct(int $id){
-        ConnectionFactory::setConfig("config.ini");
         $conn = ConnectionFactory::getConnection();
         $sql = "SELECT * FROM serie WHERE id = ?";
         $stmt = $conn->prepare($sql);
@@ -40,7 +39,7 @@ class Serie {
         $this->episodes = [];
         $count = 0;
         while($data = $stmt->fetch()){
-            $e = new Episode($data['id'],$data['numero']);
+            $e = new Episode($data['serie_id'],$data['numero']);
             $this->episodes[] = $e;
             $count++;
         }
