@@ -48,6 +48,10 @@ class Dispatcher
                 break;
                 
 
+            case 'ViewSerie':
+                $act = new \Application\action\ViewSerieAction();
+                $html = $act->execute();
+                break;
             default:
                 $html = "Hello World!";
                 break;
