@@ -15,7 +15,7 @@ class EpisodeRenderer implements Renderer {
 
     public function render(): string {
         $html = "<div class = 'episode' >".
-                "<h3>Episode {$this->episode->numero} - {$this->episode->titre} </h3>".
+                "<a href='index.php?action=display-series-episode&episodeId={$this->episode->id}&serieId={$this->episode->serieId}'>Episode {$this->episode->numero} - {$this->episode->titre} </a>".
                 "<p>Durée : {$this->episode->duree} secondes</p>" .
                 //"<img src='{$this->episode->image}' alt='image de l'episode' />".
                 "</div>";
