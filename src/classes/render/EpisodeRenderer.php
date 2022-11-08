@@ -2,6 +2,7 @@
 
 namespace Application\render;
 use Application\video\Episode;
+use Application\datalayer\factory\ConnectionFactory;
 
 
 class EpisodeRenderer implements Renderer {
@@ -14,17 +15,12 @@ class EpisodeRenderer implements Renderer {
     }
 
     public function render(): string {
-        if (isset($_GET['id'])){
-            $id = $_GET['id'];
-        }else if(isset($_GET['serieId'])){
-            $id = $_GET['serieId'];
-        }else{
             // on recupere l'id de la serie sur laquelle on clique
             $bd = ConnectionFactory::getConnection();
             $query = "select serie_id from episode where id = ?";
             $stmt = $bd->prepare($query);
-            $id = $stmt->execute([$this->episode->id]);
-        }
+            $stmt->execute([$this->episode->id]);
+            $id = $stmt->fetch()['serie_id'];
         $html = <<<END
                 <h3><a href="index.php?action=display-series-episode&serieId={$id}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
                 <p>Durée : {$this->episode->duree} secondes</p>

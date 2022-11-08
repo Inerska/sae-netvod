@@ -83,12 +83,6 @@ class Dispatcher
                 $action = new RenewAction();
                 $html = $action->execute();
                 break;
-
-            case 'viewSerie':
-                $act = new \Application\action\ViewSerieAction();
-
-                $html = $act->execute();
-                break;
                 
             default:
                 $action = new DisplayUserLikesAction();
