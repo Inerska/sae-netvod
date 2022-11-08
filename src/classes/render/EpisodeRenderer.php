@@ -23,7 +23,7 @@ class EpisodeRenderer implements Renderer {
 
     public function longRender():String{
         $html = $this->render();
-        $html .= "<p>Resumé : {$this->epiosde->resume}</p>";
+        $html .= "<p>Resumé : {$this->episode->resume}</p>";
 
         return $html;
     }
