@@ -14,9 +14,9 @@ class SigninAction extends Action
 
         $html = <<<END
             <form method="post" action="?action=sign-in">
-                  <input type="email" name="email" placeholder="votre email">
-                  <input type="text" name="password" placeholder="votre mdp">
-                  <button type="submit">Connexion</button>
+                  <input type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
+                  <input type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
+                  <button type="submit" class="bg-blue-500 rounded p-3 text-white hover:bg-blue-600">Connexion</button>
             </form>
             <a href="index.php?action=renew">Mot de passe oublié ?</a>
         END;
@@ -32,6 +32,9 @@ class SigninAction extends Action
                 $html .= "<p>Connexion réussi</p>";
                 $html .= "<p>Bienvenue $email</p>";
                 $_SESSION['loggedUser'] = serialize($user);
+
+                header("Location: index.php");
+                exit();
             } catch (AuthenticationException $e) {
                 $html .= "<p>Compte inexistant</p>";
             } catch (BadPasswordException $e) {
@@ -41,6 +44,7 @@ class SigninAction extends Action
         }
 
         $html .= "<br><br><a href='index.php'>Retour page principale</a>";
+
         return $html;
 
     }
