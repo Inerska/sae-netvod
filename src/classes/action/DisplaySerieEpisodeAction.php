@@ -18,7 +18,7 @@ class DisplaySerieEpisodeAction extends Action{
             $episode = new Episode($serieId+0, $episodeId+0);
             $renderer = new EpisodeRenderer($episode);
 
-            $html = $renderer->render();
+            $html = $renderer->longRender();
 
         }
         $html .= "<a href='index.php'>Retour page principale</a>";
