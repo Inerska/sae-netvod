@@ -13,7 +13,7 @@
 <?php
 
 require_once 'vendor/autoload.php';
-$s = new \Application\video\Serie(1);
+$s = new \Application\video\Serie(4);
 $sr = new \Application\render\SerieRenderer($s);
 echo $sr->render();
 echo "<p>--------------------------</p>";
