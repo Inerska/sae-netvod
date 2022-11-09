@@ -37,6 +37,7 @@ class SerieRenderer implements Renderer {
                 "<p>Année : {$this->serie->annee}</p>".
                 "<p>Date ajout : {$this->serie->dateAjout}</p>".
                 "<p>Note Moyenne : {$this->serie->moyenne}</p>".
+                "<p><a href='?action=commentaires&serieId={$this->serie->id}'></a></p>".
                 "<p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>".
                 "<p>Liste des épisodes : </p>".
                 "</div>";
