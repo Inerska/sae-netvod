@@ -20,7 +20,7 @@ class DisplaySerieEpisodeAction extends Action
             $serieId = $_GET['serieId'];
             $numEpisode = $_GET['episodeId'];
 
-            $episode = new Episode($serieId + 0, $numEpisode + 0);
+            $episode = new Episode($serieId+0, $numEpisode+0);
             $renderer = new EpisodeNotationRenderer($episode);
 
             $html = $renderer->render();
