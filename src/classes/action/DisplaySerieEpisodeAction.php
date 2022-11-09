@@ -50,7 +50,7 @@ class DisplaySerieEpisodeAction extends Action{
 
 
         }
-        $html .= "<a href='index.php'>Retour page principale</a>";
+        $html .= "<a class='text-2xl hover:text-red-600' href='index.php'>Retour page principale</a>";
         return $html;
     }
 }

@@ -85,10 +85,12 @@ class Dispatcher
                 $html = $action->execute();
                 break;
 
+
             case 'preferences':
                 $act = new AddSeriesToPreferencesAction();
                 $html = $act->execute();
                 break;
+                
 
             default:
                 $action = new DisplayUserLikesAction();
@@ -101,6 +103,8 @@ class Dispatcher
 
     private function render(string $template): void
     {
-        echo $template;
+        require_once 'src/views/header.php';
+
+        echo "<div class='container mx-auto pt-4 w-screen'>" . $template . "</div>";
     }
 }

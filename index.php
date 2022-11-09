@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" class="bg-white dark:bg-black">
+<html lang="fr" class="bg-white dark:bg-gray-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -17,9 +17,7 @@ use Application\exception\datalayer\DatabaseConnectionException;
 
 session_start();
 
-require_once "src/views/header.php";
 require_once 'vendor/autoload.php';
-
 
 ConnectionFactory::setConfig( 'db.config.ini' );
 
@@ -27,13 +25,11 @@ $action = $_GET['action'] ?? "";
 
 $dispatcher = new Dispatcher($action);
 
-echo "<div class='container mx-auto pt-4 w-screen'>";
 try {
     $dispatcher->dispatch();
 } catch (DatabaseConnectionException $e) {
     echo $e->getMessage();
 }
-echo "</div>";
 
 ?>
 </body>

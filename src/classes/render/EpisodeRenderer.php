@@ -17,7 +17,10 @@ class EpisodeRenderer implements Renderer {
     public function render(): string {
 
         $html = <<<END
-                <h3><a href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h3>
+
+
+                <h1 class="text-red-600 text-2xl font-bold'"><a href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h1>
+
                 <p>Durée : {$this->episode->duree} secondes</p>
          END;
         return $html;
@@ -25,8 +28,10 @@ class EpisodeRenderer implements Renderer {
 
     public function longRender():String{
         $html = $this->render();
-        $html .= "<p>Resumé : {$this->episode->resume}</p>";
+        $html .= "<p class='text-lg'>Resumé : {$this->episode->resume}</p>";
+        $html .= "<video><source src='video/{$this->episode->file}' type='video/mp4'></video>";
 
         return $html;
     }
+
 }
