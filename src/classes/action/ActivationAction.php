@@ -12,9 +12,7 @@ class ActivationAction extends Action
     public function execute(): string
     {
         $html = "";
-        if (isset($_SESSION['loggedUser'])) {
-            $html = "<p>Vous êtes déjà connecté</p>";
-        } else if (isset($_GET['token'])) {
+        if (isset($_GET['token'])) {
             $token = $_GET['token'];
             $db = ConnectionFactory::getConnection();
             $query = $db->prepare("SELECT id, email, activationExpiration FROM user WHERE activationToken = :token");
