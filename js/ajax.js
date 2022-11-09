@@ -6,6 +6,13 @@ function htmlSpecialChars(str) {
 }
 
 $(document).ready(function () {
+
+    $('input[name="search"]').on('keydown', () => {
+        if (currentTimeout) {
+            clearTimeout(currentTimeout);
+        }
+    });
+
     $('input[name="search"]').on('input', function (e) {
         e.stopPropagation();
         let value = $('input[name="search"]').val();
