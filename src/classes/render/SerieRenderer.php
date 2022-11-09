@@ -47,7 +47,6 @@ class SerieRenderer implements Renderer {
                 $html .= "<p>Note moyenne : {$this->serie->moyenne}</p>";
             }
             $html .= <<<END
-                <p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir les commentaires :</a></p>
                 <p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>
                 <p>Liste des épisodes : </p>
                 <div class="flex flex-wrap">
@@ -59,6 +58,20 @@ class SerieRenderer implements Renderer {
 
             }
             $html .= "</div>";
+
+            // on affiche le dernier commentaire
+            if ($this->serie->nbCommentaires == 0) {
+                $html .= "<p>La série n'a pas encore été commentée.</p>";
+            }else{
+                $commentaire = $this->serie->__get('commentaires')[0];
+                $html .= <<<END
+                    <p>Commentaire de {$commentaire['email']} : </p>
+                    <p>&emsp;{$commentaire['commentaire']}</p>
+                    <p>&emsp;Note : {$commentaire['note']}/5</p>
+                END;
+            }
+
+            $html .= "<p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>";
         }
         return $html;
     }
