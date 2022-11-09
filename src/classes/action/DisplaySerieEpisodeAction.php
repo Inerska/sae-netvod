@@ -3,6 +3,7 @@
 namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
+use Application\render\EpisodeNotationRenderer;
 use Application\render\EpisodeRenderer;
 use Application\video\Episode;
 
@@ -17,7 +18,7 @@ class DisplaySerieEpisodeAction extends Action{
             $numEpisode = $_GET['episodeId'];
 
             $episode = new Episode($serieId+0, $numEpisode+0);
-            $renderer = new EpisodeRenderer($episode);
+            $renderer = new EpisodeNotationRenderer($episode);
 
             $html = $renderer->render();
 

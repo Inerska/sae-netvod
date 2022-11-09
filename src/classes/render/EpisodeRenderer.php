@@ -1,8 +1,8 @@
 <?php
 
 namespace Application\render;
-use Application\datalayer\factory\ConnectionFactory;
 use Application\video\Episode;
+use Application\datalayer\factory\ConnectionFactory;
 
 
 class EpisodeRenderer implements Renderer {
@@ -15,6 +15,7 @@ class EpisodeRenderer implements Renderer {
     }
 
     public function render(): string {
+
 
         if($_GET['action']){
             if ($_GET['action'] === 'display-series-episode'){
@@ -40,6 +41,7 @@ class EpisodeRenderer implements Renderer {
                 END;
             }
         }
+
 
         return $html;
     }
