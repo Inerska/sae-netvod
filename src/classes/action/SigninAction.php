@@ -14,12 +14,17 @@ class SigninAction extends Action
     {
 
         $html = <<<END
-            <form method="post" action="?action=sign-in">
-                  <input type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
-                  <input type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
-                  <button type="submit" class="bg-blue-500 rounded p-3 text-white hover:bg-blue-600">Connexion</button>
-            </form>
-            <a href="index.php?action=renew" class="text-gray-900 dark:text-white">Mot de passe oublié ?</a>
+        <form method="post" action="?action=sign-in" class="h-full flex items-center justify-center flex-col">
+            <h1 class="text-gray-900 dark:text-white text-4xl pb-5">Se connecter</h1>
+            <div class="bg-gray-100 dark:bg-gray-800 p-5">
+                <div class="flex flex-col gap-3">
+                    <input class="p-2 dark:bg-gray-800 bg-gray-100 border-b-4 mb-5 dark:text-gray-100" type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
+                    <input class="p-2 dark:bg-gray-800 bg-gray-100 border-b-4 dark:text-gray-100" type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
+                </div>
+                <a href="?action=renew" class="text-gray-900 dark:text-white">Mot de passe oublié ?</a>
+            </div>
+            <button type="submit" class="bg-blue-500 p-3 text-white hover:bg-blue-600 mt-5">Connexion</button>
+        </form>
         END;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -55,8 +60,6 @@ class SigninAction extends Action
             }
 
         }
-
-        $html .= "<br><br><a href='index.php' class='text-gray-900 dark:text-white'>Retour page principale</a>";
 
         return $html;
 
