@@ -19,9 +19,7 @@ class AddSeriesToPreferencesAction extends Action
             } else {
                 header('Location: index.php');
             }
-            
         }
 
-        return "";
     }
 }

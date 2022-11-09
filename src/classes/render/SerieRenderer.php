@@ -20,9 +20,11 @@ class SerieRenderer implements Renderer {
         if ($this->serie->id == 0){
             $html ="<p>La série n'existe pas.</p>";
         } else {
-            $html = "<div class = 'serie' >".
-                "<img src='{$this->serie->image}' alt='image de la série' />".
-                "<h3>Titre : {$this->serie->titre} </h3>";
+            $html = "<div class = 'serie' >";
+            $seriesCard = new SeriesCardRenderer($this->serie->image, $this->serie->titre, $this->serie->id);
+
+            $html .= $seriesCard->render();
+
             $html .= "<p>Genres : ";
             foreach ($this->serie->genre as $g) {
                 $html .= $g . ", ";

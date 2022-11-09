@@ -13,7 +13,7 @@ class DisplaySerieAction extends Action
         $serieId = $_GET['id'];
 
         // cree la serie
-        $serie = new Serie($serieId+0);
+        $serie = new Serie($serieId);
         //affiche la serie
         $renderer = new SerieRenderer($serie);
 
