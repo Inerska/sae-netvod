@@ -18,12 +18,12 @@ class DisplaySerieCommentairesAction extends Action
              "<ul><br>";
         foreach ($serie->commentaires as $commentaire) {
             $html .= <<<HTML
-            <li>
-                <p>Commentaire de {$commentaire['email']} : </p>
-                <p>&emsp;{$commentaire['commentaire']}</p>
-                <p>Note : {$commentaire['note']}/5</p>
-            </li><br>
-HTML;
+                <li>
+                    <p>Commentaire de {$commentaire['email']} : </p>
+                    <p>&emsp;{$commentaire['commentaire']}</p>
+                    <p>Note : {$commentaire['note']}/5</p>
+                </li><br>
+            HTML;
         }
         if ($serie->nbCommentaires == 0) {
             $html .= "<il>La série n'a pas encore été commentée.</il>";

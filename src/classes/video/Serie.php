@@ -68,7 +68,7 @@ class Serie {
             }
             $stmt->closeCursor();
 
-            $sql = "select round(sum(note)/count(*)) as moyenne from notation where idSerie = ?";
+            $sql = "select round(sum(note)/count(*), 1) as moyenne from notation where idSerie = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
             $data = $stmt->fetch();
