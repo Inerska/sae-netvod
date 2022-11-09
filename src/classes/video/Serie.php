@@ -19,6 +19,7 @@ class Serie {
     protected string $dateAjout;
     protected array $episodes = [] ;
     protected int $nbEpisodes = 0;
+    protected int $moyenne = 0;
 
     public function __construct(int $id){
         $conn = ConnectionFactory::getConnection();
@@ -64,6 +65,13 @@ class Serie {
                 $this->publicVise[] = $data['libelle'];
             }
             $stmt->closeCursor();
+
+            $sql = "select round(sum(note)/count(*)) as moyenne from notation where idSerie = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$id]);
+            $data = $stmt->fetch();
+            $this->moyenne = $data['moyenne'];
+
 
             // Récupération des épisodes
             $sql = "SELECT * FROM episode WHERE serie_id = ?";
