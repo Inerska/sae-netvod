@@ -85,17 +85,13 @@ class Dispatcher
                 $html = $action->execute();
                 break;
 
-            case 'viewSerie':
-                $act = new ViewSerieAction();
-
-                $html = $act->execute();
-                break;
 
             case 'preferences':
                 $act = new AddSeriesToPreferencesAction();
                 $html = $act->execute();
                 break;
                 
+
             default:
                 $action = new DisplayUserLikesAction();
                 $html = $action->execute();
