@@ -13,6 +13,7 @@ use Application\action\DisplayViewedAction;
 use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
 use Application\action\DisplayUserLikesAction;
+use Application\action\SearchSeriesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
@@ -84,6 +85,11 @@ class Dispatcher
 
             case 'renew':
                 $action = new RenewAction();
+                $html = $action->execute();
+                break;
+
+            case 'search':
+                $action = new SearchSeriesAction();
                 $html = $action->execute();
                 break;
 

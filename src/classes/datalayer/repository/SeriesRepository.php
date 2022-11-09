@@ -3,6 +3,7 @@
 namespace Application\datalayer\repository;
 
 use Application\datalayer\factory\ConnectionFactory;
+use Application\exception\datalayer\DatabaseConnectionException;
 
 class SeriesRepository extends RepositoryBase
 {
@@ -28,5 +29,39 @@ class SeriesRepository extends RepositoryBase
             'user_id' => $userId,
             'series_id' => $seriesId
         ]);
+    }
+
+    /**
+     * @throws DatabaseConnectionException
+     */
+    final public function getAllSeries(): array
+    {
+        $db = ConnectionFactory::getConnection();
+        $query = $db->query("SELECT * FROM serie");
+
+        $array = [];
+
+        while ($result = $query->fetch()) {
+            $array[] = $result;
+        }
+
+        return $array;
+    }
+
+    final public function getSeriesWith(string $keyword): array
+    {
+        $db = ConnectionFactory::getConnection();
+        $query = $db->prepare("SELECT * FROM serie WHERE titre LIKE :keyword");
+        $query->execute([
+            'keyword' => "%{$keyword}%"
+        ]);
+
+        $array = [];
+
+        while ($result = $query->fetch()) {
+            $array[] = $result;
+        }
+
+        return $array;
     }
 }
