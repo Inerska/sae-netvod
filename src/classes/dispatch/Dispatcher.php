@@ -9,6 +9,7 @@ use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
 use Application\action\DisplayUserLikesAction;
 use Application\action\SigninAction;
@@ -90,7 +91,11 @@ class Dispatcher
                 $act = new AddSeriesToPreferencesAction();
                 $html = $act->execute();
                 break;
-                
+
+            case 'removePreferences':
+                $act = new RemoveSeriesToPreferencesAction();
+                $html = $act->execute();
+                break;
 
             default:
                 $action = new DisplayUserLikesAction();
