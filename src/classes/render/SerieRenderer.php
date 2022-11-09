@@ -35,9 +35,13 @@ class SerieRenderer implements Renderer {
             $html .= "</p>";
             $html .= "<p>Descriptif : {$this->serie->descriptif}</p>".
                 "<p>Année : {$this->serie->annee}</p>".
-                "<p>Date ajout : {$this->serie->dateAjout}</p>".
-                "<p>Note Moyenne : {$this->serie->moyenne}</p>".
-                "<p><a href='?action=commentaires&serieId={$this->serie->id}'></a></p>".
+                "<p>Date ajout : {$this->serie->dateAjout}</p>";
+            if ($this->serie->moyenne == 0){
+                $html .= "<p>La série n'a pas encore été notée.</p>";
+            } else {
+                $html .= "<p>Note moyenne : {$this->serie->moyenne}</p>";
+            }
+            $html .= "<p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir les commentaires :</a></p>".
                 "<p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>".
                 "<p>Liste des épisodes : </p>".
                 "</div>";

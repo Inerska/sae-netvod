@@ -19,7 +19,9 @@ class Serie {
     protected string $dateAjout;
     protected array $episodes = [] ;
     protected int $nbEpisodes = 0;
-    protected int $moyenne = 0;
+    protected mixed $moyenne = 0;
+    protected array $commentaires = [];
+    protected int $nbCommentaires = 0;
 
     public function __construct(int $id){
         $conn = ConnectionFactory::getConnection();
@@ -70,7 +72,16 @@ class Serie {
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
             $data = $stmt->fetch();
-            $this->moyenne = $data['moyenne'];
+            if ($data) $this->moyenne = $data['moyenne'];
+            $stmt->closeCursor();
+
+            $sql = "SELECT email, note, commentaire FROM notation inner join user on notation.idUser = user.id where notation.idSerie = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$id]);
+            while ($data = $stmt->fetch()){
+                $this->commentaires[] = $data;
+                $this->nbCommentaires++;
+            }
 
 
             // Récupération des épisodes
