@@ -17,7 +17,7 @@ class EpisodeRenderer implements Renderer {
     public function render(): string {
 
 
-        if($_GET['action']){
+        if(isset($_GET['action'])){
             if ($_GET['action'] === 'display-series-episode'){
                 $html = <<<END
 
