@@ -13,11 +13,12 @@ class DisplaySerieAction extends Action
         $serieId = $_GET['id'];
 
         // cree la serie
-        $serie = new Serie($serieId+0);
+        $serie = new Serie($serieId);
         //affiche la serie
         $renderer = new SerieRenderer($serie);
 
         $html = $renderer->render();
+        $html .= "<br><br><a href='index.php' class='text-gray-900 dark:text-white'>Retour page principale</a>";
 
         return $html;
     }

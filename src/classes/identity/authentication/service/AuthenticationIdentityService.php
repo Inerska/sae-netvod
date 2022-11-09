@@ -74,13 +74,12 @@ class AuthenticationIdentityService
 
         try {
 
-            $query = $db->prepare("INSERT INTO profil (nom, prenom, age, sexe, genrePref) VALUES (:nom, :prenom, :age, :genre, :genrePrefere)");
+            $query = $db->prepare("INSERT INTO profil (nom, prenom, sexe, genrePref) VALUES (:nom, :prenom, :genre, :genrePrefere)");
             $query->execute([
-                'nom' => "Unknown",
-                'prenom' => "Unknown",
-                'age' => -1,
-                'genre' => "Unknown",
-                'genrePrefere' => "Unknown"
+                'nom' => "",
+                'prenom' => "",
+                'genre' => "",
+                'genrePrefere' => ""
             ]);
 
             $profileId = $db->lastInsertId();
