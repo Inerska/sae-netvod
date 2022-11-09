@@ -7,13 +7,14 @@ use Application\render\SerieRenderer;
 use Application\render\SeriesCardRenderer;
 use Application\video\Serie;
 
-class DisplayUserLikesAction extends Action{
+class DisplayUserLikesAction extends Action
+{
 
     public function execute(): string
     {
-        if(!isset($_SESSION['loggedUser'])){
+        if (!isset($_SESSION['loggedUser'])) {
             $html = "<p>Aucun utilisateur connecté</p>";
-        }else{
+        } else {
             // get l'user en session
             $user = unserialize($_SESSION['loggedUser']);
             // get ses likes dans la bd grace a son id
@@ -22,23 +23,35 @@ class DisplayUserLikesAction extends Action{
             $stmt = $bd->prepare($query);
             $stmt->execute([$user->__get('id')]);
             // affiche les likes
-            $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos likes : </h1>";
-            while ($row = $stmt->fetch()){
+
+            $s = "";
+            while ($row = $stmt->fetch()) {
                 // on affiche toutes les series qu'il a like
 
                 // cree une serie a partir de l'id
-                $serie = new Serie($row['idSerie']+0);
+                $serie = new Serie($row['idSerie'] + 0);
                 // cree un renderer
                 // si on est sur la page principale
-                if(!isset($_GET['action'])){
+                if (!isset($_GET['action'])) {
                     $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id);
-                }else{
+                } else {
                     $renderer = new SerieRenderer($serie);
                 }
+
                 // l'affiche
-                $html .= $renderer->render();
+                $s .= $renderer->render();
+            }
+
+            if($s === ""){
+                $html = "<h1 class='text-red-600 text-2xl font-bold'>Vous n'avez pas de likes pour le moment</h1>";
+
+            }else{
+                $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos likes : </h1>" . $s;
             }
         }
+
+
+
 
         return $html;
     }
