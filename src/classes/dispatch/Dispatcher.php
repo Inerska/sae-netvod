@@ -16,8 +16,8 @@ use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
 use Application\action\ProfileAction;
-use Application\action\ViewSerieAction;
 use Application\exception\datalayer\DatabaseConnectionException;
+use Application\action\DisplaySerieCommentairesAction;
 
 
 class Dispatcher
@@ -86,7 +86,6 @@ class Dispatcher
                 $html = $action->execute();
                 break;
 
-
             case 'preferences':
                 $act = new AddSeriesToPreferencesAction();
                 $html = $act->execute();
@@ -94,6 +93,11 @@ class Dispatcher
 
             case 'removePreferences':
                 $act = new RemoveSeriesToPreferencesAction();
+                $html = $act->execute();
+                break;
+
+            case 'commentaires':
+                $act = new DisplaySerieCommentairesAction();
                 $html = $act->execute();
                 break;
 
