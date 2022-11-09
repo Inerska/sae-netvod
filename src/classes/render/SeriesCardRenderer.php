@@ -23,7 +23,7 @@ class SeriesCardRenderer implements Renderer
         $user = unserialize($_SESSION['loggedUser'], ['allowed_classes' => true]);
 
         $db = ConnectionFactory::getConnection();
-        $query = $db->prepare("SELECT * FROM user_serie_pref WHERE idSerie = :serie_id AND idUser = :user_id");
+        $query = $db->prepare("SELECT * FROM user_serie_Pref WHERE idSerie = :serie_id AND idUser = :user_id");
         $query->execute([
             'serie_id' => $this->seriesId,
             'user_id' => $user->id
