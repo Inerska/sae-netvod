@@ -29,5 +29,4 @@ class EpisodeRenderer implements Renderer {
 
         return $html;
     }
-
 }
