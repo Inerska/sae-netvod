@@ -6,6 +6,7 @@ namespace Application\dispatch;
 
 
 use Application\action\ActivationAction;
+use Application\action\AddSeriesToPreferencesAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
 use Application\action\RenewAction;
@@ -14,6 +15,7 @@ use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
 use Application\action\ProfileAction;
+use Application\action\ViewSerieAction;
 use Application\exception\datalayer\DatabaseConnectionException;
 
 
@@ -41,7 +43,6 @@ class Dispatcher
                 $act = new DisplaySerieEpisodeAction();
                 $html = $act->execute();
                 break;
-
 
             case 'display-user-likes':
                 $act = new DisplayUserLikesAction();
@@ -83,7 +84,12 @@ class Dispatcher
                 $action = new RenewAction();
                 $html = $action->execute();
                 break;
-                
+
+            case 'preferences':
+                $act = new AddSeriesToPreferencesAction();
+                $html = $act->execute();
+                break;
+
             default:
                 $action = new DisplayUserLikesAction();
                 $html = $action->execute();
