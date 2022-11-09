@@ -7,6 +7,15 @@ use Application\render\SeriesCardRenderer;
 
 class SearchSeriesAction extends Action
 {
+
+    private string $htmlBase = <<<END
+        <form method="post" class="w-100 flex justify-center items-center bg-gray-100 dark:bg-gray-800 h-20 mb-10 flex-col border-red-700">
+            <input class="flex-1 w-full border-b-4 border-red-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-5" type="text" name="search" placeholder="Rechercher...">
+        </form>
+        <script src="js/ajax.js"></script>
+    END;
+
+
     public function execute(): string
     {
         return match ($this->httpMethod) {
@@ -21,12 +30,7 @@ class SearchSeriesAction extends Action
         $repository = new SeriesRepository();
         $series = $repository->getSeriesWith($search);
 
-        $html = <<<END
-        <form method="post" class="w-100 flex justify-center items-center">
-            <input class="border-b-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-10" type="text" name="search" placeholder="Rechercher...">
-        </form>
-        <script src="js/ajax.js"></script>
-        END;
+        $html = $this->htmlBase;
 
         foreach ($series as $serie) {
             $renderer = new SeriesCardRenderer($serie['img'], $serie['titre'], $serie['id']);
@@ -38,11 +42,6 @@ class SearchSeriesAction extends Action
 
     private function get(): string
     {
-        return <<<END
-        <form method="post" class="w-100 flex justify-center items-center bg-gray-800">
-            <input class="border-b-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-10" type="text" name="search" placeholder="Rechercher...">
-        </form>
-        <script src="js/ajax.js"></script>
-        END;
+        return $this->htmlBase;
     }
 }
