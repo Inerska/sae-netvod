@@ -9,6 +9,13 @@ use Application\render\SeriesCardRenderer;
 class ViewCatalogueAction extends Action
 {
 
+    private array $listeTri = [
+        'Pas de tri' => 'id',
+        'Titre' => 'titre',
+        'Année de sortie' => 'annee',
+        "Date d'ajout" => 'date_ajout',
+    ];
+
     /**
      * @throws DatabaseConnectionException
      */
@@ -16,7 +23,15 @@ class ViewCatalogueAction extends Action
     {
         $db = ConnectionFactory::getConnection();
 
-        $query = $db->prepare("SELECT * FROM serie");
+        $searchQuery = "SELECT * FROM serie";
+
+        $tri = $_GET['tri'] ?? 'Pas de tri';
+
+        /*if () {
+            $searchQuery .= " ORDER BY $tri";
+        }*/
+
+        $query = $db->prepare($searchQuery);
         $query->execute();
 
         $html = "";
@@ -28,7 +43,7 @@ class ViewCatalogueAction extends Action
         }
 
         if ($html === "") {
-            $html = "<p>Aucune série n'est disponible</p>";
+            $html = "<p>Aucune série ne correspond à la recherche</p>";
         } else {
             $html = <<<END
             <div class="flex flex-wrap flex-row gap-10">

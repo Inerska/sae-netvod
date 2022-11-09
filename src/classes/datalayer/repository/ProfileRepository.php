@@ -46,19 +46,8 @@ class ProfileRepository extends RepositoryBase
 
     final public function getProfileByUserId(int $userId): ?ProfileDto
     {
-        $query = $this->context->prepare("SELECT idProfil from user WHERE id = :id");
-        $query->execute(['id' => $userId]);
-
-        $result = $query->fetch();
-
-        if ($result === false) {
-            return null;
-        }
-
-        $profileId = $result["idProfil"];
-
         $query = $this->context->prepare("SELECT * FROM profil WHERE idProfil = :id");
-        $query->execute(['id' => $profileId]);
+        $query->execute(['id' => $userId]);
         $result = $query->fetch();
 
         if ($result === false) {

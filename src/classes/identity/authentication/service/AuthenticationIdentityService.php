@@ -82,10 +82,8 @@ class AuthenticationIdentityService
                 'genrePrefere' => ""
             ]);
 
-            $profileId = $db->lastInsertId();
-
-            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active, idProfil) VALUES (:email, :passwrd, :role, false, :idProfil)');
-            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1, ':idProfil' => $profileId]);
+            $query = $db->prepare('INSERT INTO user (email, passwrd, role, active) VALUES (:email, :passwrd, :role, false)');
+            $query->execute([':email' => $email, ':passwrd' => $hash, ':role' => 1]);
             $id = $db->lastInsertId();
             $token = self::generateActivationToken($id);
 
