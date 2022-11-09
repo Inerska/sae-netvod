@@ -92,6 +92,11 @@ class Dispatcher
                 $html = $act->execute();
                 break;
 
+            case 'commentaires':
+                $act = new DisplaySerieCommentairesAction();
+                $html = $act->execute();
+                break;
+
             case 'removePreferences':
                 $act = new RemoveSeriesToPreferencesAction();
                 $html = $act->execute();

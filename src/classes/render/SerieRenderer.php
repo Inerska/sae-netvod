@@ -35,7 +35,7 @@ class SerieRenderer implements Renderer {
                 $html .= $p . ", ";
             }
 
-            $html .= <<<END
+           $html .= <<<END
                 </p>
                 <p>Descriptif : {$this->serie->descriptif}</p>
                 <p>Année : {$this->serie->annee}</p>
