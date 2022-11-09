@@ -252,8 +252,8 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-DROP TABLE IF EXISTS user_serie_Pref;
-CREATE TABLE user_serie_Pref (
+DROP TABLE IF EXISTS user_serie_pref;
+CREATE TABLE user_serie_pref (
   idUser int(11) NOT NULL,
   idSerie int(5) NOT NULL,
   PRIMARY KEY (idUser, idSerie)
