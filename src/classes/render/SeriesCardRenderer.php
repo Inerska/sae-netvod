@@ -39,19 +39,23 @@ class SeriesCardRenderer implements Renderer
             </a>
         END;
 
+        $url = urlencode($this->url);
+
+
+
         if (!$query->fetch()) {
             $html .= <<<END
 
-            <a href="?action=preferences&seriesId=$this->seriesId&url={$this->url}" class="p-2 hover:cursor-pointer fill-white text-white">
-                <i class="fa-regular fa-heart"></i>
+            <a href="?action=preferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
+                <i class="fa-regular fa-heart text-black dark:text-white"></i>
             </a>
             END;
             
         } else {
             $html .= <<<END
 
-            <a href="?action=removePreferences&seriesId=$this->seriesId&url={$this->url}" class="p-2 hover:cursor-pointer fill-white text-white">
-                <i class="fa-solid fa-heart"></i>
+            <a href="?action=removePreferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
+                <i class="fa-solid fa-heart text-black dark:text-white"></i>
             </a>
             END;
         }

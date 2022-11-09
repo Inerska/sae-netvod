@@ -9,6 +9,7 @@ use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\DisplayViewedAction;
 use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
 use Application\action\DisplayUserLikesAction;
@@ -17,8 +18,8 @@ use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
 use Application\action\ProfileAction;
-use Application\action\ViewSerieAction;
 use Application\exception\datalayer\DatabaseConnectionException;
+use Application\action\DisplaySerieCommentairesAction;
 
 
 class Dispatcher
@@ -97,14 +98,26 @@ class Dispatcher
                 $html = $act->execute();
                 break;
 
+            case 'commentaires':
+                $act = new DisplaySerieCommentairesAction();
+                $html = $act->execute();
+                break;
+
             case 'removePreferences':
                 $act = new RemoveSeriesToPreferencesAction();
+                $html = $act->execute();
+                break;
+
+            case 'commentaires':
+                $act = new DisplaySerieCommentairesAction();
                 $html = $act->execute();
                 break;
 
             default:
                 $action = new DisplayUserLikesAction();
                 $html = $action->execute();
+                $action2 = new DisplayViewedAction();
+                $html .= $action2->execute();
                 break;
         }
 
