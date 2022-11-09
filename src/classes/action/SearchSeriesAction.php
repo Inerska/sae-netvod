@@ -32,10 +32,12 @@ class SearchSeriesAction extends Action
 
         $html = $this->htmlBase;
 
+        $html .= "<div class='flex flex-wrap flex-row gap-10'>";
         foreach ($series as $serie) {
             $renderer = new SeriesCardRenderer($serie['img'], $serie['titre'], $serie['id']);
             $html .= $renderer->render();
         }
+        $html .= "</div>";
 
         return $html;
     }
