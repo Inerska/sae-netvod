@@ -22,33 +22,10 @@ class SearchSeriesAction extends Action
         $series = $repository->getSeriesWith($search);
 
         $html = <<<END
-        <form method="post">
-            <input type="text" name="search" placeholder="Rechercher une série">
+        <form method="post" class="w-100 flex justify-center items-center">
+            <input class="border-b-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-10" type="text" name="search" placeholder="Rechercher...">
         </form>
-        <script async>
-            $('input[name="search"]').focus(); 
-            $('input[name="search"]').val('{$search}');
-            
-            $(document).ready(function() {
-                $('input[name="search"]').on('keyup', function() {
-                    const value = $('input[name="search"]').val();
-                    
-                    if (value.length > 0) {
-                        $.ajax({
-                            url: '?action=search',
-                            type: 'POST',
-                            data: {
-                                search: value
-                            },
-                            success: (html) => {
-                                $('body').html(html);
-                            }
-                        });
-                    }
-                })
-            })
-        </script>
-        <p>Vous avez recherché : {$search}</p>
+        <script src="js/ajax.js"></script>
         END;
 
         foreach ($series as $serie) {
@@ -62,33 +39,10 @@ class SearchSeriesAction extends Action
     private function get(): string
     {
         return <<<END
-        <form method="post">
-            <input type="text" name="search" placeholder="Rechercher une série">
+        <form method="post" class="w-100 flex justify-center items-center bg-gray-800">
+            <input class="border-b-4 bg-gray-100 dark:bg-gray-900 dark:text-gray-100 h-10" type="text" name="search" placeholder="Rechercher...">
         </form>
-        <script async>
-            const search = document.querySelector('input[name="search"]');
-            
-            search.focus();
-            
-            $(document).ready(function() {
-                $('input[name="search"]').on('keyup', function() {
-                    const value = $('input[name="search"]').val();
-                    
-                    if (value.length > 0) {
-                        $.ajax({
-                            url: '?action=search',
-                            type: 'POST',
-                            data: {
-                                search: value
-                            },
-                            success: (html) => {
-                                $('body').html(html);
-                            }
-                        });
-                    }
-                })
-            })
-        </script>
+        <script src="js/ajax.js"></script>
         END;
     }
 }
