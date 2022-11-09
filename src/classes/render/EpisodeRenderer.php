@@ -1,8 +1,8 @@
 <?php
 
 namespace Application\render;
-use Application\datalayer\factory\ConnectionFactory;
 use Application\video\Episode;
+use Application\datalayer\factory\ConnectionFactory;
 
 
 class EpisodeRenderer implements Renderer {
@@ -17,7 +17,10 @@ class EpisodeRenderer implements Renderer {
     public function render(): string {
 
         $html = <<<END
+
+
                 <h1 class="text-red-600 text-2xl font-bold'"><a href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&episodeId={$this->episode->numero}">Episode {$this->episode->numero} - {$this->episode->titre}</a></h1>
+
                 <p>Durée : {$this->episode->duree} secondes</p>
          END;
         return $html;
