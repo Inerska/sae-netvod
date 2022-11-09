@@ -34,17 +34,24 @@ class SerieRenderer implements Renderer {
             foreach ($this->serie->publicVise as $p) {
                 $html .= $p . ", ";
             }
-            $html .= "</p>";
-            $html .= "<p>Descriptif : {$this->serie->descriptif}</p>".
-                "<p>Année : {$this->serie->annee}</p>".
-                "<p>Date ajout : {$this->serie->dateAjout}</p>".
-                "<p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>".
-                "<p>Liste des épisodes : </p>".
-                "</div>";
+
+            $html .= <<<END
+                </p>
+                <p>Descriptif : {$this->serie->descriptif}</p>
+                <p>Année : {$this->serie->annee}</p>
+                <p>Date ajout : {$this->serie->dateAjout}</p>
+                <p>Nombre d'épisodes : {$this->serie->nbEpisodes}</p>
+                <p>Liste des épisodes : </p>
+                <div class="flex flex-wrap">
+            END;
+
+
             foreach ($this->serie->episodes as $episode) {
                 $e = new EpisodeRenderer($episode);
                 $html .= $e->render();
+
             }
+            $html .= "</div>";
         }
         return $html;
     }
