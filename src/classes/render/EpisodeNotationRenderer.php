@@ -18,7 +18,7 @@ class EpisodeNotationRenderer implements Renderer {
         $id = $this->episode->serieId;
         $numero = $this->episode->numero;
         $episodeRender = new EpisodeRenderer($this->episode);
-        $html = $episodeRender->longRender();
+        $html = $episodeRender->render();
 
         $db = ConnectionFactory::getConnection();
         $sql = "SELECT * FROM `notation` WHERE idUser = ? and idSerie = ?";
