@@ -18,6 +18,8 @@ class ViewSerieAction extends Action
         } else {
             $html .= "Aucune série sélectionnée";
         }
+        $html .= "<a href='index.php' class='text-gray-900 dark:text-white'>Retour page principale</a>";
+
         return $html;
     }
 }
