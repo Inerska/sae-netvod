@@ -10,12 +10,14 @@ class SeriesCardRenderer implements Renderer
     private ?string $cover;
     private ?string $title;
     private ?string $url;
+    private int $annee;
 
-    public function __construct(?string $cover, ?string $title, int $seriesId)
+    public function __construct(?string $cover, ?string $title, int $seriesId, int $annee)
     {
         $this->cover = $cover;
         $this->title = htmlentities($title);
         $this->seriesId = $seriesId;
+        $this->annee = $annee;
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $this->url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     }
@@ -33,9 +35,10 @@ class SeriesCardRenderer implements Renderer
 
         $html = <<<END
         <div class="w-max" id="seriesCard">
-            <a href="?action=viewSerie&id={$this->seriesId}" class="bg-red-500">
+            <a href="?action=viewSerie&id={$this->seriesId}"> 
                 <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
                 <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm font-sans">$this->title</h3> 
+                <span class="text-emerald-500 pt-2 leading-tight text-sm font-sans">$this->annee - </span>
             </a>
         END;
 

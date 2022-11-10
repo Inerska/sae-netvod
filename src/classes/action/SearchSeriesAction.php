@@ -34,7 +34,7 @@ class SearchSeriesAction extends Action
 
         $html .= "<div class='flex flex-wrap flex-row gap-10'>";
         foreach ($series as $serie) {
-            $renderer = new SeriesCardRenderer($serie['img'], $serie['titre'], $serie['id']);
+            $renderer = new SeriesCardRenderer($serie['img'], $serie['titre'], $serie['id'], $serie['annee']);
             $html .= $renderer->render();
         }
         $html .= "</div>";
