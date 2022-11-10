@@ -38,7 +38,7 @@ class SeriesCardRenderer implements Renderer
             <a href="?action=viewSerie&id={$this->seriesId}"> 
                 <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
                 <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm font-sans">$this->title</h3> 
-                <span class="text-emerald-500 pt-2 leading-tight text-sm font-sans">$this->annee - </span>
+                <span class="text-emerald-500 pt-2 leading-tight text-sm font-sans">$this->annee</span>
             </a>
         END;
 

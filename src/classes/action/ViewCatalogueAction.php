@@ -42,7 +42,7 @@ class ViewCatalogueAction extends Action
         $this->listeType = $statement->fetchAll(PDO::FETCH_COLUMN);
 
 
-        $searchQuery = "SELECT distinct id, titre, img FROM serie";
+        $searchQuery = "SELECT distinct id, titre, img, annee FROM serie";
 
         $genre = $_GET['genre'] ?? null;
 
@@ -291,7 +291,7 @@ class ViewCatalogueAction extends Action
         $catalogue = "";
 
         while ($result = $query->fetch()) {
-            $seriesCard = new SeriesCardRenderer($result["img"], $result["titre"], $result["id"] , $result["annee"]);
+            $seriesCard = new SeriesCardRenderer($result["img"], $result["titre"], $result["id"] , (int)$result["annee"]);
 
             $catalogue .= $seriesCard->render();
         }
