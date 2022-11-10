@@ -9,8 +9,8 @@ class SearchSeriesAction extends Action
 {
 
     private string $htmlBase = <<<END
-        <form method="post" class="w-screen flex justify-center items-center bg-gray-100 dark:bg-gray-800 h-20 mb-10 flex-col border-red-700 m-0">
-            <input class="flex-1 w-1/2 text-5xl border-b-2 border-red-600 my-10 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 focus:outline-none" type="text" name="search" placeholder="Rechercher...">
+        <form method="post" class="w-screen flex justify-center items-center bg-white dark:bg-gray-800 h-20 mb-10 flex-col border-red-700 m-0">
+            <input class="flex-1 w-1/2 text-5xl border-b-2 border-red-600 my-10 bg-transparent dark:bg-gray-800 dark:text-gray-100 focus:outline-none" type="text" name="search" placeholder="Rechercher...">
         </form>
         <script src="js/ajax.js"></script>
     END;
