@@ -14,7 +14,7 @@
     <script src="js/app.js"></script>
     <link rel="stylesheet" href="css/tailwind.css">
 </head>
-<body class="bg-white dark:bg-gray-800 h-full transition-colors duration-700 antialiased">
+<body class="bg-gray-250 dark:bg-gray-800 h-full transition-colors duration-700 antialiased">
 <?php
 
 use Application\datalayer\factory\ConnectionFactory;
