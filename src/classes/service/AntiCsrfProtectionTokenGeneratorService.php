@@ -7,8 +7,30 @@ class AntiCsrfProtectionTokenGeneratorService
     /**
      * @throws \Exception
      */
-    public function generateToken(): string
+    private function generateToken(): string
     {
         return bin2hex(random_bytes(32));
+    }
+
+    private function generateTokenTime() : int
+    {
+        return time();
+    }
+
+    private function generateTokenAndTime() : array
+    {
+        return [
+            'token' => $this->generateToken(),
+            'time' => $this->generateTokenTime()
+        ];
+    }
+
+    public function protect() : string
+    {
+        $tokenAndTime = $this->generateTokenAndTime();
+        $_SESSION['token'] = $tokenAndTime['token'];
+        $_SESSION['token_time'] = $tokenAndTime['time'];
+
+        return $tokenAndTime['token'];
     }
 }

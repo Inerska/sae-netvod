@@ -23,9 +23,7 @@ class SigninAction extends Action
     {
         if ($this->httpMethod === 'GET') {
             $service = new AntiCsrfProtectionTokenGeneratorService();
-            $token = $service->generateToken();
-            $_SESSION['token'] = $token;
-            $_SESSION['token_time'] = time();
+            $token = $service->protect();
 
             $html = <<<END
             <form method="post" class="flex justify-center items-center flex-col h-screen pb-72">
