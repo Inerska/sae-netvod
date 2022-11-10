@@ -53,7 +53,7 @@ HTML;
             $nbEpisodes = $_POST['nbEpisodes'];
             $description = $_POST['description'];
             $image = $_POST['image'];
-            $stmt = $db->prepare("insert into serie values (?, ?, ?, ?, ?, ?)");
+            $stmt = $db->prepare("insert into serie values (?, ?, ?, ?, ?, ?,0,0)");
             $stmt->execute([$idSerie, $titre, $description, $image,$date, $dateAjout]);
             $stmt->closeCursor();
         }
