@@ -291,7 +291,7 @@ class ViewCatalogueAction extends Action
         $catalogue = "";
 
         while ($result = $query->fetch()) {
-            $seriesCard = new SeriesCardRenderer($result["img"], $result["titre"], $result["id"]);
+            $seriesCard = new SeriesCardRenderer($result["img"], $result["titre"], $result["id"] , $result["annee"]);
 
             $catalogue .= $seriesCard->render();
         }
