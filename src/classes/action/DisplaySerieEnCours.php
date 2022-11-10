@@ -9,6 +9,9 @@ use Application\video\Serie;
 class DisplaySerieEnCours extends Action{
 
     public function execute(): string{
+
+        $html = '';
+
         if (isset($_SESSION['loggedUser'])) {
             // recup la liste des serie en cours
             $user = unserialize($_SESSION['loggedUser']);

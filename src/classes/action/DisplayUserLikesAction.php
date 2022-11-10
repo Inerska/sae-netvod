@@ -12,6 +12,9 @@ class DisplayUserLikesAction extends Action
 
     public function execute(): string
     {
+
+        $html = '';
+
         if (isset($_SESSION['loggedUser'])) {
             // get l'user en session
             $user = unserialize($_SESSION['loggedUser']);
