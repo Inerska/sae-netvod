@@ -19,9 +19,7 @@ class RenewAction extends Action
         } else {
 
             if (!isset($_GET['token']) && !isset($_POST['token'])) {
-                $service = new AntiCsrfProtectionTokenGeneratorService();
                 if ($this->httpMethod === 'GET') {
-                    $token = $service->protect();
 
                     $html .= <<<END
                     <form method="POST" class="flex justify-center items-center flex-col h-screen pb-72">
@@ -77,9 +75,6 @@ class RenewAction extends Action
                     $query = $db->prepare('SELECT id, email, renewExpiration FROM user WHERE renewToken = :token');
                     $query->execute([':token' => $token]);
 
-                    $service = new AntiCsrfProtectionTokenGeneratorService();
-                    $tokenCsrf = $service->protect();
-
                     if ($result = $query->fetch()) {
                         if ($result['renewExpiration'] > time()) {
                             $html .= <<<END
@@ -87,7 +82,6 @@ class RenewAction extends Action
                                 <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
                                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                     <div class="flex flex-col gap-3 w-full">
-                                        <input type="hidden" name="tokenCsrf" value="$tokenCsrf">
                                         <input type="hidden" name="token" value="$token">
                                         <input class="flex-1 w-full p-2 focus:outline-none bg-transparent border-b-2 mb-5 dark:text-gray-100 placeholder-gray-200 focus:border-red-600 transition duration-300" type="password" name="password" placeholder="Nouveau mot de passe" required>
                                         <input class="flex-1 w-full p-2 focus:outline-none bg-transparent border-b-2 dark:text-gray-100 placeholder-gray-200 focus:border-red-600 transition duration-300" type="password" name="passwordConfirm" placeholder="Confirmation du mot de passe" required>
@@ -119,27 +113,22 @@ class RenewAction extends Action
                     }
                 } elseif ($this->httpMethod === 'POST') {
                     $token = $_POST['token'];
-                    $tokenCsrfForm = $_POST['tokenCsrf'];
 
-                    $service = new AntiCsrfProtectionTokenGeneratorService();
-                    $valid = $service->verify($tokenCsrfForm, 60 * 5);
+                    $db = ConnectionFactory::getConnection();
+                    $query = $db->prepare('SELECT id, email FROM user WHERE renewToken = :token');
+                    $query->execute([':token' => $token]);
 
-                    if ($valid) {
-                        $db = ConnectionFactory::getConnection();
-                        $query = $db->prepare('SELECT id, email FROM user WHERE renewToken = :token');
-                        $query->execute([':token' => $token]);
+                    if ($result = $query->fetch()) {
+                        $password = $_POST['password'];
+                        $passwordConfirm = $_POST['passwordConfirm'];
 
-                        if ($result = $query->fetch()) {
-                            $password = $_POST['password'];
-                            $passwordConfirm = $_POST['passwordConfirm'];
+                        if ($password === $passwordConfirm) {
 
-                            if ($password === $passwordConfirm) {
-
-                                if (PasswordStrengthCheckerService::check($password)) {
-                                    $query = $db->prepare("UPDATE user SET renewToken = NULL, renewExpiration = NULL, passwrd = :password WHERE id = :id");
-                                    $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
-                                    $query->execute([':id' => $result['id'], ':password' => $hash]);
-                                    $html .= <<<END
+                            if (PasswordStrengthCheckerService::check($password)) {
+                                $query = $db->prepare("UPDATE user SET renewToken = NULL, renewExpiration = NULL, passwrd = :password WHERE id = :id");
+                                $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
+                                $query->execute([':id' => $result['id'], ':password' => $hash]);
+                                $html .= <<<END
                                     <div class="flex justify-center items-center flex-col h-screen pb-72">
                                         <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                             <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Votre mot de passe a bien été changé</h1>
@@ -147,8 +136,8 @@ class RenewAction extends Action
                                         </div>
                                     </div>
                                     END;
-                                } else {
-                                    $html .= <<<END
+                            } else {
+                                $html .= <<<END
                                     <div class="flex justify-center items-center flex-col h-screen pb-72">
                                         <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                             <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Votre mot de passe n'est pas assez fort</h1>
@@ -156,10 +145,10 @@ class RenewAction extends Action
                                         </div>
                                     </div>
                                     END;
-                                }
+                            }
 
-                            } else {
-                                $html .= <<<END
+                        } else {
+                            $html .= <<<END
                                 <div class="flex justify-center items-center flex-col h-screen pb-72">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                         <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Les mots de passe ne correspondent pas</h1>
@@ -167,18 +156,18 @@ class RenewAction extends Action
                                     </div>
                                 </div>
                                 END;
-                            }
+                        }
 
-                        } else {
-                            $html .= <<<END
+                    } else {
+                        $html .= <<<END
                                 <div class="flex justify-center items-center flex-col h-screen pb-72">
                                     <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                         <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Ce token ne correspond a aucun compte</h1>
                                     </div>
                                 </div>
                                 END;
-                        }
                     }
+
                 }
             }
         }
