@@ -29,10 +29,15 @@ class CommentaireRenderer implements Renderer{
         }else{
             $html .= "<h1 class='text-red-600 text-2xl font-bold'>Commentaires</h1>";
             $commentaire = $this->serie->__get('commentaires')[0];
+
+            $email = htmlentities($commentaire['email']);
+            $commentaireC = htmlentities($commentaire['commentaire']);
+            $note = htmlentities($commentaire['note']);
+
             $html .= <<<END
-                    <p class="dark:text-white">Commentaire de {$commentaire['email']}</p>
-                    <p class="dark:text-white">&emsp;{$commentaire['commentaire']}</p>
-                    <p class="dark:text-white">&emsp;Note : {$commentaire['note']}/5</p>
+                    <p class="dark:text-white">Commentaire de {$email}</p>
+                    <p class="dark:text-white">&emsp;{$commentaireC}</p>
+                    <p class="dark:text-white">&emsp;Note : {$note}/5</p>
                     <p><a class="hover:text-red-600 dark:text-white" href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>
 
                 END;
