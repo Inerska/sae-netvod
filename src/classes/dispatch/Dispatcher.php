@@ -8,6 +8,7 @@ namespace Application\dispatch;
 use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
 use Application\action\DisplaySerieAction;
+use Application\action\DisplaySerieEnCours;
 use Application\action\DisplaySerieEpisodeAction;
 use Application\action\DisplayViewedAction;
 use Application\action\RemoveSeriesToPreferencesAction;
@@ -114,6 +115,8 @@ class Dispatcher
                 $html = $action->execute();
                 $action2 = new DisplayViewedAction();
                 $html .= $action2->execute();
+                $action3 = new DisplaySerieEnCours();
+                $html .= $action3->execute();
                 break;
         }
 

@@ -2,6 +2,7 @@
 
 namespace Application\render;
 
+use Application\datalayer\factory\ConnectionFactory;
 use Application\video\Serie;
 
 class CommentaireRenderer implements Renderer{
@@ -12,29 +13,21 @@ class CommentaireRenderer implements Renderer{
         $this->serie = $serie;
     }
 
-    public function render(): string
-    {
+    public function render(): string{
+
+        $html = "";
+
+
+        $this->serie = new Serie($this->serie->id);
+
+        // on affiche le premier comm
+
         // on affiche le dernier commentaire
         if ($this->serie->nbCommentaires == 0) {
-            // il faut regarder ou on est
-            $html = <<<END
-            <form action="?action=display-series-episode&serieId={$this->serie->id}&numEp={$this->serie->id}" method="post">
-                <input type="hidden" name="serieId" value="{$id}">
-                <input type="hidden" name="episodeId" value="{$numero}">
-                <h3>Notez la série :</h3>
-                <label><input type="radio" id="note_1" name="note" value="1">1</label><br>
-                <label><input type="radio" id="note_2" name="note" value="2">2</label><br>
-                <label><input type="radio" id="note_3" name="note" value="3">3</label><br>
-                <label><input type="radio" id="note_4" name="note" value="4">4</label><br>
-                <label><input type="radio" id="note_5" name="note" value="5">5</label><br>
-                <h3>Commentez la série :</h3>
-                <textarea name="commentaire" rows="10" cols="30"></textarea><br>
-                <input type="submit" value="Noter">
-            </form>
-     END;
+            $html.= "<p>Aucun commentaire pour le moment</p>";
         }else{
             $commentaire = $this->serie->__get('commentaires')[0];
-            $html = <<<END
+            $html .= <<<END
                     <p>Commentaire de {$commentaire['email']} : </p>
                     <p>&emsp;{$commentaire['commentaire']}</p>
                     <p>&emsp;Note : {$commentaire['note']}/5</p>

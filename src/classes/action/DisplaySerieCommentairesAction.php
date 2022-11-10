@@ -10,27 +10,33 @@ class DisplaySerieCommentairesAction extends Action
     public function execute(): string
     {
 
-        $serieId = $_GET['serieId'];
-        $serie = new Serie($serieId);
-        $html = "<div class='commentaires'>".
-            "<img class='h-58 w-40' src='{$serie->image}' alt='image de la série' /><br>".
-            "<div id='list-commentaires'><h1>Commentaires - {$serie->titre}</h1>".
-             "<ul><br>";
-        foreach ($serie->commentaires as $commentaire) {
-            $html .= <<<HTML
+        if(isset($_GET['serieId'])) {
+
+
+            $serieId = $_GET['serieId'];
+            $serie = new Serie($serieId);
+            $html = "<div class='commentaires'>" .
+                "<img class='h-58 w-40' src='{$serie->image}' alt='image de la série' /><br>" .
+                "<div id='list-commentaires'><h1>Commentaires - {$serie->titre}</h1>" .
+                "<ul><br>";
+            foreach ($serie->commentaires as $commentaire) {
+                $html .= <<<HTML
                 <li>
                     <p>Commentaire de {$commentaire['email']} : </p>
                     <p>&emsp;{$commentaire['commentaire']}</p>
                     <p>Note : {$commentaire['note']}/5</p>
                 </li><br>
             HTML;
-        }
-        if ($serie->nbCommentaires == 0) {
-            $html .= "<il>La série n'a pas encore été commentée.</il>";
-        }
-        $html .= "</ul></div>";
+            }
+            if ($serie->nbCommentaires == 0) {
+                $html .= "<il>La série n'a pas encore été commentée.</il>";
+            }
+            $html .= "</ul></div>";
 
-        $html .= "<div id='retour-commentaire'><a href='?action=viewSerie&id={$serieId}'>Retour à la série</a></div></div>";
+            $html .= "<div id='retour-commentaire'><a href='?action=viewSerie&id={$serieId}'>Retour à la série</a></div></div>";
+        }else{
+            $html = "Erreur lors du chargement des commentaire";
+        }
         $html .= <<<HTML
     <style>
             h1 {

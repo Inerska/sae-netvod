@@ -24,13 +24,6 @@ class DisplaySerieEpisodeAction extends Action
             $renderer = new EpisodeRenderer($episode);
 
 
-            $html = <<<END
-            
-                        {$renderer->render()}   
-            END;
-
-
-
             if (isset($_SESSION['loggedUser'])) {
                 $user = unserialize($_SESSION['loggedUser']);
                 $db = ConnectionFactory::getConnection();
@@ -76,6 +69,10 @@ class DisplaySerieEpisodeAction extends Action
                     }
                 }
             }
+
+            // on affiche la page
+            $html = $renderer->render();
+
 
 
         }
