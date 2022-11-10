@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Application\action;
 
 use Application\datalayer\factory\ConnectionFactory;
@@ -23,7 +25,7 @@ class SigninAction extends Action
                         <a href="?action=renew" class="text-gray-900 dark:text-white font-sm text-xs">Mot de passe oublié ?</a>
                 </div>
             </div>
-            <button type="submit" class="transition duration-300 bg-red-700 p-3 text-gray-800 font-semibold hover:bg-red-600 mt-5 uppercase">Se connecter</button>
+            <button type="submit" class="transition duration-300 bg-red-700 p-3 font-semibold text-white dark:text-gray-800 hover:bg-red-600 mt-5 uppercase">Se connecter</button>
             <span class="dark:text-white pt-5">Pas de compte encore ? <a href="?action=sign-up" class="text-red-700 font-semibold uppercase">Créer un compte</a></span>
         </form>
         
