@@ -30,14 +30,18 @@ class EpisodeRenderer implements Renderer
 
         $html = <<<END
 
-                        <div>
+                        <div class="flex flex-col">
                             <video controls class="w-full"><source src='video/{$this->episode->file}' type='video/mp4'></video>
-                            <h1 class="text-red-600 text-2xl font-bold'">Episode {$this->episode->numero} - {$this->episode->titre}</h1>
-                            <p class='text-lg'>{$this->episode->resume} - {$this->episode->duree} secondes</p>
-                        </div>
+                            <h1 class="text-red-600 text-2xl font-bold">Episode {$this->episode->numero} - {$this->episode->titre}</h1>
+                            <p class='text-lg dark:text-white'>{$this->episode->resume} - {$this->episode->duree} secondes</p>
+                        
                         {$commentaireRenderer->render()}
-                        {$notationRenderer->render()}
-                        {$nextEpRenderer->render()}
+                        <div class="flex flex-row justify-between">
+                            {$notationRenderer->render()}
+                            {$nextEpRenderer->render()}
+                        </div>
+                        
+                        </div>
 
                 END;
 
