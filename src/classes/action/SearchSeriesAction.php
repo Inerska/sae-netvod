@@ -10,7 +10,7 @@ class SearchSeriesAction extends Action
 
     private string $htmlBase = <<<END
         <form method="post" class="w-100 flex justify-center items-center bg-gray-100 dark:bg-gray-800 h-20 mb-10 flex-col border-red-700">
-            <input class="flex-1 w-full border-b-4 border-red-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-5" type="text" name="search" placeholder="Rechercher...">
+            <input class="flex-1 w-full border-b-4 border-red-600 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-5 focus:outline-none" type="text" name="search" placeholder="Rechercher...">
         </form>
         <script src="js/ajax.js"></script>
     END;
