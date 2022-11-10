@@ -76,6 +76,12 @@ class SigninAction extends Action
                         $html = "<p class='text-gray-900 dark:text-white'>Compte non activé</p>";
                     } else {
                         $html = "<p class='text-gray-900 dark:text-white'>Bienvenue $email</p>";
+                        if($result['role'] == '100'){
+                            $html .= "<p class='text-gray-900 dark:text-white'>Vous êtes admin</p>";
+                            $_SESSION['loggedAdmin'] = true;
+                        } else {
+                            $_SESSION['loggedAdmin'] = false;
+                        }
                         $_SESSION['loggedUser'] = serialize($user);
 
                     }

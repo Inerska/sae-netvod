@@ -6,6 +6,8 @@ namespace Application\dispatch;
 
 use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
+use Application\action\AjouterEpisodeAction;
+use Application\action\AjouterSerieAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieCommentairesAction;
 use Application\action\DisplaySerieEnCours;
@@ -15,6 +17,7 @@ use Application\action\DisplayViewedAction;
 use Application\action\ProfileAction;
 use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
+use Application\action\RetirerSeriesAction;
 use Application\action\SearchSeriesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
@@ -103,16 +106,32 @@ class Dispatcher
                 $html = $act->execute();
                 break;
 
+            case 'commentaires':
+                $act = new DisplaySerieCommentairesAction();
+                $html = $act->execute();
+                break;
 
             case 'removePreferences':
                 $act = new RemoveSeriesToPreferencesAction();
                 $html = $act->execute();
                 break;
 
-            case 'commentaires':
-                $act = new DisplaySerieCommentairesAction();
+            case 'add-series':
+                $act = new AjouterSerieAction();
                 $html = $act->execute();
                 break;
+
+            case 'remove-series':
+                $act = new RetirerSeriesAction();
+                $html = $act->execute();
+                break;
+
+            case 'add-episodes':
+                $act = new AjouterEpisodeAction();
+                $html = $act->execute();
+                break;
+
+
 
             default:
                 $html = "<div class='flex flex-col'>";
@@ -143,6 +162,8 @@ class Dispatcher
     private function render(string $template): void
     {
         require_once 'src/views/header.php';
+        if(isset($_SESSION['loggedAdmin']) && $_SESSION['loggedAdmin'])
+        require_once 'src/views/navAdmin.php';
 
         echo <<<END
             <!doctype html>

@@ -80,7 +80,7 @@ class Serie {
                 $this->commentaires[] = $data;
             }
 
-            // Récupération des épisodes
+            // Récupération des épisodes et du nombre d'épisodes de la série
             $sql = "SELECT * FROM episode WHERE serie_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
