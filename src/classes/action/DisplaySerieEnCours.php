@@ -17,21 +17,25 @@ class DisplaySerieEnCours extends Action{
             $stmt->execute([$user->__get('id')]);
 
             $s = "";
+
             while($row = $stmt->fetch()){
                 $serie = new Serie($row['idSerie']+0);
                 $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, $serie->annee);
                 $s .= $renderer->render();
             }
 
-            // l'affiche
-
             if($s === ""){
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>Vous n'avez pas de serie en cours pour le moment</h1>";
+                $html = "<h1 class='text-red-600 text-2xl font-bold' >Vous n'avez pas de serie en cours</h1>";
             }else{
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos series en cours : </h1>" . $s;
+                $html = <<<END
+                    <h1 class='text-red-600 text-2xl font-bold' >Vos series en cours</h1>
+                    <div class='flex flex-wrap'>
+                    $s
+                    </div>
+                END;
             }
-        }else{
-            $html = "<p>Aucun utilisateur connecté</p>";
+
+            // l'affiche
         }
 
         return $html;
