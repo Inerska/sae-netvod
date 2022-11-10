@@ -27,7 +27,7 @@ class SigninAction extends Action
 
             $html = <<<END
             <form method="post" class="flex justify-center items-center flex-col h-screen pb-72">
-                <input type="hidden" name="token" value="$token">
+                <input type="text" name="token" value="$token">
                 <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                     <div class="flex flex-col gap-3 w-full">
@@ -47,10 +47,10 @@ class SigninAction extends Action
             $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
             $password = filter_var($_POST['password'], FILTER_SANITIZE_SPECIAL_CHARS);
 
+            $service = new AntiCsrfProtectionTokenGeneratorService();
             $token = $_POST['token'];
-            $token_time = $_SESSION['token_time'];
 
-            if ($token !== $_SESSION['token'] || time() - $token_time > 60 * 5) {
+            if (!$service->verify($token, 60*5)) {
                 $html = <<<END
                 <div class="flex justify-center items-center flex-col h-screen">
                     <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
