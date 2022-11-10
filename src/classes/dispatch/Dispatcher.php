@@ -91,7 +91,8 @@ class Dispatcher
             case 'search':
                 $action = new SearchSeriesAction();
                 $html = $action->execute();
-                break;
+                $this->render_grip($html);
+                return;
 
             case 'preferences':
                 $act = new AddSeriesToPreferencesAction();
@@ -129,5 +130,12 @@ class Dispatcher
         require_once 'src/views/header.php';
 
         echo "<div class='container mx-auto pt-4 w-screen'>" . $template . "</div>";
+    }
+
+    private function render_grip(string $template): void
+    {
+        require_once 'src/views/header.php';
+
+        echo "<div class='container w-screen'>" . $template . "</div>";
     }
 }
