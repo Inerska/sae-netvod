@@ -20,7 +20,7 @@
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=search"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">
+                            <span>
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
                         </a>
@@ -28,31 +28,31 @@
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=viewCatalogue"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">Catalogue</span>
+                            <span>Catalogue</span>
                         </a>
                     </li>
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=profile"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">Mon compte</span>
+                            <span>Mon compte</span>
                         </a>
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=sign-out"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">Déconnexion</span>
+                            <span>Déconnexion</span>
                         </a>
                     </li>
                 <?php else: ?>
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=sign-in"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">Connexion</span>
+                            <span>Connexion</span>
                         </a>
                     </li>
                     <li class="flex flex-col md:flex-row">
                         <a href="?action=sign-up"
                            class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
-                            <span class="ml-2">Inscription</span>
+                            <span>Inscription</span>
                         </a>
                     </li>
                 <?php endif; ?>

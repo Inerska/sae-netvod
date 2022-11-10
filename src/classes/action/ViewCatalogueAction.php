@@ -52,8 +52,8 @@ class ViewCatalogueAction extends Action
         if ($genre !== null) {
             $genres = explode(',', $genre);
 
-            foreach ($genres as $genre) {
-                if (in_array($genre, $this->listeGenre)) {
+            foreach ($genres as $value) {
+                if (in_array($value, $this->listeGenre)) {
                     $nbPossibleGenre++;
                 }
             }
@@ -68,8 +68,8 @@ class ViewCatalogueAction extends Action
         if ($type !== null) {
             $types = explode(',', $type);
 
-            foreach ($types as $type) {
-                if (in_array($type, $this->listeType)) {
+            foreach ($types as $value) {
+                if (in_array($value, $this->listeType)) {
                     $nbPossibleType++;
                 }
             }
@@ -131,6 +131,50 @@ class ViewCatalogueAction extends Action
             }
             $searchQuery .= ")";
         }
+
+
+        $html .= <<<END
+        <form method="get" action="index.php">
+            <input type="hidden" name="action" value="viewCatalogue">
+        END;
+
+        if ($genre !== null) {
+            $html .= <<<END
+            <input type="hidden" name="genre" value="$genre">
+            END;
+        }
+
+        if ($type !== null) {
+            $html .= <<<END
+            <input type="hidden" name="type" value="$type">
+            END;
+        }
+
+        $html .= <<<END
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="genrePrefere">Trier le catalogue</label>
+            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="tri" id="tri"">
+        END;
+
+        $triQuerry = '';
+
+        if (array_key_exists($tri, $this->listeTri)) {
+            $triQuerry .= " ORDER BY $tri";
+            $html .= "<option value=\"{$tri}\">{$this->listeTri[$tri]}</option>";
+            unset($this->listeTri[$tri]);
+        } else {
+            $html .= "<option value=\"id\">{$this->listeTri['id']}</option>";
+            unset($this->listeTri['id']);
+        }
+
+        foreach ($this->listeTri as $key => $value) {
+            $html .= "<option value=\"{$key}\">{$value}</option>";
+        }
+
+        $html .= <<<END
+            </select>
+            <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Trier</button>
+            </form>
+            END;
 
 
         if (count($this->listeGenre) > 0) {
@@ -215,7 +259,7 @@ class ViewCatalogueAction extends Action
             $html .= <<<END
             <div>
                 <label class="block text-sm font-medium text-gray-900 dark:text-gray-300" for="genrePrefere">Filtres actifs</label>
-                <ul class="mt-2" >
+                <ul class="flex flex-col flex-wrap h-20 gap-3 mt-2" >
             END;
 
             $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
@@ -228,7 +272,7 @@ class ViewCatalogueAction extends Action
                 $lien = str_replace('&type=' . $value, "", $lien);
                 $lien = str_replace('&genre=' . $value, "", $lien);
                 $html .= <<<END
-                <li class="block mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" xmlns="http://www.w3.org/1999/html">
+                <li class="block bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded" xmlns="http://www.w3.org/1999/html">
                     <a class="flex flex-row justify-between" href="$lien">
                         <label class="mr-2">$value</label>
                         <i class="fa-solid fa-xmark text-black align-middle dark:text-white"></i>
@@ -243,49 +287,7 @@ class ViewCatalogueAction extends Action
             END;
         }
 
-
-        $html .= <<<END
-        <form method="get" action="index.php">
-            <input type="hidden" name="action" value="viewCatalogue">
-        END;
-
-        if ($genre !== null) {
-            $html .= <<<END
-            <input type="hidden" name="genre" value="$genre">
-            END;
-        }
-
-        if ($type !== null) {
-            $html .= <<<END
-            <input type="hidden" name="type" value="$type">
-            END;
-        }
-
-        $html .= <<<END
-            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="genrePrefere">Trier le catalogue</label>
-            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="tri" id="tri"">
-        END;
-
-        if (array_key_exists($tri, $this->listeTri)) {
-            $searchQuery .= " ORDER BY $tri";
-            $html .= "<option value=\"{$tri}\">{$this->listeTri[$tri]}</option>";
-            unset($this->listeTri[$tri]);
-        } else {
-            $html .= "<option value=\"id\">{$this->listeTri['id']}</option>";
-            unset($this->listeTri['id']);
-        }
-
-        foreach ($this->listeTri as $key => $value) {
-            $html .= "<option value=\"{$key}\">{$value}</option>";
-        }
-
-        $html .= <<<END
-            </select>
-            <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Trier</button>
-            </form>
-            END;
-
-        $query = $db->prepare($searchQuery);
+        $query = $db->prepare($searchQuery . $triQuerry);
         $query->execute();
 
         $catalogue = "";
@@ -301,8 +303,10 @@ class ViewCatalogueAction extends Action
         }
 
         return <<<END
-                <div class="flex flex-wrap flex-row gap-10">
+                <div class="flex flex-wrap flex-row gap-10 mb-8">
                     {$html}
+                </div>
+                <div class="flex flex-wrap flex-row gap-10">
                     {$catalogue}
                 </div>
                 END;
