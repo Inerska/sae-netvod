@@ -5,7 +5,6 @@ namespace Application\action;
 use Application\datalayer\factory\ConnectionFactory;
 use Application\identity\authentication\service\AuthenticationIdentityService;
 use Application\identity\authentication\service\PasswordStrengthCheckerService;
-use Application\service\AntiCsrfProtectionTokenGeneratorService;
 
 class RenewAction extends Action
 {
@@ -26,7 +25,6 @@ class RenewAction extends Action
                         <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Renouveler le mot de passe</h1>
                         <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                             <div class="flex flex-col gap-3 w-full">
-                                <input type="hidden" name="token" value="$token">
                                 <input class="flex-1 w-full p-2 focus:outline-none bg-transparent border-b-2 mb-5 dark:text-gray-100 placeholder-gray-200 focus:border-red-600 transition duration-300" type="email" name="email" placeholder="Adresse mail" required>
                             </div>
                         </div>
@@ -37,16 +35,13 @@ class RenewAction extends Action
                 } elseif ($this->httpMethod === 'POST') {
                     $email = $_POST['email'];
 
-                    $valid = $service->verify($_POST['token'], 60 * 5);
+                    $db = ConnectionFactory::getConnection();
+                    $query = $db->prepare('SELECT id FROM user WHERE email = :email');
+                    $query->execute([':email' => $email]);
 
-                    if ($valid) {
-                        $db = ConnectionFactory::getConnection();
-                        $query = $db->prepare('SELECT id FROM user WHERE email = :email');
-                        $query->execute([':email' => $email]);
-
-                        if ($query->fetch()) {
-                            $token = AuthenticationIdentityService::generateRenewToken($email);
-                            $html .= <<<END
+                    if ($query->fetch()) {
+                        $token = AuthenticationIdentityService::generateRenewToken($email);
+                        $html .= <<<END
                             <div class="flex justify-center items-center flex-col h-screen pb-72">
                                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                     <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Un email de renouvellement a été envoyé à l'adresse $email</h1>
@@ -54,17 +49,14 @@ class RenewAction extends Action
                                 </div>
                             </div>
                             END;
-                        } else {
-                            $html .= <<<END
+                    } else {
+                        $html .= <<<END
                             <div class="flex justify-center items-center flex-col h-screen pb-72">
                                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                                     <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Cette adresse mail n'existe pas</h1>
                                 </div>
                             </div>
                             END;
-                        }
-                    } else {
-                        $html .= '<p>Une erreur est survenue</p>';
                     }
                 }
 
