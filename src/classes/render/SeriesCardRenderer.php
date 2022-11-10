@@ -50,7 +50,7 @@ class SeriesCardRenderer implements Renderer
             $html .= <<<END
 
             <a href="?action=preferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
-                <i class="fa-regular fa-heart text-black dark:text-white"></i>
+                <i class="fa-regular fa-heart text-rose-600"></i>
             </a>
             END;
             
@@ -58,7 +58,7 @@ class SeriesCardRenderer implements Renderer
             $html .= <<<END
 
             <a href="?action=removePreferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
-                <i class="fa-solid fa-heart text-black dark:text-white"></i>
+                <i class="fa-solid fa-heart text-rose-600"></i>
             </a>
             END;
         }
