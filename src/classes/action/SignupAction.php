@@ -5,14 +5,19 @@ namespace Application\action;
 use Application\exception\datalayer\DatabaseConnectionException;
 use Application\exception\identity\AuthenticationException;
 use Application\identity\authentication\service\AuthenticationIdentityService;
+use Application\service\AntiCsrfProtectionTokenGeneratorService;
 
 class SignupAction extends Action
 {
     final public function execute(): string
     {
         if ($this->httpMethod === 'GET') {
+            $service = new AntiCsrfProtectionTokenGeneratorService();
+            $token = $service->protect();
+
             return <<<END
             <form method="post" class="flex justify-center items-center flex-col h-screen pb-72">
+                <input type="hidden" name="token" value="$token">
                 <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">S'enregistrer</h1>
                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                     <div class="flex flex-col gap-3 w-full">
@@ -27,20 +32,30 @@ class SignupAction extends Action
             END;
         }
 
-        $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
-        $password = $_POST['password'];
-        $confirm = $_POST['confirm'];
+        if ($this->httpMethod === 'POST') {
+            $email = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+            $password = $_POST['password'];
+            $confirm = $_POST['confirm'];
 
-        try {
-            $token = AuthenticationIdentityService::register($email, $password, $confirm);
-        } catch (DatabaseConnectionException|AuthenticationException $e) {
-            return $e->getMessage();
-        }
+            $service = new AntiCsrfProtectionTokenGeneratorService();
+            $valid = $service->verify($_POST['token'], 60 * 5);
 
-        return <<<END
+            if ($valid) {
+                try {
+                    $token = AuthenticationIdentityService::register($email, $password, $confirm);
+                } catch (DatabaseConnectionException|AuthenticationException $e) {
+                    return $e->getMessage();
+                }
+
+                return <<<END
             <p>Compte enregister avec succès, veuillez activer votre compte</p>
             <a href="index.php?action=activation&token={$token}">Activer mon compte</a>
         END;
+            } else {
+                return 'Une erreur est survenue, veuillez réessayer';
+            }
+        }
 
+        return '';
     }
 }
