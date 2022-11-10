@@ -263,7 +263,7 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-INSERT INTO user_serie_Pref VALUES 
+INSERT INTO user_serie_pref VALUES 
 (1, 1),
 (1, 2),
 (1, 5),

@@ -19,7 +19,7 @@ class DisplayUserLikesAction extends Action
             $user = unserialize($_SESSION['loggedUser']);
             // get ses likes dans la bd grace a son id
             $bd = ConnectionFactory::getConnection();
-            $query = "select idSerie from user_serie_Pref where idUser = ?";
+            $query = "select idSerie from user_serie_pref where idUser = ?";
             $stmt = $bd->prepare($query);
             $stmt->execute([$user->__get('id')]);
             // affiche les likes
