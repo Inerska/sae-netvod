@@ -23,7 +23,13 @@ class DisplaySerieEpisodeAction extends Action
             $episode = new Episode($serieId+0, $numEpisode+0);
             $renderer = new EpisodeNotationRenderer($episode);
 
-            $html = $renderer->render();
+
+            $html = <<<END
+            
+                        {$renderer->render()}   
+            END;
+
+
 
             if (isset($_SESSION['loggedUser'])) {
                 $user = unserialize($_SESSION['loggedUser']);

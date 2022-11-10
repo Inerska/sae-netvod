@@ -27,7 +27,7 @@ class EpisodeNotationRenderer implements Renderer {
         $stmt->execute([$idUser, $id]);
         $data = $stmt->fetch();
         if ($data){
-            $html .= "<p>Vous avez déjà noté cette série</p>";
+            $html .= "<p>Vous avez déjà noté cette série {$data['note']}/5</p>";
         } else {
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 $html .= <<<END
@@ -45,12 +45,19 @@ class EpisodeNotationRenderer implements Renderer {
                 <input type="submit" value="Noter">
             </form>
      END;
-            } else {
-                $note = $_POST['note'];
+            } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $note = FILTER_SANITIZE_NUMBER_FLOAT($_POST['note']);
                 $commentaire = $_POST['commentaire'];
                 $sql = "INSERT INTO `notation` (`idUser`, `idSerie`, `note`, `commentaire`) VALUES (?, ?, ?, ?)";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([unserialize($_SESSION['loggedUser'])->id, $id, $note, $commentaire]);
+
+                $st = $db->prepare("select note_moyenne, nombre_note from serie where idSerie = ?");
+                $data = $st-execute($id);
+
+                $st2 = $db->prepare("update serie set note_moyenne = ?, nombre_note = ? where idSerie = ?" );
+                $st2->execute([ ($data['note_moyenne']+$note)/2,  ($data['nombre_note'])+1, $id]);
+
                 $html .= "<p>Vous avez noté cette série $note / 5.</p>";
             }
         }

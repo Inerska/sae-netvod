@@ -21,19 +21,17 @@ class EpisodeRenderer implements Renderer {
             if ($_GET['action'] === 'display-series-episode'){
                 $html = <<<END
 
-                <div class="flex">
                         <div>
+                            <video controls class="w-full"><source src='video/{$this->episode->file}' type='video/mp4'></video>
                             <h1 class="text-red-600 text-2xl font-bold'">Episode {$this->episode->numero} - {$this->episode->titre}</h1>
-                            <video controls><source src='video/{$this->episode->file}' type='video/mp4'></video>
-                            <p>Durée : {$this->episode->duree} secondes</p>
-                            <p class='text-lg'>Resumé : {$this->episode->resume}</p>
+                            <p class='text-lg'>{$this->episode->resume} - {$this->episode->duree} minutes</p>
+
                         </div>
-                </div>
                 END;
 
             }else{
                 $html = <<<END
-                        <a class="flex flex-col items-center w-2/6 bg-blue-100" href="index.php?action=display-series-episode&serieId={$this->episode->serieId}&numEp={$this->episode->numero}">
+                        <a class="flex flex-col items-center w-2/6 bg-blue-100" href="index.php?action=display-series-episode&episodeId={$this->episode->id}">
                                 <h1 class="text-red-600 text-2xl font-bold'">Episode {$this->episode->numero} - {$this->episode->titre}</h1>
                                 <video  class="h-58 w-40"><source src='video/{$this->episode->file}' type='video/mp4'></video>
                                 <p>Durée : {$this->episode->duree} secondes</p>

@@ -48,6 +48,10 @@ class Serie {
             $this->annee = $data['annee'];
             //ajout de la date d'ajout de la serie
             $this->dateAjout = $data['date_ajout'];
+            //ajout de la moyenne
+            $this->moyenne = $data['note_moyenne'];
+            // ajout du nombre de commentaire (nb note)
+            $this->nbCommentaires = $data['nombre_note'];
             $stmt->closeCursor();
 
             // Récupération des genres
@@ -67,22 +71,6 @@ class Serie {
                 $this->publicVise[] = $data['libelle'];
             }
             $stmt->closeCursor();
-
-            $sql = "select round(sum(note)/count(*), 1) as moyenne from notation where idSerie = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$id]);
-            $data = $stmt->fetch();
-            if ($data) $this->moyenne = $data['moyenne'];
-            $stmt->closeCursor();
-
-            $sql = "SELECT email, note, commentaire FROM notation inner join user on notation.idUser = user.id where notation.idSerie = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$id]);
-            while ($data = $stmt->fetch()){
-                $this->commentaires[] = $data;
-                $this->nbCommentaires++;
-            }
-
 
             // Récupération des épisodes
             $sql = "SELECT * FROM episode WHERE serie_id = ?";
