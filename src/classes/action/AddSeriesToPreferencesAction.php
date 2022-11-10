@@ -10,15 +10,20 @@ class AddSeriesToPreferencesAction extends Action
     {
         if ($this->httpMethod === 'GET') {
             $seriesId = (int)$_GET['seriesId'];
-            $user = unserialize($_SESSION['loggedUser'], ['allowed_classes' => true]);
-            $repository = new SeriesRepository();
-            $repository->addSeriesToPreferences($seriesId, $user->id);
+            if ($seriesId > 0) {
+                $user = unserialize($_SESSION['loggedUser'], ['allowed_classes' => true]);
+                $repository = new SeriesRepository();
+                $repository->addSeriesToPreferences($seriesId, $user->id);
 
-            if (isset($_GET['url'])) {
-                header('Location: ' . $_GET['url']);
-            } else {
-                header('Location: index.php');
+                if (isset($_GET['url'])) {
+                    header('Location: ' . $_GET['url']);
+                    exit();
+                }
+
             }
+
+            header('Location: index.php');
+
         }
         return '';
 

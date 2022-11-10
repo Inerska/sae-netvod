@@ -11,6 +11,11 @@ class SignupAction extends Action
 {
     final public function execute(): string
     {
+
+        if (isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+        }
+
         if ($this->httpMethod === 'GET') {
             $service = new AntiCsrfProtectionTokenGeneratorService();
             $token = $service->protect();

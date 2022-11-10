@@ -53,13 +53,7 @@ class ActivationAction extends Action
             }
 
         } else {
-            $html = <<<END
-                                <div class="flex justify-center items-center flex-col h-screen pb-72">
-                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
-                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Erreur lors de l'activation</h1>
-                                    </div>
-                                </div>
-                                END;
+            header('Location: index.php');
         }
         return $html;
     }

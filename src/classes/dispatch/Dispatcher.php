@@ -43,13 +43,9 @@ class Dispatcher
                 $act = new SigninAction();
                 $html = $act->execute();
                 break;
+
             case 'display-series-episode':
                 $act = new DisplaySerieEpisodeAction();
-                $html = $act->execute();
-                break;
-
-            case 'display-user-likes':
-                $act = new DisplayUserLikesAction();
                 $html = $act->execute();
                 break;
 
@@ -134,14 +130,28 @@ class Dispatcher
 
 
             default:
-                $html = "<div class='flex flex-col'>";
-                $action = new DisplayUserLikesAction();
-                $html = $action->execute();
-                $action2 = new DisplayViewedAction();
-                $html .= $action2->execute();
-                $action3 = new DisplaySerieEnCours();
-                $html .= $action3->execute();
-                $html .= '</div>';
+
+                $html ='';
+
+                if (!isset($_SESSION['loggedUser'])) {
+                    $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Vous n'etes pas connecté, veuillez vous connectez</h1>
+                                    </div>
+                                </div>
+                                END;
+                } else {
+                    $html = "<div class='flex flex-col'>";
+                    $action = new DisplayUserLikesAction();
+                    $html .= $action->execute();
+                    $action2 = new DisplayViewedAction();
+                    $html .= $action2->execute();
+                    $action3 = new DisplaySerieEnCours();
+                    $html .= $action3->execute();
+                    $html .= '</div>';
+                }
+
                 break;
         }
 
