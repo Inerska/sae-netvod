@@ -33,7 +33,7 @@ class NextEpRenderer implements Renderer {
                 $numEpSuiv = $data['numEpisode'] + 1;
                 if ($numEpSuiv <= $nbEp) {
                     $html .= "<div class='w-1/2'>";
-                    $html .= "<p class='dark:text-white'>La serie est actuellement en cours, voullez-vous regarder le prochaine épisode ? </p>";
+                    $html .= "<p class='dark:text-white'>Continuez votre lecture </p>";
                     // Reprendre le prochain épisode
                     $episodeRenderer =  new EpisodeCardRender(new Episode($this->serie->id, $numEpSuiv));
                     $html .= $episodeRenderer->render();
