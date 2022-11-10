@@ -58,7 +58,11 @@ class SeriesCardRenderer implements Renderer
             $html .= <<<END
 
             <a href="?action=removePreferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
-                <i class="fa-solid fa-heart text-rose-600"></i>
+            <div class="flex h-3 w-3">
+                <i class="absolute inline-flex fa-solid fa-heart text-rose-600 hover:scale-125 animate-ping"></i>
+                <i class="relative inline-flex fa-solid fa-heart text-rose-600 hover:scale-125"></i>
+            </div>
+                
             </a>
             END;
         }
