@@ -32,6 +32,9 @@ class ProfileAction extends Action
             $service = new AntiCsrfProtectionTokenGeneratorService();
             $token = $service->protect();
 
+            $nom = htmlentities($profile->getNom());
+            $prenom = htmlentities($profile->getPrenom());
+
             $html = <<<END
 <h1 class="text-3xl font-bold mb-8 dark:text-white text-gray-900" xmlns="http://www.w3.org/1999/html">Modifier le profil</h1>
 <form method="POST">
@@ -39,11 +42,11 @@ class ProfileAction extends Action
 <div class="grid gap-6 mb-6 md:grid-cols-2">
 <div>
 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="nom">Nom</label>
-    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="nom" id="nom" value="{$profile->getNom()}">
+    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="nom" id="nom" value="{$nom}">
 </div>
 <div>
     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="prenom">Prenom</label>
-    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="prenom" id="prenom" value="{$profile->getPrenom()}"> 
+    <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="text" name="prenom" id="prenom" value="{$prenom}"> 
 </div>
 <div>
 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="age">Age</label>
