@@ -68,6 +68,7 @@ class Serie {
             }
             $stmt->closeCursor();
 
+            //Calcul de la moyenne des notes de la série
             $sql = "select round(sum(note)/count(*), 1) as moyenne from notation where idSerie = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
@@ -75,6 +76,7 @@ class Serie {
             if ($data) $this->moyenne = $data['moyenne'];
             $stmt->closeCursor();
 
+            // Récupération des commentaires et des notes de la série
             $sql = "SELECT email, note, commentaire FROM notation inner join user on notation.idUser = user.id where notation.idSerie = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
@@ -84,7 +86,7 @@ class Serie {
             }
 
 
-            // Récupération des épisodes
+            // Récupération des épisodes et du nombre d'épisodes de la série
             $sql = "SELECT * FROM episode WHERE serie_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id]);
