@@ -51,7 +51,8 @@ class SeriesRepository extends RepositoryBase
     final public function getSeriesWith(string $keyword): array
     {
         $db = ConnectionFactory::getConnection();
-        $query = $db->prepare("SELECT * FROM serie WHERE titre LIKE :keyword");
+
+        $query = $db->prepare("SELECT * FROM serie WHERE titre LIKE :keyword OR descriptif LIKE :keyword");
         $query->execute([
             'keyword' => "%{$keyword}%"
         ]);

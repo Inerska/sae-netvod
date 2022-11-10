@@ -26,9 +26,8 @@ class SearchSeriesAction extends Action
 
     private function post(): string
     {
-        $search = filter_var($_POST['search'], FILTER_SANITIZE_SPECIAL_CHARS);
         $repository = new SeriesRepository();
-        $series = $repository->getSeriesWith($search);
+        $series = $repository->getSeriesWith($_POST['search']);
 
         $html = $this->htmlBase;
 
