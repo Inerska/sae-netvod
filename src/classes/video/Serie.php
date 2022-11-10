@@ -51,7 +51,7 @@ class Serie {
             //ajout de la moyenne
             $this->moyenne = $data['note_moyenne'];
             // ajout du nombre de commentaire (nb note)
-            $this->nbCommentaires = $data['nombre_note'];
+            $this->nbCommentaires = (int)$data['nombre_note'];
             $stmt->closeCursor();
 
             // Récupération des genres
