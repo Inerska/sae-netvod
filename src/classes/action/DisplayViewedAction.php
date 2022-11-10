@@ -25,16 +25,19 @@ class DisplayViewedAction extends Action {
                 $s .= $renderer->render();
             }
 
-            // l'affiche
-
             if($s === ""){
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>Vous n'avez pas de serie déjà vu pour le moment</h1>";
+                $html = "<h1 class='text-red-600 text-2xl font-bold' >Vous n'avez pas de serie vu</h1>";
             }else{
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos series vu : </h1>" . $s;
+                $html = <<<END
+                    <h1 class='text-red-600 text-2xl font-bold' >Vos series vu</h1>
+                    <div class='flex flex-wrap'>
+                    $s
+                    </div>
+                END;
             }
-        }else{
-            $html = "<p>Aucun utilisateur connecté</p>";
+
         }
+
 
         return $html;
     }

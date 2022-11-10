@@ -12,9 +12,7 @@ class DisplayUserLikesAction extends Action
 
     public function execute(): string
     {
-        if (!isset($_SESSION['loggedUser'])) {
-            $html = '<p>Aucun utilisateur connecté</p>';
-        } else {
+        if (isset($_SESSION['loggedUser'])) {
             // get l'user en session
             $user = unserialize($_SESSION['loggedUser']);
             // get ses likes dans la bd grace a son id
@@ -24,7 +22,9 @@ class DisplayUserLikesAction extends Action
             $stmt->execute([$user->__get('id')]);
             // affiche les likes
 
-            $s = '';
+            $s = "";
+
+
             while ($row = $stmt->fetch()) {
                 // on affiche toutes les series qu'il a like
 
@@ -42,11 +42,18 @@ class DisplayUserLikesAction extends Action
                 $s .= $renderer->render();
             }
 
-            if ($s === '') {
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>Vous n'avez pas de likes pour le moment</h1>";
-            } else {
-                $html = "<h1 class='text-red-600 text-2xl font-bold'>liste de vos likes : </h1>" . $s;
+            if($s === ""){
+                $html = "<h1 class='text-red-600 text-2xl font-bold' >Vous n'avez pas de likes</h1>";
+            }else{
+                $html = <<<END
+                    <h1 class='text-red-600 text-2xl font-bold' >Vos likes</h1>
+                    <div class='flex flex-wrap'>
+                    $s
+                    </div>
+                END;
             }
+
+
         }
 
 
