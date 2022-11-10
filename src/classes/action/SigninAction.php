@@ -75,17 +75,14 @@ class SigninAction extends Action
                     if ((int)$result['active'] === 0) {
                         $html = "<p class='text-gray-900 dark:text-white'>Compte non activé</p>";
                     } else {
-                        $html .= "<p class='text-gray-900 dark:text-white'>Connexion réussi</p>";
-                        $html .= "<p class='text-gray-900 dark:text-white'>Bienvenue $email</p>";
+                        $html = "<p class='text-gray-900 dark:text-white'>Bienvenue $email</p>";
                         $_SESSION['loggedUser'] = serialize($user);
 
-                        header('Location: index.php');
-                        exit();
                     }
                 } catch (AuthenticationException $e) {
-                    $html .= "<p class='text-gray-900 dark:text-white'>Compte inexistant</p>";
+                    $html = "<p class='text-gray-900 dark:text-white'>Compte inexistant</p>";
                 } catch (BadPasswordException $e) {
-                    $html .= "<p class='text-gray-900 dark:text-white'>Mot de passe incorrect</p>";
+                    $html = "<p class='text-gray-900 dark:text-white'>Mot de passe incorrect</p>";
                 }
             }
         }
