@@ -11,6 +11,11 @@ class DisplaySerieAction extends Action
 
     public function execute(): string
     {
+        if(!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         // get l'id de la serie a afficher
         if (isset($_GET['id'])) {
 
