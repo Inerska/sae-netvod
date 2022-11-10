@@ -69,7 +69,7 @@ CREATE TABLE serie (
   img varchar(256) NOT NULL,
   annee int(11) NOT NULL,
   date_ajout date NOT NULL,
-  note_moyenne float(5) 
+  note_moyenne float(5),
   nombre_note int(5),
   PRIMARY KEY (id)
 )
