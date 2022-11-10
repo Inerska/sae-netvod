@@ -21,7 +21,8 @@ class AddSeriesToPreferencesAction extends Action
                 $repository->addSeriesToPreferences($seriesId, $user->id);
 
                 if (isset($_GET['url'])) {
-                    header('Location: ' . $_GET['url']);
+                    $url = str_replace('search-ajax', 'search', $_GET['url']);
+                    header('Location: ' . $url);
                     exit();
                 }
 

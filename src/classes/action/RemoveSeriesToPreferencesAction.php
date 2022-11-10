@@ -20,11 +20,13 @@ class RemoveSeriesToPreferencesAction extends Action
             $repository->removeSeriesToPreferences($seriesId, $user->id);
 
             if (isset($_GET['url'])) {
-                header('Location: ' . $_GET['url']);
-            } else {
-                header('Location: index.php');
+                $url = str_replace('search-ajax', 'search', $_GET['url']);
+                header('Location: ' . $url);
+                exit();
             }
-            
+
+            header('Location: index.php');
+
         }
 
         return "";
