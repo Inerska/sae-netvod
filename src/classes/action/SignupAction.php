@@ -48,11 +48,21 @@ class SignupAction extends Action
                 }
 
                 return <<<END
-            <p>Compte enregister avec succès, veuillez activer votre compte</p>
-            <a href="index.php?action=activation&token={$token}">Activer mon compte</a>
-        END;
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Compte enregister avec succès, veuillez activer votre compte</h1>
+                                        <a href='index.php?action=activation&token={$token}' class="text-gray-900 dark:text-white font-sm text-lg">Activer mon compte</a>
+                                    </div>
+                                </div>
+                                END;
             } else {
-                return 'Une erreur est survenue, veuillez réessayer';
+                return <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Une erreur est survenue, veuillez réessayer</h1>
+                                    </div>
+                                </div>
+                                END;
             }
         }
 

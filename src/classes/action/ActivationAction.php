@@ -23,19 +23,43 @@ class ActivationAction extends Action
                     $query->execute([':id' => $result['id']]);
                     $_SESSION['loggedUser'] = serialize(new User($result['id'], $result['email']));
 
-                    $html = "<p>Votre compte a bien été activé</p>";
+                    $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Votre compte a bien été activé</h1>
+                                    </div>
+                                </div>
+                                END;
                 } else {
                     $token = AuthenticationIdentityService::generateActivationToken($result['id']);
-                    $html = "<p>Votre lien d'activation a expiré, un nouveau lien a été généré</p>";
-                    $html .= "<p><a href='index.php?action=activation&token={$token}'>Activer mon compte</a></p>";
+                    $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Votre lien d'activation a expiré, un nouveau lien a été généré</h1>
+                                        <a href='index.php?action=activation&token={$token}' class="text-gray-900 dark:text-white font-sm text-lg">Activer mon compte</a>
+                                    </div>
+                                </div>
+                                END;
                 }
 
             } else {
-                $html = "<p>Ce token ne correspond a aucun compte</p>";
+                $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Ce token ne correspond a aucun compte</h1>
+                                    </div>
+                                </div>
+                                END;
             }
 
         } else {
-            $html = "<p>Erreur lors de l'activation</p>";
+            $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Erreur lors de l'activation</h1>
+                                    </div>
+                                </div>
+                                END;
         }
         return $html;
     }

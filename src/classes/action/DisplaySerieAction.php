@@ -18,7 +18,7 @@ class DisplaySerieAction extends Action
             $serieId = $_GET['id'];
 
             // cree la serie
-            $serie = new Serie($serieId);
+            $serie = new Serie((int)$serieId);
             //affiche la serie
             $renderer = new SerieRenderer($serie);
 
@@ -27,12 +27,16 @@ class DisplaySerieAction extends Action
 
 
         }else{
-            $html = "<p>Serie introuvable</p>";
-            $html .= "<a class='text-2xl hover:text-red-600' href='index.php'>Retour page principale</a>";
+            $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Serie introuvable</h1>
+                                        <a href='index.php' class="text-gray-900 dark:text-white font-sm text-lg">Retour page principale</a>
+                                    </div>
+                                </div>
+                                END;
         }
 
-
-        $html .= "<br><br><a href='index.php' class='text-gray-900 dark:text-white'>Retour page principale</a>";
         return $html;
     }
 }

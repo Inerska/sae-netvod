@@ -53,15 +53,36 @@ class AuthenticationIdentityService
     public static function register(string $email, string $password, string $confirm): string
     {
         if ($password !== $confirm) {
-            throw new AuthenticationException("Passwords do not match");
+            throw new AuthenticationException(<<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Les mots de passe ne sont pas les mêmes</h1>
+                                        <a href='index.php?action=sign-up' class="text-gray-900 dark:text-white font-sm text-lg">S'insrire</a>
+                                    </div>
+                                </div>
+                                END);
         }
 
         if (!PasswordStrengthCheckerService::check($password)) {
-            throw new AuthenticationException("<p>password trop faible</p>");
+            throw new AuthenticationException(<<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Mot de passe trop faible</h1>
+                                        <a href='index.php?action=sign-up' class="text-gray-900 dark:text-white font-sm text-lg">S'insrire</a>
+                                    </div>
+                                </div>
+                                END);
         }
 
         if (self::alreadyExists($email)) {
-            throw new AuthenticationException("<p>Cet email est déjà utilisé</p>");
+            throw new AuthenticationException(<<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Cet email est déjà utilisé</h1>
+                                        <a href='index.php?action=sign-up' class="text-gray-900 dark:text-white font-sm text-lg">S'insrire</a>
+                                    </div>
+                                </div>
+                                END);
         }
 
         $hash = password_hash($password, PASSWORD_DEFAULT, ['cost' => 12]);
@@ -69,7 +90,14 @@ class AuthenticationIdentityService
         try {
             $db = ConnectionFactory::getConnection();
         } catch (DatabaseConnectionException $e) {
-            throw new DatabaseConnectionException("<p>Erreur de connexion à la base de données</p>");
+            throw new DatabaseConnectionException(<<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Erreur de connexion à la base de données</h1>
+                                        <a href='index.php?action=sign-up' class="text-gray-900 dark:text-white font-sm text-lg">S'insrire</a>
+                                    </div>
+                                </div>
+                                END);
         }
 
         try {
@@ -88,7 +116,14 @@ class AuthenticationIdentityService
             $token = self::generateActivationToken($id);
 
         } catch (PDOException $e) {
-            throw new DatabaseConnectionException("<p>Erreur d'insertion dans la base de données</p> : " . $e->getMessage());
+            throw new DatabaseConnectionException(<<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Erreur d'insertion dans la base de données</h1>
+                                        <a href='index.php?action=sign-up' class="text-gray-900 dark:text-white font-sm text-lg">S'insrire</a>
+                                    </div>
+                                </div>
+                                END);
         }
 
         return $token;

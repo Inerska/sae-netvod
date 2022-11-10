@@ -15,7 +15,14 @@ class DisplaySerieEpisodeAction extends Action
     {
         // get l'id de la seerie et l'id de l'episode
         if (!isset($_GET['numEp']) || !isset($_GET['serieId'])) {
-            $html = "<p>Erreur lors de l'affichage</p>";
+            $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Erreur lors de l'affichage</h1>
+                                        <a href='index.php' class="text-gray-900 dark:text-white font-sm text-lg">Retour page principale</a>
+                                    </div>
+                                </div>
+                                END;
         } else {
             $serieId = $_GET['serieId'];
             $numEpisode = $_GET['numEp'];

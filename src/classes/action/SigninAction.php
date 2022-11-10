@@ -73,22 +73,50 @@ class SigninAction extends Action
                     $result = $query->fetch();
 
                     if ((int)$result['active'] === 0) {
-                        $html = "<p class='text-gray-900 dark:text-white'>Compte non activé</p>";
+                        $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Compte non activé</h1>
+                                    </div>
+                                </div>
+                                END;
                     } else {
-                        $html = "<p class='text-gray-900 dark:text-white'>Bienvenue $email</p>";
+                        $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Bienvenue $email</h1>  
+                                END;
+
                         if($result['role'] == '100'){
-                            $html .= "<p class='text-gray-900 dark:text-white'>Vous êtes admin</p>";
+                            $html .= <<<END
+                                    <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Vous êtes admin</h1> 
+                            END;
                             $_SESSION['loggedAdmin'] = true;
                         } else {
                             $_SESSION['loggedAdmin'] = false;
                         }
                         $_SESSION['loggedUser'] = serialize($user);
-
+                        $html .= <<<END
+                                    </div>
+                                </div>
+                                END;
                     }
                 } catch (AuthenticationException $e) {
-                    $html = "<p class='text-gray-900 dark:text-white'>Compte inexistant</p>";
+                    $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Compte inexistant</h1>
+                                    </div>
+                                </div>
+                                END;
                 } catch (BadPasswordException $e) {
-                    $html = "<p class='text-gray-900 dark:text-white'>Mot de passe incorrect</p>";
+                    $html = <<<END
+                                <div class="flex justify-center items-center flex-col h-screen pb-72">
+                                    <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                                        <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Mot de passe incorrect</h1>
+                                    </div>
+                                </div>
+                                END;
                 }
             }
         }
