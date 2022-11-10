@@ -10,6 +10,7 @@ if (!isset($_SESSION['loggedUser'])) {
 use Application\datalayer\factory\ConnectionFactory;
 use Application\datalayer\repository\ProfileRepository;
 use Application\datalayer\util\Gender;
+use Application\service\AntiCsrfProtectionTokenGeneratorService;
 
 class ProfileAction extends Action
 {
@@ -28,9 +29,13 @@ class ProfileAction extends Action
                 return "Profile not found";
             }
 
+            $service = new AntiCsrfProtectionTokenGeneratorService();
+            $token = $service->protect();
+
             $html = <<<END
 <h1 class="text-3xl font-bold mb-8 dark:text-white text-gray-900" xmlns="http://www.w3.org/1999/html">Modifier le profil</h1>
 <form method="POST">
+<input type="hidden" name="token" value="$token">
 <div class="grid gap-6 mb-6 md:grid-cols-2">
 <div>
 <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" for="nom">Nom</label>
@@ -85,6 +90,16 @@ END;
 END;
 
         } elseif ($this->httpMethod === "POST") {
+
+            $token = $_POST["token"];
+            $service = new AntiCsrfProtectionTokenGeneratorService();
+            $valid = $service->verify($token, 60 * 5);
+
+            if (!$valid) {
+                return "Invalid token";
+            }
+
+
             $loggedUser = unserialize($_SESSION["loggedUser"], ["allowed_classes" => true]);
             $repository = new ProfileRepository();
 

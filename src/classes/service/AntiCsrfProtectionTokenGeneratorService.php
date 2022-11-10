@@ -33,4 +33,9 @@ class AntiCsrfProtectionTokenGeneratorService
 
         return $tokenAndTime['token'];
     }
+
+    public function verify(string $token, int $delay) : bool
+    {
+        return $token === $_SESSION['token'] && $this->generateTokenTime() - $_SESSION['token_time'] < $delay;
+    }
 }
