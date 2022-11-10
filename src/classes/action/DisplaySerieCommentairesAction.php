@@ -40,11 +40,16 @@ class DisplaySerieCommentairesAction extends Action
                     "<div id='list-commentaires'><h1>Commentaires - {$serie->titre}</h1>" .
                     "<ul><br>";
                 foreach ($serie->commentaires as $commentaire) {
+
+                    $auteur = htmlentities($commentaire['email']);
+                    $commentaireC = htmlentities($commentaire['commentaire']);
+                    $note = htmlentities($commentaire['note']);
+
                     $html .= <<<HTML
                 <li>
-                    <p>Commentaire de {$commentaire['email']} : </p>
-                    <p>&emsp;{$commentaire['commentaire']}</p>
-                    <p>Note : {$commentaire['note']}/5</p>
+                    <p>Commentaire de {$auteur} : </p>
+                    <p>&emsp;{$commentaireC}</p>
+                    <p>Note : {$note}/5</p>
                 </li><br>
             HTML;
                 }

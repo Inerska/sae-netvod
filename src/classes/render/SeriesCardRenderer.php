@@ -34,8 +34,6 @@ class SeriesCardRenderer implements Renderer
         ]);
         $url = urlencode($this->url);
 
-
-
         if (!$query->fetch()) {
             $coeur = <<<END
 
