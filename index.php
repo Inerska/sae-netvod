@@ -13,7 +13,6 @@
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
     <link rel="stylesheet" href="css/tailwind.css">
-    <link rel="stylesheet" href="css/dark.css">
 </head>
 <body class="bg-white dark:bg-gray-800 h-full transition-colors duration-700 antialiased">
 <?php
