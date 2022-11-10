@@ -19,7 +19,7 @@ class DisplaySerieEnCours extends Action{
             $s = "";
             while($row = $stmt->fetch()){
                 $serie = new Serie($row['idSerie']+0);
-                $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id);
+                $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, $serie->annee);
                 $s .= $renderer->render();
             }
 
