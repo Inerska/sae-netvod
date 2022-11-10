@@ -35,11 +35,7 @@ class DisplayUserLikesAction extends Action
                 $serie = new Serie($row['idSerie'] + 0);
                 // cree un renderer
                 // si on est sur la page principale
-                if (!isset($_GET['action'])) {
-                    $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, (int)$serie->annee);
-                } else {
-                    $renderer = new SerieRenderer($serie);
-                }
+                $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, (int)$serie->annee);
 
                 // l'affiche
                 $s .= $renderer->render();
