@@ -14,16 +14,15 @@ class DisplaySerieEpisodeAction extends Action
     public function execute(): string
     {
         // get l'id de la seerie et l'id de l'episode
-        if (!isset($_GET['numEp']) && !isset($_GET['serieId'])) {
+        if (!isset($_GET['numEp']) || !isset($_GET['serieId'])) {
             $html = "<p>Erreur lors de l'affichage</p>";
         } else {
             $serieId = $_GET['serieId'];
             $numEpisode = $_GET['numEp'];
 
             $episode = new Episode($serieId+0, $numEpisode+0);
-            $renderer = new EpisodeNotationRenderer($episode);
+            $renderer = new EpisodeRenderer($episode);
 
-            $html = $renderer->render();
 
             if (isset($_SESSION['loggedUser'])) {
                 $user = unserialize($_SESSION['loggedUser']);
@@ -70,6 +69,10 @@ class DisplaySerieEpisodeAction extends Action
                     }
                 }
             }
+
+            // on affiche la page
+            $html = $renderer->render();
+
 
 
         }

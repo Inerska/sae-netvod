@@ -2,13 +2,13 @@
 
 namespace Application\render;
 
+use Application\datalayer\factory\ConnectionFactory;
+use Application\video\Episode;
 use Application\video\Serie;
-use Application\render\Renderer;
 
 class SerieRenderer implements Renderer {
 
     private Serie $serie;
-    private string $rendered;
 
     public function __construct(Serie $s) {
         $this->serie = $s;
@@ -41,7 +41,7 @@ class SerieRenderer implements Renderer {
                 <p>Année : {$this->serie->annee}</p>
                 <p>Date ajout : {$this->serie->dateAjout}</p>
         END;
-            if ($this->serie->moyenne == 0){
+            if ($this->serie->nbCommentaires == 0){
                 $html .= "<p>La série n'a pas encore été notée.</p>";
             } else {
                 $html .= "<p>Note moyenne : {$this->serie->moyenne}</p>";
@@ -52,26 +52,28 @@ class SerieRenderer implements Renderer {
                 <div class="flex flex-wrap">
         END;
 
+            // on affiche les episodes de la serie
             foreach ($this->serie->episodes as $episode) {
-                $e = new EpisodeRenderer($episode);
+                $e = new EpisodeCardRender($episode);
                 $html .= $e->render();
 
             }
             $html .= "</div>";
 
-            // on affiche le dernier commentaire
-            if ($this->serie->nbCommentaires == 0) {
-                $html .= "<p>La série n'a pas encore été commentée.</p>";
-            }else{
-                $commentaire = $this->serie->__get('commentaires')[0];
-                $html .= <<<END
-                    <p>Commentaire de {$commentaire['email']} : </p>
-                    <p>&emsp;{$commentaire['commentaire']}</p>
-                    <p>&emsp;Note : {$commentaire['note']}/5</p>
-                END;
-            }
+            // on affiche le prochiane epiosde a regarder (si la serie est en cours)
+            $nextEpRenderer = new NextEpRenderer($this->serie);
+            $html .= $nextEpRenderer->render();
 
-            $html .= "<p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>";
+
+
+
+            // on affiche la note de l'utilisateur
+            $notationRenderer = new NotationRenderer($this->serie);
+            $html .= $notationRenderer->render();
+            // on affiche les derniers comms
+            $commentaireRenderer = new CommentaireRenderer($this->serie);
+            $html .= $commentaireRenderer->render();
+
         }
         return $html;
     }
