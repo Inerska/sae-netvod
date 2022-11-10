@@ -118,7 +118,8 @@ END;
             $repository->updateProfile($profile);
 
             header('Location: index.php?action=profile');
-            $html = "Profile updated";
+            echo "dgfdgd";
+            exit();
         }
 
         return $html;

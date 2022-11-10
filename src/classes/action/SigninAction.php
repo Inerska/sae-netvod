@@ -27,7 +27,7 @@ class SigninAction extends Action
 
             $html = <<<END
             <form method="post" class="flex justify-center items-center flex-col h-screen pb-72">
-                <input type="text" name="token" value="$token">
+                <input type="hidden" name="token" value="$token">
                 <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
                 <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                     <div class="flex flex-col gap-3 w-full">
@@ -56,7 +56,7 @@ class SigninAction extends Action
                     <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
                     <div class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
                         <div class="flex flex-col gap-3 w-full">
-                            <span class="text-red-700 font-semibold">Une erreur est survenue, veuillez réessayer</span>
+                            <span class="text-red-700 font-semibold">Une erreur est survenue, veuillez réessayer. Cela a peut-être été occasioné dû à un délai dépassé.</span>
                         </div>
                     </div>
                     <a href="?action=sign-in" class="transition duration-300 bg-red-700 p-3 font-semibold text-white dark:text-gray-800 hover:bg-red-600 mt-5 uppercase">Retour</a>
