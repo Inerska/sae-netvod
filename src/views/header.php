@@ -56,7 +56,12 @@
                         </a>
                     </li>
                 <?php endif; ?>
-
+                <li class="flex flex-col md:flex-row">
+                    <a href="#" id="theme-toggle"
+                       class="flex items-center px-4 py-2 text-gray-500 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400">
+                        <i class="fa-solid fa-moon w-5 h-5" id="theme-toggle-dark-icon"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
