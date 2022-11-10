@@ -47,14 +47,19 @@ HTML;
             $newNum = 1;
             $stmt = $db->prepare("select * from episode where serie_id = ?");
             $stmt->execute([$_POST['id']]);
-            if ($stmt) {
+            $data1 = $stmt->fetch();
+            if ($data1) {
                 $stmtNum = $db->prepare("select max(numero)+1 as newNum from episode where serie_id = ?");
                 $stmtNum->execute([$_POST['id']]);
-                $newNum = $stmtNum->fetch()['newNum'];
+                $data2 = $stmtNum->fetch();
+                if ($data2) {
+                    $newNum = $data2['newNum'];
+                }
             }
             $stmt1 = $db->prepare("select max(id)+1 as maxId from episode");
             $stmt1->execute();
             $maxId = $stmt1->fetch()['maxId'];
+            if($maxId ==null) $maxId = 1;
             $nom = $_POST['nom'];
             $resume = $_POST['resume'];
             $duree = $_POST['duree'];
