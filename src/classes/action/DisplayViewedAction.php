@@ -11,6 +11,9 @@ class DisplayViewedAction extends Action {
 
     public function execute(): string
     {
+
+        $html = '';
+
         if (isset($_SESSION['loggedUser'])) {
             // recup la liste des visonnée
             $user = unserialize($_SESSION['loggedUser']);
