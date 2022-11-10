@@ -22,6 +22,7 @@ $(document).ready(function () {
                         search: value
                     }, success: (html) => {
                         $('body').html(html);
+                        $('input[name="search"]').val(value);
                     }
                 }, 300);
             });

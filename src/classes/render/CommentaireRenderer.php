@@ -24,14 +24,16 @@ class CommentaireRenderer implements Renderer{
 
         // on affiche le dernier commentaire
         if ($this->serie->nbCommentaires == 0) {
-            $html.= "<p>Aucun commentaire pour le moment</p>";
+            $html .= "<h1 class='text-red-600 text-2xl font-bold'>Il n'y a aucun commentaire pour le moment</h1>";
+
         }else{
+            $html .= "<h1 class='text-red-600 text-2xl font-bold'>Commentaires</h1>";
             $commentaire = $this->serie->__get('commentaires')[0];
             $html .= <<<END
-                    <p>Commentaire de {$commentaire['email']} : </p>
-                    <p>&emsp;{$commentaire['commentaire']}</p>
-                    <p>&emsp;Note : {$commentaire['note']}/5</p>
-                    <p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>
+                    <p class="dark:text-white">Commentaire de {$commentaire['email']}</p>
+                    <p class="dark:text-white">&emsp;{$commentaire['commentaire']}</p>
+                    <p class="dark:text-white">&emsp;Note : {$commentaire['note']}/5</p>
+                    <p><a class="hover:text-red-600 dark:text-white" href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>
 
                 END;
         }
