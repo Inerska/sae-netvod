@@ -34,7 +34,7 @@ class SeriesCardRenderer implements Renderer
         ]);
 
         $html = <<<END
-        <div class="w-max" id="seriesCard">
+        <div class="w-max hover:bg-gray-50 p-2 dark:hover:bg-gray-700" id="seriesCard">
             <a href="?action=viewSerie&id={$this->seriesId}"> 
                 <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
                 <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm font-sans">$this->title</h3> 
