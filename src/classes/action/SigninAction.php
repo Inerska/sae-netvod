@@ -14,18 +14,17 @@ class SigninAction extends Action
     {
 
         $html = <<<END
-        <div class="flex justify-center items-center h-screen pb-72">
-            <form method="post" action="?action=sign-in" class="bg-gray-50 dark:bg-gray-700 p-10 flex items-center justify-center flex-col">
-                <div class="">
-                    <h1 class="text-dark text-4xl font-sans font-semibold pb-5 dark:text-white">Se connecter</h1>
-                    <div class="flex flex-col gap-3">
-                        <input class="p-2 dark:bg-gray-800 bg-gray-100 border-b-4 mb-5 dark:text-gray-100" type="email" name="email" oncopy="return false" onpaste="return false" placeholder="votre email">
-                        <input class="p-2 dark:bg-gray-800 bg-gray-100 border-b-4 dark:text-gray-100" type="password" name="password" oncopy="return false" onpaste="return false" placeholder="votre mdp">
-                    </div>
-                    <a href="?action=renew" class="text-gray-900 dark:text-white font-sm text-xs">Mot de passe oublié ?</a>
+        <div class="flex justify-center items-center flex-col h-screen pb-72">
+            <h1 class="text-dark text-4xl font-light pb-5 dark:text-white">Se connecter</h1>
+            <form method="post" action="?action=sign-in" class="bg-gray-50 dark:bg-gray-700 p-10 w-1/2 flex items-center justify-center flex-col">
+                <div class="flex flex-col gap-3 w-full">
+                        <input class="flex-1 w-full p-2 focus:outline-none bg-transparent border-b-2 mb-5 dark:text-gray-100 placeholder-gray-200 focus:border-red-600 transition duration-300" type="email" name="email" oncopy="return false" onpaste="return false" placeholder="Email">
+                        <input class="flex-1 w-full p-2 focus:outline-none bg-transparent border-b-2 dark:text-gray-100 placeholder-gray-200 focus:border-red-600 transition duration-300" type="password" name="password" oncopy="return false" onpaste="return false" placeholder="Mot de passe">
+                        <a href="?action=renew" class="text-gray-900 dark:text-white font-sm text-xs">Mot de passe oublié ?</a>
                 </div>
-                <button type="submit" class="bg-blue-500 p-3 text-white hover:bg-blue-600 mt-5">Connexion</button>
             </form>
+            <button type="submit" class="transition duration-300 bg-red-700 p-3 text-gray-800 font-semibold hover:bg-red-600 mt-5 uppercase">Se connecter</button>
+            <span class="dark:text-white pt-5">Pas de compte encore ? <a href="?action=sign-up" class="text-red-700 font-semibold uppercase">Créer un compte</a></span>
         </div>
         
         END;
