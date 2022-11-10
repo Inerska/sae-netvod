@@ -14,6 +14,5 @@ document.addEventListener('DOMContentLoaded', () => {
         let isDark = document.documentElement.classList.contains('dark');
 
         isDark ? html.classList.remove('dark') : html.classList.add('dark');
-        localStorage.theme = isDark ? 'light' : 'dark';
     });
 });

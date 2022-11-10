@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer baase {
+    * {
+        @apply transition-colors duration-700;
+    }
+}

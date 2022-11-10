@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="transition-colors duration-300">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -15,11 +15,7 @@
     <link rel="stylesheet" href="css/tailwind.css">
     <link rel="stylesheet" href="css/dark.css">
 </head>
-<body class="bg-white dark:bg-gray-800 h-full">
-<div class="mod-tog"></div>
-<div class="containr">
-    <div class="dark-mode"></div>
-</div>
+<body class="bg-white dark:bg-gray-800 h-full transition-colors duration-1000 antialiased">
 <?php
 
 use Application\datalayer\factory\ConnectionFactory;
