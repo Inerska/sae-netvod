@@ -7,12 +7,14 @@ namespace Application\dispatch;
 
 use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
+use Application\action\AjouterSerieAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
 use Application\action\DisplayViewedAction;
 use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
 use Application\action\DisplayUserLikesAction;
+use Application\action\RetirerSeriesAction;
 use Application\action\SearchSeriesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
@@ -108,8 +110,13 @@ class Dispatcher
                 $html = $act->execute();
                 break;
 
-            case 'commentaires':
-                $act = new DisplaySerieCommentairesAction();
+            case 'add-series':
+                $act = new AjouterSerieAction();
+                $html = $act->execute();
+                break;
+
+            case 'remove-series':
+                $act = new RetirerSeriesAction();
                 $html = $act->execute();
                 break;
 
@@ -127,6 +134,7 @@ class Dispatcher
     private function render(string $template): void
     {
         require_once 'src/views/header.php';
+        require_once 'src/views/navAdmin.php';
 
         echo "<div class='container mx-auto pt-4 w-screen'>" . $template . "</div>";
     }
