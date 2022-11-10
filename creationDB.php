@@ -69,8 +69,8 @@ CREATE TABLE serie (
   img varchar(256) NOT NULL,
   annee int(11) NOT NULL,
   date_ajout date NOT NULL,
-  note_moyenne float(5) NOT NULL,
-  nombre_note int(5) NOT NULL,
+  note_moyenne float(5) 
+  nombre_note int(5),
   PRIMARY KEY (id)
 )
 END);
@@ -96,7 +96,6 @@ CREATE TABLE user (
   email varchar(128) NOT NULL,
   passwrd varchar(128) NOT NULL,
   role int(5) NOT NULL,
-  idProfil int(5),
   active boolean,
   activationToken varchar(64),
   activationExpiration int(16),
@@ -130,6 +129,16 @@ CREATE TABLE profil (
   genrePref varchar(64),
   PRIMARY KEY (idProfil)
 )
+END);
+$query->execute();
+
+$query = $db->prepare(
+    <<<END
+INSERT INTO profil (nom, prenom, age, sexe, genrePref) VALUES
+('Scher', 'Adrien', 19, '', ''),
+('Gridel', 'Alexis', 21, '', ''),
+('Grosmann', 'Jeremy', 19, '', ''),
+('Povoas', 'Florian', 19, '', '')
 END);
 $query->execute();
 

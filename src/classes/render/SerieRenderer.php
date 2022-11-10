@@ -21,7 +21,7 @@ class SerieRenderer implements Renderer {
             $html ="<p>La série n'existe pas.</p>";
         } else {
             $html = "<div class = 'serie' >";
-            $seriesCard = new SeriesCardRenderer($this->serie->image, $this->serie->titre, $this->serie->id);
+            $seriesCard = new SeriesCardRenderer($this->serie->image, $this->serie->titre, $this->serie->id, $this->serie->annee);
 
             $html .= $seriesCard->render();
 

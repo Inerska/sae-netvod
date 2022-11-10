@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#seriesCard:hover {
+  @apply scale-125 transition duration-500 ease-in-out;
+}
+
+#seriesCard {
+  @apply transition duration-500 ease-in-out;
+}
+
+html, body {
+  @apply transition-colors duration-700 ease-in-out;
+}
