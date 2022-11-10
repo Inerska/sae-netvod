@@ -4,7 +4,7 @@ $html = <<<END
         <ul>
         <li><a href="?action=add-series">Add Serie</a></li>
         <li><a href="?action=remove-series">Remove</a></li>
-        <li><a href="?action=add-episode">Add Episode</a></li>
+        <li><a href="?action=add-episodes&episodeAdd=0">Add Episode</a></li>
 </ul>
            
     </div>

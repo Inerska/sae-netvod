@@ -7,6 +7,7 @@ namespace Application\dispatch;
 
 use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
+use Application\action\AjouterEpisodeAction;
 use Application\action\AjouterSerieAction;
 use Application\action\DisplaySerieAction;
 use Application\action\DisplaySerieEpisodeAction;
@@ -119,6 +120,13 @@ class Dispatcher
                 $act = new RetirerSeriesAction();
                 $html = $act->execute();
                 break;
+
+            case 'add-episodes':
+                $act = new AjouterEpisodeAction();
+                $html = $act->execute();
+                break;
+
+
 
             default:
                 $action = new DisplayUserLikesAction();
