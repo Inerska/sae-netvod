@@ -3,12 +3,10 @@
 namespace Application\render;
 
 use Application\video\Serie;
-use Application\render\Renderer;
 
 class SerieRenderer implements Renderer {
 
     private Serie $serie;
-    private string $rendered;
 
     public function __construct(Serie $s) {
         $this->serie = $s;
@@ -59,19 +57,11 @@ class SerieRenderer implements Renderer {
             }
             $html .= "</div>";
 
-            // on affiche le dernier commentaire
-            if ($this->serie->nbCommentaires == 0) {
-                $html .= "<p>La série n'a pas encore été commentée.</p>";
-            }else{
-                $commentaire = $this->serie->__get('commentaires')[0];
-                $html .= <<<END
-                    <p>Commentaire de {$commentaire['email']} : </p>
-                    <p>&emsp;{$commentaire['commentaire']}</p>
-                    <p>&emsp;Note : {$commentaire['note']}/5</p>
-                END;
-            }
+            // on affiche les commentaire de la serie
+            $commentaireRenderer = new CommentaireRenderer($this->serie);
+            $html .= $commentaireRenderer->render();
 
-            $html .= "<p><a href='?action=commentaires&serieId={$this->serie->id}'>Voir tous les commentaires</a></p>";
+
         }
         return $html;
     }

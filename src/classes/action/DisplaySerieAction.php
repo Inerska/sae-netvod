@@ -37,7 +37,7 @@ class DisplaySerieAction extends Action
                 $numEpSuiv = $data['numEpisode'] + 1;
                 if ($numEpSuiv <= $nbEp) {
                     // on propose de regarder l'episode en cours
-                    $html .= "<a href='?action=display-series-episode&serieId=$serieId&episodeId=$numEpSuiv'>La serie est actuellement en cours, voullez-vous regarder le prochaine épisode ? </a>";
+                    $html .= "<a href='?action=display-series-episode&serieId=$serieId&numEp=$numEpSuiv'>La serie est actuellement en cours, voullez-vous regarder le prochaine épisode ? </a>";
                 }
             }
         }

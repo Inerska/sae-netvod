@@ -72,6 +72,14 @@ class Serie {
             }
             $stmt->closeCursor();
 
+            // recuperation des comms
+            $sql = "SELECT email, note, commentaire FROM notation inner join user on notation.idUser = user.id where notation.idSerie = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$id]);
+            while ($data = $stmt->fetch()){
+                $this->commentaires[] = $data;
+            }
+
             // Récupération des épisodes
             $sql = "SELECT * FROM episode WHERE serie_id = ?";
             $stmt = $conn->prepare($sql);

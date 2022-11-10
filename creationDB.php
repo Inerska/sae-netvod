@@ -69,6 +69,8 @@ CREATE TABLE serie (
   img varchar(256) NOT NULL,
   annee int(11) NOT NULL,
   date_ajout date NOT NULL,
+  note_moyenne float(5) NOT NULL,
+  nombre_note int(5) NOT NULL,
   PRIMARY KEY (id)
 )
 END);
@@ -76,13 +78,13 @@ $query->execute();
 
 $query = $db->prepare(
     <<<END
-INSERT INTO serie (id, titre, descriptif, img, annee, date_ajout) VALUES
-(1,	'Le lac aux mystères',	'C\'est l\'histoire d\'un lac mystérieux et plein de surprises. La série, bluffante et haletante, nous entraine dans un labyrinthe d\'intrigues époustouflantes. A ne rater sous aucun prétexte !',	'images/1.jpg',	2020,	'2022-10-30'),
-(2,	'L\'eau a coulé',	'Une série nostalgique qui nous invite à revisiter notre passé et à se remémorer tout ce qui s\'est passé depuis que tant d\'eau a coulé sous les ponts.',	'images/2.jfif',	1907,	'2022-10-29'),
-(3,	'Chevaux fous',	'Une série sur la vie des chevals sauvages en liberté. Décoiffante.',	'images/3.jfif',	2017,	'2022-10-31'),
-(4,	'A la plage',	'Le succès de l\'été 2021, à regarder sans modération et entre amis.',	'images/4.jfif',	2021,	'2022-11-04'),
-(5,	'Champion',	'La vie trépidante de deux champions de surf, passionnés dès leur plus jeune age. Ils consacrent leur vie à ce sport. ',	'images/5.jfif',	2022,	'2022-11-03'),
-(6,	'Une ville la nuit',	'C\'est beau une ville la nuit, avec toutes ces voitures qui passent et qui repassent. La série suit un livreur, un chauffeur de taxi, et un insomniaque. Tous parcourent la grande ville une fois la nuit venue, au volant de leur véhicule.',	'images/6.jfif',	2017,	'2022-10-31');
+INSERT INTO serie (id, titre, descriptif, img, annee, date_ajout, note_moyenne, nombre_note) VALUES
+(1,	'Le lac aux mystères',	'C\'est l\'histoire d\'un lac mystérieux et plein de surprises. La série, bluffante et haletante, nous entraine dans un labyrinthe d\'intrigues époustouflantes. A ne rater sous aucun prétexte !',	'images/1.jpg',	2020,	'2022-10-30', 0, 0),
+(2,	'L\'eau a coulé',	'Une série nostalgique qui nous invite à revisiter notre passé et à se remémorer tout ce qui s\'est passé depuis que tant d\'eau a coulé sous les ponts.',	'images/2.jfif',	1907,	'2022-10-29', 0, 0),
+(3,	'Chevaux fous',	'Une série sur la vie des chevals sauvages en liberté. Décoiffante.',	'images/3.jfif',	2017,	'2022-10-31', 0, 0),
+(4,	'A la plage',	'Le succès de l\'été 2021, à regarder sans modération et entre amis.',	'images/4.jfif',	2021,	'2022-11-04', 0, 0),
+(5,	'Champion',	'La vie trépidante de deux champions de surf, passionnés dès leur plus jeune age. Ils consacrent leur vie à ce sport. ',	'images/5.jfif',	2022,	'2022-11-03', 0, 0),
+(6,	'Une ville la nuit',	'C\'est beau une ville la nuit, avec toutes ces voitures qui passent et qui repassent. La série suit un livreur, un chauffeur de taxi, et un insomniaque. Tous parcourent la grande ville une fois la nuit venue, au volant de leur véhicule.',	'images/6.jfif',	2017,	'2022-10-31', 0, 0);
 END);
 $query->execute();
 

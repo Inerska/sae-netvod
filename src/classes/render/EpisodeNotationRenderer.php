@@ -27,11 +27,11 @@ class EpisodeNotationRenderer implements Renderer {
         $stmt->execute([$idUser, $id]);
         $data = $stmt->fetch();
         if ($data){
-            $html .= "<p>Vous avez déjà noté cette série {$data['note']}/5</p>";
+            $html .= "<p>Vous avez noté cette série {$data['note']}/5</p>";
         } else {
             if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 $html .= <<<END
-            <form action="?action=display-series-episode&serieId={$id}&episodeId={$numero}" method="post">
+            <form action="?action=display-series-episode&serieId={$id}&numEp={$numero}" method="post">
                 <input type="hidden" name="serieId" value="{$id}">
                 <input type="hidden" name="episodeId" value="{$numero}">
                 <h3>Notez la série :</h3>
@@ -46,17 +46,27 @@ class EpisodeNotationRenderer implements Renderer {
             </form>
      END;
             } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $note = FILTER_SANITIZE_NUMBER_FLOAT($_POST['note']);
+
+                $note =$_POST['note'];
                 $commentaire = $_POST['commentaire'];
                 $sql = "INSERT INTO `notation` (`idUser`, `idSerie`, `note`, `commentaire`) VALUES (?, ?, ?, ?)";
                 $stmt = $db->prepare($sql);
                 $stmt->execute([unserialize($_SESSION['loggedUser'])->id, $id, $note, $commentaire]);
 
-                $st = $db->prepare("select note_moyenne, nombre_note from serie where idSerie = ?");
-                $data = $st-execute($id);
+                $st = $db->prepare("select note_moyenne, nombre_note from serie where id = ?");
+                $st->execute([$id]);
 
-                $st2 = $db->prepare("update serie set note_moyenne = ?, nombre_note = ? where idSerie = ?" );
-                $st2->execute([ ($data['note_moyenne']+$note)/2,  ($data['nombre_note'])+1, $id]);
+                $data = $st->fetch();
+                $nbNote = $data['nombre_note'];
+                $noteMoyenne = $data['note_moyenne'];
+
+                $st2 = $db->prepare("update serie set note_moyenne = ?, nombre_note = ? where id = ?" );
+                // si la serie n'a pas encore de note
+                if ($nbNote == 0){
+                    $st2->execute([$note, $nbNote+1, $id]);
+                }else{
+                    $st2->execute([($noteMoyenne+$note)/2,  $nbNote+1, $id]);
+                }
 
                 $html .= "<p>Vous avez noté cette série $note / 5.</p>";
             }
