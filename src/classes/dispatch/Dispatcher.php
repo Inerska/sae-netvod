@@ -112,12 +112,14 @@ class Dispatcher
                 break;
 
             default:
+                $html = "<div class='flex flex-col'>";
                 $action = new DisplayUserLikesAction();
                 $html = $action->execute();
                 $action2 = new DisplayViewedAction();
                 $html .= $action2->execute();
                 $action3 = new DisplaySerieEnCours();
                 $html .= $action3->execute();
+                $html .= "</div>";
                 break;
         }
 

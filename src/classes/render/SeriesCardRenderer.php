@@ -32,30 +32,20 @@ class SeriesCardRenderer implements Renderer
             'serie_id' => $this->seriesId,
             'user_id' => $user->id
         ]);
-
-        $html = <<<END
-        <div class="w-max hover:bg-gray-50 p-2 dark:hover:bg-gray-700" id="seriesCard">
-            <a href="?action=viewSerie&id={$this->seriesId}"> 
-                <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
-                <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm font-sans">$this->title</h3> 
-                <span class="text-emerald-500 pt-2 leading-tight text-sm font-sans">$this->annee</span>
-            </a>
-        END;
-
         $url = urlencode($this->url);
 
 
 
         if (!$query->fetch()) {
-            $html .= <<<END
+            $coeur = <<<END
 
             <a href="?action=preferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
                 <i class="fa-regular fa-heart text-rose-600"></i>
             </a>
             END;
-            
+
         } else {
-            $html .= <<<END
+            $coeur = <<<END
 
 
                 <a href="?action=removePreferences&seriesId=$this->seriesId&url={$url}" class="p-2 hover:cursor-pointer fill-white text-white">
@@ -67,6 +57,24 @@ class SeriesCardRenderer implements Renderer
             </a>
             END;
         }
+
+
+
+        $html = <<<END
+        <div class="w-max hover:bg-gray-50 p-2 dark:hover:bg-gray-700" id="seriesCard">
+            <a href="?action=viewSerie&id={$this->seriesId}"> 
+                <img class="h-58 w-40" src="$this->cover" alt="Couverture du film $this->title">
+                
+                    <h3 class="dark:text-white text-gray-900 pt-2 leading-tight text-sm font-sans">$this->title</h3> 
+                        <span class="text-emerald-500 pt-2 leading-tight text-sm font-sans">$this->annee</span>
+                        $coeur
+            </a>
+        END;
+
+
+
+
+
 
         $html .= '</div>';
 
