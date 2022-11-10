@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" class="bg-white dark:bg-gray-900">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -13,8 +13,13 @@
             integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
     <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="stylesheet" href="css/dark.css">
 </head>
-<body>
+<body class="bg-white dark:bg-gray-800 h-full">
+<div class="mod-tog"></div>
+<div class="containr">
+    <div class="dark-mode"></div>
+</div>
 <?php
 
 use Application\datalayer\factory\ConnectionFactory;
@@ -27,14 +32,14 @@ require_once 'vendor/autoload.php';
 
 ConnectionFactory::setConfig('db.config.ini');
 
-$action = $_GET['action'] ?? "";
+$action = $_GET['action'] ?? '';
 
 $dispatcher = new Dispatcher($action);
 
 try {
     $dispatcher->dispatch();
-} catch (DatabaseConnectionException $e) {
-    echo $e->getMessage();
+} catch (DatabaseConnectionException $exception) {
+    echo $exception->getMessage();
 }
 
 ?>

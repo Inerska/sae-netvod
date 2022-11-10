@@ -6,9 +6,6 @@ if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.match
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
-    console.log(localStorage.theme);
-
     const themeToggleBtn = document.getElementById('theme-toggle');
 
     themeToggleBtn.addEventListener('click', function () {
@@ -18,7 +15,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
         isDark ? html.classList.remove('dark') : html.classList.add('dark');
         localStorage.theme = isDark ? 'light' : 'dark';
-
-        console.log(localStorage.theme);
     });
 });
