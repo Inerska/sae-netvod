@@ -115,13 +115,13 @@ class AuthenticationIdentityService
 
         $statement = $context->prepare($query);
 
-        $result = $statement->execute([$email]);
+        $statement->execute([$email]);
 
-        if (!$result) {
-            throw new AuthenticationException("Authentication failed");
+        if ($result = $statement->fetch()) {
+            return true;
+        } else {
+            return false;
         }
-
-        return $statement->fetch();
     }
 
     public static function generateRenewToken(string $email) : string

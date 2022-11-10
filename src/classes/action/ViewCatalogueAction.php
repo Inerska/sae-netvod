@@ -27,6 +27,9 @@ class ViewCatalogueAction extends Action
     public function execute(): string
     {
 
+        $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $url = urldecode($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
         $html = '';
 
         $tri = $_GET['tri'] ?? 'id';
@@ -172,7 +175,7 @@ class ViewCatalogueAction extends Action
 
         $html .= <<<END
             </select>
-            <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Trier</button>
+                <button class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Trier</button>
             </form>
             END;
 
@@ -261,10 +264,6 @@ class ViewCatalogueAction extends Action
                 <label class="block text-sm font-medium text-gray-900 dark:text-gray-300" for="genrePrefere">Filtres actifs</label>
                 <ul class="flex flex-col flex-wrap h-20 gap-3 mt-2" >
             END;
-
-            $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
-            $url = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-            $url = urldecode($url);
 
             foreach ($filtreActif as $value) {
                 $lien = str_replace($value . ',', "", $url);
