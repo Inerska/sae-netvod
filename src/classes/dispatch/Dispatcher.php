@@ -134,6 +134,7 @@ class Dispatcher
     private function render(string $template): void
     {
         require_once 'src/views/header.php';
+        if(isset($_SESSION['loggedAdmin']) && $_SESSION['loggedAdmin'])
         require_once 'src/views/navAdmin.php';
 
         echo "<div class='container mx-auto pt-4 w-screen'>" . $template . "</div>";
