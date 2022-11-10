@@ -14,6 +14,11 @@ class DisplaySerieCommentairesAction extends Action
             exit();
         }
 
+        if (!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         if(isset($_GET['serieId'])) {
 
 

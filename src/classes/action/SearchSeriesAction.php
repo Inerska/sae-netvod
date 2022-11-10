@@ -19,6 +19,11 @@ class SearchSeriesAction extends Action
 
     public function execute(): string
     {
+        if (!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         return match ($this->httpMethod) {
             'POST' => $this->post(),
             default => $this->get(),

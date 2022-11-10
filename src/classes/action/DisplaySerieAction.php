@@ -11,8 +11,7 @@ class DisplaySerieAction extends Action
 
     public function execute(): string
     {
-
-        if (!isset($_SESSION['loggedUser'])) {
+        if(!isset($_SESSION['loggedUser'])) {
             header('Location: index.php');
             exit();
         }

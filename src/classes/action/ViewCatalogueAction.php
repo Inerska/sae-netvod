@@ -27,6 +27,11 @@ class ViewCatalogueAction extends Action
     public function execute(): string
     {
 
+        if (!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         $protocol = ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $url = urldecode($protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
 

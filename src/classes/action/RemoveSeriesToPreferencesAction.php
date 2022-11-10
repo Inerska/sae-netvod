@@ -8,6 +8,11 @@ class RemoveSeriesToPreferencesAction extends Action
 {
     public function execute(): string
     {
+        if(!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         if ($this->httpMethod === 'GET') {
             $seriesId = (int)$_GET['seriesId'];
             $user = unserialize($_SESSION['loggedUser'], ['allowed_classes' => true]);

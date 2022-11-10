@@ -13,6 +13,11 @@ class DisplaySerieEpisodeAction extends Action
 
     public function execute(): string
     {
+        if (!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         // get l'id de la seerie et l'id de l'episode
         if (!isset($_GET['numEp']) || !isset($_GET['serieId'])) {
             $html = <<<END

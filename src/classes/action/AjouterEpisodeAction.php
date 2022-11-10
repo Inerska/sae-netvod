@@ -9,6 +9,11 @@ class AjouterEpisodeAction extends Action
 
     public function execute(): string
     {
+        if(!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         $html="";
         $db = ConnectionFactory::getConnection();
         $stmt = $db->prepare("select max(id) as maxId from serie");

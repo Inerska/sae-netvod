@@ -9,6 +9,11 @@ class AjouterSerieAction extends Action
 
     public function execute(): string
     {
+        if(!isset($_SESSION['loggedUser'])) {
+            header('Location: index.php');
+            exit();
+        }
+
         $html="";
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET'){
