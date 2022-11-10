@@ -33,7 +33,7 @@ class DisplayUserLikesAction extends Action
                 // cree un renderer
                 // si on est sur la page principale
                 if (!isset($_GET['action'])) {
-                    $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, $serie->annee);
+                    $renderer = new SeriesCardRenderer($serie->image, $serie->titre, $serie->id, (int)$serie->annee);
                 } else {
                     $renderer = new SerieRenderer($serie);
                 }
