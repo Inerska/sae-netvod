@@ -18,11 +18,10 @@ $(document).ready(function () {
 
             currentTimeout = setTimeout(() => {
                 $.ajax({
-                    url: '?action=search', type: 'POST', data: {
+                    url: '?action=search-ajax', type: 'POST', data: {
                         search: value
                     }, success: (html) => {
-                        $('body').html(html);
-                        $('input[name="search"]').val(value);
+                        $('#articles').html(html);
                     }
                 }, 300);
             });

@@ -305,7 +305,7 @@ class ViewCatalogueAction extends Action
                 <div class="flex flex-wrap flex-row gap-10 mb-8">
                     {$html}
                 </div>
-                <div class="flex flex-wrap flex-row gap-10">
+                <div class="flex flex-wrap flex-row gap-10" id="articles">
                     {$catalogue}
                 </div>
                 END;
