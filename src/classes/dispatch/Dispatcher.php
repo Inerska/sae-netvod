@@ -4,24 +4,22 @@ declare(strict_types=1);
 
 namespace Application\dispatch;
 
-
 use Application\action\ActivationAction;
 use Application\action\AddSeriesToPreferencesAction;
 use Application\action\DisplaySerieAction;
+use Application\action\DisplaySerieCommentairesAction;
 use Application\action\DisplaySerieEnCours;
 use Application\action\DisplaySerieEpisodeAction;
+use Application\action\DisplayUserLikesAction;
 use Application\action\DisplayViewedAction;
+use Application\action\ProfileAction;
 use Application\action\RemoveSeriesToPreferencesAction;
 use Application\action\RenewAction;
-use Application\action\DisplayUserLikesAction;
 use Application\action\SearchSeriesAction;
 use Application\action\SigninAction;
 use Application\action\SignupAction;
 use Application\action\ViewCatalogueAction;
-use Application\action\ProfileAction;
 use Application\exception\datalayer\DatabaseConnectionException;
-use Application\action\DisplaySerieCommentairesAction;
-
 
 class Dispatcher
 {
@@ -38,7 +36,6 @@ class Dispatcher
     final public function dispatch(): void
     {
         switch ($this->action) {
-
             case 'sign-in':
                 $act = new SigninAction();
                 $html = $act->execute();
@@ -53,7 +50,7 @@ class Dispatcher
                 $html = $act->execute();
                 break;
 
-            case "sign-up":
+            case 'sign-up':
                 $action = new SignupAction();
                 $html = $action->execute();
                 break;
@@ -95,6 +92,12 @@ class Dispatcher
                 $this->render_grip($html);
                 return;
 
+            case 'search-ajax':
+                $action = new SearchSeriesAction();
+                $html = $action->execute();
+                $this->render_partial($html);
+                return;
+
             case 'preferences':
                 $act = new AddSeriesToPreferencesAction();
                 $html = $act->execute();
@@ -119,24 +122,74 @@ class Dispatcher
                 $html .= $action2->execute();
                 $action3 = new DisplaySerieEnCours();
                 $html .= $action3->execute();
-                $html .= "</div>";
+                $html .= '</div>';
                 break;
         }
 
         $this->render($html);
     }
 
+    private function render_grip(string $template): void
+    {
+        require_once 'src/views/header.php';
+        echo <<<END
+            <!doctype html>
+            <html lang="fr" class="transition-colors duration-300">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport"
+                      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>NetVOD</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+                      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+                      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+                <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+                        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+                <script src="js/app.js"></script>
+                <link rel="stylesheet" href="css/tailwind.css">
+            </head>
+            <body class="bg-white dark:bg-gray-800 h-full transition-colors duration-700 antialiased">
+            
+            <div class='container w-screen'>$template </div>
+                        
+            </body>
+            </html>
+            END;
+    }
+
+    private function render_partial(string $template): void
+    {
+        echo $template;
+    }
+
     private function render(string $template): void
     {
         require_once 'src/views/header.php';
 
-        echo "<div class='container mx-auto pt-4 w-screen'>" . $template . "</div>";
-    }
-
-    private function render_grip(string $template): void
-    {
-        require_once 'src/views/header.php';
-
-        echo "<div class='container w-screen'>" . $template . "</div>";
+        echo <<<END
+            <!doctype html>
+            <html lang="fr" class="transition-colors duration-300">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport"
+                      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>NetVOD</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+                      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+                      crossorigin="anonymous" referrerpolicy="no-referrer"/>
+                <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+                        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+                <script src="js/app.js"></script>
+                <link rel="stylesheet" href="css/tailwind.css">
+            </head>
+            <body class="bg-white dark:bg-gray-800 h-full transition-colors duration-700 antialiased">
+            
+            <div class='container mx-auto pt-4 w-screen'> $template </div>
+                        
+            </body>
+            </html>
+            END;
     }
 }

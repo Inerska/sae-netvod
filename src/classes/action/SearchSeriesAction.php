@@ -12,6 +12,7 @@ class SearchSeriesAction extends Action
         <form method="post" class="w-screen flex justify-center items-center bg-white dark:bg-gray-800 h-20 mb-10 flex-col border-red-700 m-0">
             <input class="flex-1 w-1/2 text-5xl border-b-2 border-red-600 my-10 bg-transparent dark:bg-gray-800 dark:text-gray-100 focus:outline-none" type="text" name="search" placeholder="Rechercher...">
         </form>
+        <div class="flex flex-wrap justify-center" id="articles"></div>
         <script src="js/ajax.js"></script>
     END;
 
@@ -28,15 +29,12 @@ class SearchSeriesAction extends Action
     {
         $repository = new SeriesRepository();
         $series = $repository->getSeriesWith($_POST['search']);
+        $html = "";
 
-        $html = $this->htmlBase;
-
-        $html .= "<div class='flex flex-wrap flex-row gap-10'>";
         foreach ($series as $serie) {
             $renderer = new SeriesCardRenderer($serie['img'], $serie['titre'], $serie['id'], $serie['annee']);
             $html .= $renderer->render();
         }
-        $html .= "</div>";
 
         return $html;
     }
